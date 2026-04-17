@@ -7,7 +7,7 @@ tmp_exp.html
 Thumbs.db
 Desktop.ini
 
-# AI/Metadata
+# Optional: AI/Metadata
 .gemini/
 .antigravity/
 brain/
@@ -15,3 +15,6 @@ scratch/
 implementation_plan.md
 task.md
 walkthrough.md
+
+# Old Attempts
+assets/outra tentativa/
