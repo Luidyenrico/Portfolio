@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Data, AI & Automation</title>
+
+    <!-- Fonts from design system -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons from design system -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS config from design system -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['DM Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: 'var(--primary)',
+                        'primary-foreground': 'var(--primary-foreground)',
+                        'primary-glow': 'var(--primary-glow)',
+                        background: 'var(--bg-main)',
+                        surface: 'var(--bg-card)',
+                        border: 'var(--border-color)',
+                        text: {
+                            main: 'var(--text-main)',
+                            muted: 'var(--text-muted)'
+                        },
+                        accent: 'var(--accent)'
+                    },
+                    animation: {
+                        'float': 'float 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+                        'float-delayed': 'float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1) -5s',
+                        'pulse-glow': 'pulse-glow 3s infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%': { transform: 'translate(0, 0) scale(1)' },
+                            '100%': { transform: 'translate(30px, 50px) scale(1.1)' }
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP from design system -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Global CSS Variables from design_system_main.html */
+        :root[data-theme="light"] {
+            --bg-main: #FAFAFA;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-glass: rgba(255, 255, 255, 0.4);
+            --bg-glass-hover: rgba(255, 255, 255, 0.6);
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --primary: #000000;
+            --primary-foreground: #FFFFFF;
+            --primary-glow: rgba(0, 0, 0, 0.1);
+            --accent: #2563EB;
+            --cursor-color: rgba(0, 0, 0, 0.5);
+            --blob-1: #BFDBFE;
+            /* blue-200 */
+            --blob-2: #E9D5FF;
+            /* purple-200 */
+        }
+
+        :root[data-theme="dark"] {
+            --bg-main: #050A14;
+            --bg-card: rgba(20, 20, 30, 0.6);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --bg-glass-hover: rgba(255, 255, 255, 0.06);
+            --text-main: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #FFFFFF;
+            --primary-foreground: #000000;
+            --primary-glow: rgba(255, 255, 255, 0.15);
+            --accent: #3B82F6;
+            --cursor-color: rgba(255, 255, 255, 0.5);
+            --blob-1: #1E3A8A;
+            /* blue-900 */
+            --blob-2: #581C87;
+            /* purple-900 */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            cursor: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Ambient Liquid Blob */
+        .liquid-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: -1;
+            pointer-events: none;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            transition: 0.5s;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .glass-panel:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--primary-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--primary-glow);
+        }
+
+        .glass-panel:hover::before {
+            left: 100%;
+            transition: 0.7s ease-in-out;
+        }
+
+        /* Nav floating control bar styles (from design_system2.html) */
+        .controls-nav {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .controls-nav.glass-panel:hover {
+            transform: translateX(-50%) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .controls-nav.glass-panel:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            display: gap;
+            gap: 2rem;
+            align-items: center;
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.65;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* Transparent Stroke Text */
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .text-transparent-stroke:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 1px transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Text Reveal Wrapper for GSAP */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* CUSTOM CURSOR */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 36px;
+            height: 36px;
+            background-color: var(--bg-glass);
+            border-color: var(--text-muted);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Noise Overlay for texture */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* Utility */
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .border-b-grid {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .border-t-grid {
+            border-top: 1px solid var(--border-color);
+        }
+
+        [data-i18n-lang="pt"] [data-i18n-en] {
+            display: none;
+        }
+
+        [data-i18n-lang="en"] [data-i18n-pt] {
+            display: none;
+        }
+
+        /* Background Grid */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            opacity: 0.3;
+        }
+
+        .bg-grid-lines {
+            width: 100%;
+            max-width: 1440px;
+            height: 100%;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 3rem;
+        }
+
+        .bg-grid-line {
+            width: 1px;
+            height: 100%;
+            background-color: var(--border-color);
+        }
+
+        /* Marquee from design_system2.html */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: scroll 35s linear infinite;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Utility Label / Component details */
+        .ds-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-mono);
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-accent/30 selection:text-text-main relative" data-i18n-lang="en">
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div class="noise-overlay"></div>
+
+    <!-- Background Grid -->
+    <div class="bg-grid">
+        <div class="bg-grid-lines">
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden lg:block"></div>
+            <div class="bg-grid-line"></div>
+        </div>
+    </div>
+
+    <!-- Liquid Background Layer -->
+    <div class="liquid-blob animate-float"
+        style="width: 50vw; height: 50vw; top: -10vw; left: -10vw; background-color: var(--blob-1);"></div>
+    <div class="liquid-blob animate-float-delayed"
+        style="width: 40vw; height: 40vw; top: 40%; right: -10vw; background-color: var(--blob-2);"></div>
+
+    <!-- REQUIREMENT 1 - Top Control Bar -->
+    <nav class="glass-panel controls-nav" id="navbar">
+        <div class="flex items-center gap-2 cursor-hover-target">
+            <iconify-icon icon="solar:atom-bold-duotone" class="text-lg text-accent"></iconify-icon>
+            <span class="font-heading font-semibold text-sm tracking-tight text-text-main">DS.SYSTEM</span>
+        </div>
+
+        <div class="hidden md:flex nav-links">
+            <a href="#hero" class="nav-link cursor-hover-target"><span data-i18n-en>Hero</span><span
+                    data-i18n-pt>Início</span></a>
+            <a href="#projects" class="nav-link cursor-hover-target"><span data-i18n-en>Projects</span><span
+                    data-i18n-pt>Projetos</span></a>
+            <a href="#ai-automation" class="nav-link cursor-hover-target"><span data-i18n-en>AI & Automation</span><span
+                    data-i18n-pt>IA & Automação</span></a>
+            <a href="#dashboards" class="nav-link cursor-hover-target"><span data-i18n-en>Dashboards</span><span
+                    data-i18n-pt>Painéis</span></a>
+            <a href="#about" class="nav-link cursor-hover-target"><span data-i18n-en>About</span><span
+                    data-i18n-pt>Sobre</span></a>
+            <a href="#contact" class="nav-link cursor-hover-target"><span data-i18n-en>Contact</span><span
+                    data-i18n-pt>Contato</span></a>
+        </div>
+
+        <div class="w-px h-4 bg-border"></div>
+
+        <button id="theme-toggle" class="toggle-btn cursor-hover-target" aria-label="Toggle Theme">
+            <i data-lucide="moon" class="w-4 h-4 dark-icon hidden border-none text-text-main"></i>
+            <i data-lucide="sun" class="w-4 h-4 light-icon text-text-main"></i>
+            <span data-i18n-en class="text-xs">Dark/Light</span><span data-i18n-pt class="text-xs">Escuro/Claro</span>
+        </button>
+
+        <div class="w-px h-4 bg-border"></div>
+
+        <button id="lang-toggle" class="toggle-btn cursor-hover-target" aria-label="Toggle Language">
+            <i data-lucide="globe" class="w-4 h-4 text-text-main"></i>
+            <span data-lang-text class="text-xs">PT-BR / EN-US</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full flex flex-col items-center">
+
+        <!-- 1. HERO SECTION -->
+        <section id="hero"
+            class="min-h-screen w-full flex flex-col justify-center section-padding relative max-w-[1440px] px-6 mx-auto border-b-grid">
+
+            <!-- Title content -->
+            <div class="flex flex-col items-center text-center mt-24 mb-16 relative z-10">
+                <h1
+                    class="text-[clamp(3rem,8vw,10rem)] font-heading font-bold tracking-tighter leading-[0.85] text-text-main flex flex-wrap justify-center gap-4">
+                    <span class="text-reveal-wrapper">
+                        <span class="text-reveal-content block text-transparent-stroke">
+                            <span data-i18n-en>JOHN</span><span data-i18n-pt>JOÃO</span>
+                        </span>
+                    </span>
+                    <span class="text-reveal-wrapper">
+                        <span class="text-reveal-content block">
+                            <span data-i18n-en>DOE</span><span data-i18n-pt>SILVA</span>
+                        </span>
+                    </span>
+                </h1>
+
+                <p class="text-lg md:text-2xl text-text-muted mt-8 font-light hero-fade-up opacity-0">
+                    <span data-i18n-en>Data • AI • Automation</span>
+                    <span data-i18n-pt>Dados • IA • Automação</span>
+                </p>
+                <p class="text-sm md:text-md text-text-muted mt-4 max-w-xl font-body hero-fade-up opacity-0">
+                    <span data-i18n-en>Architecting modern data systems, integrating artificial intelligence, and
+                        building seamless automation flows for scalable engineering.</span>
+                    <span data-i18n-pt>Arquitetando sistemas de dados modernos, integrando inteligência artificial e
+                        construindo fluxos de automação para engenharia escalável.</span>
+                </p>
+
+                <div class="mt-12 flex items-center gap-6 hero-fade-up opacity-0">
+                    <button
+                        class="cursor-hover-target px-8 py-4 bg-primary text-primary-foreground rounded-full text-sm font-semibold uppercase tracking-widest hover:scale-105 hover:shadow-lg hover:shadow-primary-glow transition-all duration-300 flex items-center gap-2">
+                        <span data-i18n-en>View Projects</span><span data-i18n-pt>Ver Projetos</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                    <button
+                        class="cursor-hover-target px-8 py-4 bg-transparent border border-border text-text-main rounded-full text-sm font-semibold uppercase tracking-widest hover:border-primary hover:bg-primary/5 transition-all duration-300">
+                        <span data-i18n-en>Contact Me</span><span data-i18n-pt>Contato</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- REQUIREMENT 2 - SKILLS MARQUEE -->
+            <div
+                class="w-full py-8 border-y border-border relative overflow-hidden bg-bg-glass backdrop-blur-md hero-fade-up opacity-0 delay-[600ms]">
+                <div class="marquee-container">
+                    <div
+                        class="marquee-content font-heading uppercase tracking-tighter opacity-20 text-[clamp(2rem,4vw,4rem)]">
+                        <span class="mx-6 text-text-main">AI</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">INTELLIGENCE</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">AUTOMATION</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">SYSTEMS</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">DATA</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">ANALYTICS</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">PYTHON</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <!-- Duplicate for infinite effect -->
+                        <span class="mx-6 text-text-main">AI</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">INTELLIGENCE</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">AUTOMATION</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">SYSTEMS</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">DATA</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">ANALYTICS</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                        <span class="mx-6 text-text-main">PYTHON</span> <iconify-icon icon="solar:star-bold"
+                            class="text-accent text-[clamp(2rem,3vw,3rem)] self-center"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div
+                class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 opacity-0 hero-fade-up delay-[1000ms]">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-text-muted">
+                    <span data-i18n-en>Scroll</span><span data-i18n-pt>Rolar</span>
+                </span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-text-muted to-transparent"></div>
+            </div>
+
+        </section>
+
+        <!-- 2. PROJECTS SECTION -->
+        <section id="projects" class="w-full section-padding border-b border-border">
+            <div class="max-w-7xl mx-auto px-6">
+                <!-- Section Header -->
+                <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">01 //
+                                Projects</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                            <span data-i18n-en>Selected</span><span data-i18n-pt>Trabalhos</span><br />
+                            <span class="text-text-muted"><span data-i18n-en>Works</span><span
+                                    data-i18n-pt>Selecionados</span></span>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                    <!-- Project 1 -->
+                    <div
+                        class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div
+                                    class="w-12 h-12 bg-primary/5 border border-border rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-bg-main transition-all duration-300">
+                                    <i data-lucide="database" class="w-5 h-5"></i>
+                                </div>
+                                <span
+                                    class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-border rounded text-text-muted bg-surface"><span
+                                        data-i18n-en>Data Pipeline</span><span data-i18n-pt>Pipeline de
+                                        Dados</span></span>
+                            </div>
+                            <h4 class="text-2xl font-heading font-bold mb-3 text-text-main"><span
+                                    data-i18n-en>Enterprise Data Lake</span><span data-i18n-pt>Data Lake
+                                    Corporativo</span></h4>
+                            <p class="text-sm text-text-muted leading-relaxed mb-6"><span data-i18n-en>Scalable
+                                    architecture for processing terabytes of real-time streaming data using modern
+                                    warehouse solutions.</span><span data-i18n-pt>Arquitetura escalável para
+                                    processamento de terabytes de dados de streaming em tempo real usando soluções de
+                                    warehouse modernas.</span></p>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-main group-hover:gap-4 transition-all duration-300 mt-4 border-t border-border pt-6">
+                            <span data-i18n-en>View Case Study</span><span data-i18n-pt>Ver Estudo de Caso</span> <i
+                                data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div
+                        class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div
+                                    class="w-12 h-12 bg-primary/5 border border-border rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-bg-main transition-all duration-300">
+                                    <iconify-icon icon="solar:cpu-bolt-bold-duotone" class="text-2xl"></iconify-icon>
+                                </div>
+                                <span
+                                    class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-border rounded text-text-muted bg-surface"><span
+                                        data-i18n-en>AI Model</span><span data-i18n-pt>Modelo de IA</span></span>
+                            </div>
+                            <h4 class="text-2xl font-heading font-bold mb-3 text-text-main"><span
+                                    data-i18n-en>Predictive Analytics Engine</span><span data-i18n-pt>Motor de Análise
+                                    Preditiva</span></h4>
+                            <p class="text-sm text-text-muted leading-relaxed mb-6"><span data-i18n-en>Custom machine
+                                    learning models deployed via API to forecast customer churn with 94%
+                                    accuracy.</span><span data-i18n-pt>Modelos de aprendizado de máquina personalizados
+                                    implantados via API para prever rotatividade de clientes com 94% de precisão.</span>
+                            </p>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-main group-hover:gap-4 transition-all duration-300 mt-4 border-t border-border pt-6">
+                            <span data-i18n-en>View Case Study</span><span data-i18n-pt>Ver Estudo de Caso</span> <i
+                                data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. AI & AUTOMATION SECTION -->
+        <section id="ai-automation" class="w-full section-padding border-b border-border">
+            <div class="max-w-7xl mx-auto px-6">
+                <!-- Section Header -->
+                <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-accent">02 // Core
+                                Expertise</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                            <span data-i18n-en>AI &</span><span data-i18n-pt>IA &</span><br />
+                            <span class="text-text-muted"><span data-i18n-en>Automation</span><span
+                                    data-i18n-pt>Automação</span></span>
+                        </h2>
+                    </div>
+                    <p class="text-lg text-text-muted max-w-md font-light">
+                        <span data-i18n-en>Leveraging machine learning and custom workflows to eliminate manual effort
+                            and scale operations exponentially.</span>
+                        <span data-i18n-pt>Aproveitando o aprendizado de máquina e fluxos de trabalho personalizados
+                            para eliminar o esforço manual e escalar as operações exponencialmente.</span>
+                    </p>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                    <!-- Metric Card 1 -->
+                    <div class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 p-6 opacity-40 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500">
+                            <i data-lucide="activity" class="w-6 h-6 text-accent"></i>
+                        </div>
+                        <h5 class="text-[10px] font-mono uppercase tracking-widest text-text-muted mb-6"><span
+                                data-i18n-en>System Uptime</span><span data-i18n-pt>Disponibilidade</span></h5>
+
+                        <div class="flex items-end gap-2 mb-4">
+                            <div class="text-6xl font-heading font-bold tracking-tighter text-text-main">99.9</div>
+                            <div class="text-2xl font-heading font-bold text-accent mb-2">%</div>
+                        </div>
+                        <p class="text-sm text-text-muted mb-8"><span data-i18n-en>Reliable data pipelines ensuring data
+                                availability around the clock.</span><span data-i18n-pt>Pipelines de dados confiáveis
+                                ​​garantindo acesso 24 horas por dia.</span></p>
+
+                        <div class="w-full bg-border rounded-full h-1.5 relative overflow-hidden">
+                            <div
+                                class="absolute top-0 left-0 h-full bg-accent rounded-full w-0 group-hover:w-[99%] transition-all duration-1000 ease-out">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 2 -->
+                    <div class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 p-6 opacity-40 group-hover:opacity-100 group-hover:-rotate-12 transition-all duration-500">
+                            <i data-lucide="zap" class="w-6 h-6 text-accent"></i>
+                        </div>
+                        <h5 class="text-[10px] font-mono uppercase tracking-widest text-text-muted mb-6"><span
+                                data-i18n-en>Processing Speed</span><span data-i18n-pt>Velocidade</span></h5>
+
+                        <div class="flex items-end gap-2 mb-4">
+                            <div class="text-6xl font-heading font-bold tracking-tighter text-text-main">10</div>
+                            <div class="text-2xl font-heading font-bold text-accent mb-2">x</div>
+                        </div>
+                        <p class="text-sm text-text-muted mb-8"><span data-i18n-en>Performance improvements in automated
+                                workflows vs manual processing.</span><span data-i18n-pt>Melhorias de desempenho em
+                                fluxos automatizados vs processamento manual.</span></p>
+
+                        <div class="w-full bg-border rounded-full h-1.5 relative overflow-hidden">
+                            <div
+                                class="absolute top-0 left-0 h-full bg-accent rounded-full w-0 group-hover:w-[100%] transition-all duration-1000 ease-out">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 3 -->
+                    <div class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 p-6 opacity-40 group-hover:opacity-100 group-hover:rotate-45 transition-all duration-500">
+                            <i data-lucide="crosshair" class="w-6 h-6 text-accent"></i>
+                        </div>
+                        <h5 class="text-[10px] font-mono uppercase tracking-widest text-text-muted mb-6"><span
+                                data-i18n-en>Model Accuracy</span><span data-i18n-pt>Precisão IA</span></h5>
+
+                        <div class="flex items-end gap-2 mb-4">
+                            <div class="text-6xl font-heading font-bold tracking-tighter text-text-main">95</div>
+                            <div class="text-2xl font-heading font-bold text-accent mb-2">%</div>
+                        </div>
+                        <p class="text-sm text-text-muted mb-8"><span data-i18n-en>Average prediction accuracy across
+                                multiple deployed ML models in production.</span><span data-i18n-pt>Precisão média de
+                                previsão em vários modelos de ML implantados em produção.</span></p>
+
+                        <div class="w-full bg-border rounded-full h-1.5 relative overflow-hidden">
+                            <div
+                                class="absolute top-0 left-0 h-full bg-accent rounded-full w-0 group-hover:w-[95%] transition-all duration-1000 ease-out">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DASHBOARDS SECTION -->
+        <section id="dashboards" class="w-full section-padding border-b border-border">
+            <div class="max-w-7xl mx-auto px-6">
+                <!-- Section Header -->
+                <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-1.5 h-1.5 rounded-full bg-text-main"></div>
+                            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">03 //
+                                Interface Design</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                            <span data-i18n-en>Interactive</span><span data-i18n-pt>Painéis</span><br />
+                            <span class="text-text-muted"><span data-i18n-en>Dashboards</span><span
+                                    data-i18n-pt>Interativos</span></span>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Dashboard Preview -->
+                <div class="reveal">
+                    <div
+                        class="glass-panel p-2 rounded-3xl overflow-hidden shadow-2xl border border-border/50 relative">
+                        <!-- Mac OS top bar -->
+                        <div class="h-8 border-b border-border bg-black/10 flex items-center px-4 gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                        </div>
+                        <div class="flex flex-col md:flex-row h-full min-h-[500px] bg-bg-main">
+                            <!-- Sidebar -->
+                            <div class="w-full md:w-64 border-r border-border p-6 flex flex-col gap-6 bg-surface">
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i></div>
+                                    <span class="font-bold text-sm text-text-main">DataPlatform</span>
+                                </div>
+                                <div class="flex flex-col gap-2">
+                                    <div
+                                        class="flex items-center gap-3 px-3 py-2 rounded-lg bg-border text-text-main text-sm font-medium">
+                                        <i data-lucide="bar-chart-2" class="w-4 h-4"></i> <span
+                                            data-i18n-en>Overview</span><span data-i18n-pt>Visão Geral</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-border/50 text-text-muted hover:text-text-main transition-colors cursor-hover-target text-sm">
+                                        <i data-lucide="database" class="w-4 h-4"></i> <span
+                                            data-i18n-en>Sources</span><span data-i18n-pt>Fontes</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-border/50 text-text-muted hover:text-text-main transition-colors cursor-hover-target text-sm">
+                                        <i data-lucide="settings" class="w-4 h-4"></i> <span
+                                            data-i18n-en>Settings</span><span data-i18n-pt>Configurações</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Main Content Area -->
+                            <div class="flex-1 p-8 overflow-hidden bg-bg-main relative">
+                                <!-- Top actions -->
+                                <div class="flex justify-between items-center mb-8">
+                                    <h3 class="text-xl font-heading font-bold"><span data-i18n-en>Analytics
+                                            Overview</span><span data-i18n-pt>Visão Geral de Análises</span></h3>
+                                    <button
+                                        class="px-4 py-2 bg-primary text-primary-foreground text-xs font-bold rounded-lg cursor-hover-target"><span
+                                            data-i18n-en>Export Report</span><span data-i18n-pt>Exportar
+                                            Relatório</span></button>
+                                </div>
+                                <!-- Cards -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                                    <div
+                                        class="p-4 rounded-xl border border-border bg-surface flex flex-col gap-2 cursor-hover-target hover:border-text-muted transition-colors">
+                                        <span class="text-[10px] font-mono uppercase text-text-muted">Total Users</span>
+                                        <span class="text-2xl font-bold font-heading">24,592</span>
+                                        <span class="text-xs text-green-500 flex items-center gap-1"><i
+                                                data-lucide="arrow-up-right" class="w-3 h-3"></i> +12.5%</span>
+                                    </div>
+                                    <div
+                                        class="p-4 rounded-xl border border-border bg-surface flex flex-col gap-2 cursor-hover-target hover:border-text-muted transition-colors">
+                                        <span class="text-[10px] font-mono uppercase text-text-muted">Active
+                                            Sessions</span>
+                                        <span class="text-2xl font-bold font-heading">1,405</span>
+                                        <span class="text-xs text-green-500 flex items-center gap-1"><i
+                                                data-lucide="arrow-up-right" class="w-3 h-3"></i> +3.2%</span>
+                                    </div>
+                                    <div class="p-4 border-l border-border pl-6 flex flex-col justify-center">
+                                        <span class="text-xs text-text-muted max-w-[150px]"><span data-i18n-en>Real-time
+                                                data ingestion functioning optimally.</span><span data-i18n-pt>Ingestão
+                                                de dados em tempo real funcionando perfeitamente.</span></span>
+                                    </div>
+                                </div>
+                                <!-- Chart Area Mock -->
+                                <div
+                                    class="w-full h-48 rounded-xl border border-border bg-surface flex items-center justify-center relative overflow-hidden group">
+                                    <div
+                                        class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-accent/20 to-transparent">
+                                    </div>
+                                    <svg class="absolute bottom-0 w-full h-full opacity-50" preserveAspectRatio="none"
+                                        viewBox="0 0 100 100">
+                                        <path d="M0 100 L0 80 Q25 40 50 60 T100 20 L100 100 Z" fill="var(--accent)"
+                                            fill-opacity="0.1" stroke="var(--accent)" stroke-width="2"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ABOUT SECTION -->
+        <section id="about" class="w-full section-padding border-b border-border">
+            <div class="max-w-7xl mx-auto px-6 reveal">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                    <div class="md:col-span-4">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">04 // Who am
+                                I</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-6">
+                            <span data-i18n-en>Profile</span><span data-i18n-pt>Perfil</span>
+                        </h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-2xl md:text-4xl font-light leading-relaxed text-text-main tracking-tight mb-8">
+                            <span data-i18n-en>I engineer robust data architectures and AI-driven systems. Blending deep
+                                technical knowledge with an eye for scalable design, I build solutions that transform
+                                raw data into automated intelligence.</span>
+                            <span data-i18n-pt>Eu projeto arquiteturas de dados robustas e sistemas baseados em IA.
+                                Combinando conhecimento técnico profundo com um olhar para design escalável, construo
+                                soluções que transformam dados brutos em inteligência automatizada.</span>
+                        </p>
+                        <div class="flex items-center gap-4 border-t border-border pt-8">
+                            <div
+                                class="w-12 h-12 rounded-full overflow-hidden bg-surface border border-border flex items-center justify-center cursor-hover-target hover:scale-110 transition-transform">
+                                <i data-lucide="user" class="text-text-main"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-text-main"><span data-i18n-en>John Doe</span><span
+                                        data-i18n-pt>João Silva</span></h4>
+                                <p class="text-xs text-text-muted font-mono"><span data-i18n-en>Senior Data
+                                        Architect</span><span data-i18n-pt>Arquiteto de Dados Sênior</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CONTACT SECTION -->
+        <section id="contact" class="w-full section-padding">
+            <div class="max-w-4xl mx-auto px-6">
+                <!-- Section Header -->
+                <div class="text-center mb-16 reveal flex flex-col items-center">
+                    <div
+                        class="w-12 h-12 bg-primary/5 border border-border rounded-2xl flex items-center justify-center text-primary mb-6">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                        <span data-i18n-en>Let's collaborate</span><span data-i18n-pt>Vamos colaborar</span>
+                    </h2>
+                    <p class="text-lg text-text-muted font-light"><span data-i18n-en>Ready to scale your next project?
+                            Drop a message.</span><span data-i18n-pt>Pronto para escalar seu próximo projeto? Deixe uma
+                            mensagem.</span></p>
+                </div>
+
+                <!-- Form Interface -->
+                <div class="glass-panel p-8 md:p-12 rounded-3xl reveal relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+                    </div>
+                    <form class="space-y-8 flex flex-col relative z-10" onsubmit="event.preventDefault();">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Name Input -->
+                            <div class="relative w-full">
+                                <label
+                                    class="text-[10px] font-mono uppercase tracking-widest text-text-muted absolute -top-2.5 left-3 bg-bg-main px-1 transition-colors z-10">
+                                    <span data-i18n-en>Full Name</span><span data-i18n-pt>Nome Completo</span>
+                                </label>
+                                <input type="text" placeholder="John Doe"
+                                    class="w-full bg-transparent border border-border rounded-xl px-4 py-4 text-sm text-text-main focus:outline-none focus:border-primary transition-colors cursor-hover-target placeholder:text-text-muted/50" />
+                            </div>
+                            <!-- Email Input -->
+                            <div class="relative w-full">
+                                <label
+                                    class="text-[10px] font-mono uppercase tracking-widest text-text-muted absolute -top-2.5 left-3 bg-bg-main px-1 transition-colors z-10">
+                                    <span data-i18n-en>Email Address</span><span data-i18n-pt>Endereço de E-mail</span>
+                                </label>
+                                <input type="email" placeholder="design@vibe.com"
+                                    class="w-full bg-transparent border border-border rounded-xl px-4 py-4 text-sm text-text-main focus:outline-none focus:border-primary transition-colors cursor-hover-target placeholder:text-text-muted/50" />
+                            </div>
+                        </div>
+
+                        <!-- Message Input -->
+                        <div class="relative w-full">
+                            <label
+                                class="text-[10px] font-mono uppercase tracking-widest text-text-muted absolute -top-2.5 left-3 bg-bg-main px-1 transition-colors z-10">
+                                <span data-i18n-en>Message</span><span data-i18n-pt>Mensagem</span>
+                            </label>
+                            <textarea rows="4" placeholder="Tell me about your project..."
+                                class="w-full bg-transparent border border-border rounded-xl px-4 py-4 text-sm text-text-main focus:outline-none focus:border-primary transition-colors cursor-hover-target placeholder:text-text-muted/50 resize-none"></textarea>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                            <label class="flex items-center gap-4 cursor-hover-target group cursor-pointer w-fit">
+                                <div class="relative flex items-center justify-center">
+                                    <input type="checkbox" class="peer sr-only" />
+                                    <div
+                                        class="w-5 h-5 border border-border rounded bg-transparent peer-checked:bg-primary peer-checked:border-primary transition-colors">
+                                    </div>
+                                    <i data-lucide="check"
+                                        class="w-3 h-3 text-bg-main absolute opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                </div>
+                                <span
+                                    class="text-sm font-medium text-text-main group-hover:text-primary transition-colors">
+                                    <span data-i18n-en>I agree to the privacy policy</span><span data-i18n-pt>Concordo
+                                        com a política de privacidade</span>
+                                </span>
+                            </label>
+
+                            <button type="submit"
+                                class="cursor-hover-target px-8 py-4 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:scale-105 hover:shadow-lg hover:shadow-primary-glow transition-all duration-300 w-full md:w-auto">
+                                <span data-i18n-en>Send Message</span><span data-i18n-pt>Enviar Mensagem</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER / END -->
+        <footer class="w-full border-t border-border py-12 mt-20 z-20 relative bg-bg-main">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <iconify-icon icon="solar:atom-bold-duotone" class="text-lg text-accent"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest text-text-muted">Portfolio 2026</span>
+                </div>
+                <div class="text-xs text-text-muted">
+                    <span data-i18n-en>© 2026 Developer Portfolio. All rights reserved.</span><span data-i18n-pt>© 2026
+                        Portfólio de Desenvolvedor. Todos os direitos reservados.</span>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Scripts from design_system_main.html -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // 1. Language Toggle Logic
+        const langBtn = document.getElementById('lang-toggle');
+        const langTextSpan = langBtn.querySelector('[data-lang-text]');
+        const bodyTag = document.body;
+        let currentLang = localStorage.getItem('site_lang') || 'en';
+
+        function applyLanguage(lang) {
+            bodyTag.setAttribute('data-i18n-lang', lang);
+            langTextSpan.textContent = lang === 'en' ? 'EN-US' : 'PT-BR';
+        }
+
+        applyLanguage(currentLang);
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+            localStorage.setItem('site_lang', currentLang);
+            applyLanguage(currentLang);
+        });
+
+        // 2. Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        let savedTheme = localStorage.getItem('site_theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        html.setAttribute('data-theme', savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('site_theme', newTheme);
+        });
+
+        // 3. Custom Cursor Logic - GSAP-powered smooth tracking
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        if (dot) { dot.style.left = window.innerWidth / 2 + 'px'; dot.style.top = window.innerHeight / 2 + 'px'; }
+        if (outline) { outline.style.left = window.innerWidth / 2 + 'px'; outline.style.top = window.innerHeight / 2 + 'px'; }
+
+        if (typeof gsap !== 'undefined' && dot && outline) {
+            const xRing = gsap.quickTo(outline, 'left', { duration: 0.55, ease: 'power2.out' });
+            const yRing = gsap.quickTo(outline, 'top', { duration: 0.55, ease: 'power2.out' });
+
+            window.addEventListener('mousemove', e => {
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+                xRing(e.clientX);
+                yRing(e.clientY);
+            });
+
+            document.addEventListener('mouseleave', () => {
+                gsap.to([dot, outline], { opacity: 0, duration: 0.3 });
+            });
+            document.addEventListener('mouseenter', () => {
+                gsap.to([dot, outline], { opacity: 1, duration: 0.3 });
+            });
+        }
+
+        // Cursor hover states
+        function bindCursorHover() {
+            document.querySelectorAll('a, button, input, textarea, select, [data-lucide], iconify-icon, .cursor-hover-target, .glass-panel').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
+        bindCursorHover();
+
+        // 4. GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.set('.text-reveal-content', { y: '110%', opacity: 0 });
+        gsap.set('.hero-fade-up', { y: 30, opacity: 0 });
+
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            tl.to('.text-reveal-content', {
+                y: '0%',
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: 'power4.out',
+                delay: 0.1
+            })
+                .to('.hero-fade-up', {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: 'power3.out'
+                }, "-=0.8");
+        });
+
+        // Scroll reveals
+        gsap.utils.toArray('.reveal').forEach(element => {
+            gsap.fromTo(element,
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+
+</html>

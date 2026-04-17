@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt" data-theme="light" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="page_title">Vibe - System 2.0</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Oswald:wght@400;500;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        oswald: ['Oswald', 'sans-serif'],
+                        instrument: ['Instrument Sans', 'sans-serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        newsreader: ['Newsreader', 'serif'],
+                        dm: ['DM Sans', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif']
+                    },
+                    colors: {
+                        background: 'var(--bg-main)',
+                        surface: 'var(--bg-surface)',
+                        stonebg: 'var(--bg-stone)',
+                        textmain: 'var(--text-main)',
+                        textmuted: 'var(--text-muted)',
+                        bordercolor: 'var(--border-color)',
+                        accent: 'var(--accent)',
+                        accentfg: 'var(--accent-fg)',
+                        glow: 'var(--glow-color)',
+                        brand: 'var(--brand-color)',
+                        primary: 'var(--primary)',
+                        primaryfg: 'var(--primary-foreground)',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 10s linear infinite',
+                        'spin-slow-reverse': 'spin 15s linear infinite reverse',
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1) -5s',
+                        'marquee': 'marquee 30s linear infinite',
+                        'pulse-glow': 'pulse-glow 3s infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-20px) scale(1.05)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(212, 242, 104, 0.4)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)', boxShadow: '0 0 20px 10px rgba(212, 242, 104, 0.2)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Light Theme Values */
+        :root[data-theme="light"] {
+            --bg-main: #EAEAE5; /* Base digital-architect */
+            --bg-surface: #F9F9F9; /* Cards */
+            --bg-stone: #E6E3D6; /* Green-museum warm */
+            --text-main: #1C1C1C;
+            --text-muted: #6B7280;
+            --border-color: rgba(0, 0, 0, 0.08);
+
+            --primary: #000000;
+            --primary-foreground: #FFFFFF;
+            
+            --accent: #D4F268; /* Vibe green */
+            --accent-fg: #1C1C1C;
+            --glow-color: rgba(28, 28, 28, 0.1);
+            --brand-color: #D4F268;
+            
+            --cursor-color: rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.4);
+
+            --blob-1: #BFDBFE;
+            --blob-2: #E9D5FF;
+        }
+
+        /* Dark Theme Values */
+        :root[data-theme="dark"] {
+            --bg-main: #050A14; /* Deep dark blue/black from liquid arch */
+            --bg-surface: #101216; /* Cards */
+            --bg-stone: #0C0F15;
+            --text-main: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+
+            --primary: #FFFFFF;
+            --primary-foreground: #000000;
+
+            --accent: #C3E354;
+            --accent-fg: #000000;
+            --glow-color: rgba(255, 255, 255, 0.1);
+            --brand-color: #C3E354;
+
+            --cursor-color: rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(20, 20, 30, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
+
+            --blob-1: #1E3A8A;
+            --blob-2: #581C87;
+        }
+
+        /* Reset & Base */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none; /* Custom cursor */
+            overflow-x: hidden;
+        }
+        
+        a, button, input, select, textarea, .cursor-hover-target { cursor: none; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* Custom Cursor Logic */
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        .cursor-outline {
+            width: 48px; height: 48px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+        .cursor-hover .cursor-dot { background-color: transparent; }
+        .cursor-hover .cursor-outline {
+            width: 36px; height: 36px;
+            background-color: var(--glass-bg);
+            border-color: var(--text-muted);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Language Toggle display logic */
+        [data-i18n-lang="pt"] [data-i18n-en] { display: none !important; }
+        [data-i18n-lang="en"] [data-i18n-pt] { display: none !important; }
+
+        /* Reveal Animations (Scroll triggered) */
+        .reveal { opacity: 0; transform: translateY(2rem); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Masked Text Reveal */
+        .text-reveal-wrapper { overflow: hidden; display: inline-block; vertical-align: bottom; }
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+        .reveal-active .text-reveal-content { transform: translateY(0); opacity: 1; }
+        
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+            transition: 0.5s;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .glass-panel:hover {
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--glow-color);
+        }
+        .glass-panel:hover::before {
+            left: 100%;
+            transition: 0.7s ease-in-out;
+        }
+
+        /* Transparent Stroke Text */
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            transition: all 0.5s ease;
+        }
+        .text-transparent-stroke:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 1px transparent;
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+
+        /* Ambient Liquid Blob */
+        .liquid-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Ticket Serrated Edge (from green-museum) */
+        .ticket-bottom {
+            background-image: radial-gradient(circle at 10px 0, transparent 0, transparent 5px, var(--bg-surface) 5px);
+            background-size: 20px 10px;
+            background-repeat: repeat-x;
+            height: 10px;
+            width: 100%;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-accent/30 selection:text-textmain relative" data-i18n-lang="pt">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    
+    <div class="noise-overlay"></div>
+
+    <!-- Liquid Background Layer -->
+    <div class="liquid-blob animate-float" style="width: 50vw; height: 50vw; top: -10vw; left: -10vw; background-color: var(--blob-1);"></div>
+    <div class="liquid-blob animate-float-delayed" style="width: 40vw; height: 40vw; top: 40%; right: -10vw; background-color: var(--blob-2);"></div>
+
+    <!-- Main App Container -->
+    <div class="max-w-[1440px] mx-auto border-x border-bordercolor relative min-h-screen flex flex-col bg-background/50 backdrop-blur-3xl z-10 shadow-2xl">
+        
+        <!-- Grid Lines Background -->
+        <div class="absolute inset-0 pointer-events-none grid grid-cols-1 md:grid-cols-12 gap-0 z-0 h-full w-full opacity-30">
+            <div class="hidden md:block md:col-span-3 border-r border-bordercolor h-full"></div>
+            <div class="hidden md:block md:col-span-6 border-r border-bordercolor h-full"></div>
+            <div class="hidden md:block md:col-span-3 h-full"></div>
+        </div>
+
+        <!-- Navigation -->
+        <header class="relative z-50 border-b border-bordercolor sticky top-0 bg-background/80 backdrop-blur-md">
+            <div class="flex justify-between items-center px-4 md:px-6 py-4">
+                
+                <div class="flex items-center gap-2 group cursor-hover-target">
+                    <div class="w-8 h-8 rounded-full bg-accent text-accentfg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                    </div>
+                    <span class="font-bold tracking-tighter text-lg text-textmain font-dm uppercase">VIBE<span class="font-light text-textmuted">SYS</span></span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-xs font-semibold tracking-widest uppercase text-textmuted hover:text-textmain transition-colors cursor-hover-target" href="#typography" data-i18n="nav_typography">Tipografia</a>
+                    <a class="text-xs font-semibold tracking-widest uppercase text-textmuted hover:text-textmain transition-colors cursor-hover-target" href="#colors" data-i18n="nav_colors">Cores</a>
+                    <a class="text-xs font-semibold tracking-widest uppercase text-textmuted hover:text-textmain transition-colors cursor-hover-target" href="#components" data-i18n="nav_components">Componentes</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="cursor-hover-target w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors border border-transparent hover:border-bordercolor group" aria-label="Toggle Theme">
+                        <i data-lucide="moon" class="w-4 h-4 text-textmain block dark:hidden group-hover:rotate-12 transition-transform"></i>
+                        <i data-lucide="sun" class="w-4 h-4 text-textmain hidden dark:block group-hover:rotate-90 transition-transform"></i>
+                    </button>
+                    
+                    <!-- Language Toggle -->
+                    <button id="lang-toggle" class="cursor-hover-target px-3 py-1.5 rounded-full border border-bordercolor hover:bg-surface transition-colors flex items-center justify-center gap-2 text-xs font-bold shadow-sm">
+                        <iconify-icon icon="twemoji:flag-brazil" class="text-lg" id="flag-br"></iconify-icon>
+                        <iconify-icon icon="twemoji:flag-united-states" class="text-lg hidden" id="flag-us"></iconify-icon>
+                        <span class="font-mono text-textmuted" data-lang-text>PT</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- The rest of the page content will go here -->
+        <!-- Hero Section -->
+        <section class="relative z-10 min-h-[80vh] flex flex-col justify-center px-6 md:px-12 py-20 border-b border-bordercolor overflow-hidden">
+            
+            <!-- Floating Background Elements -->
+            <div class="absolute top-[20%] left-[10%] animate-pulse-glow z-0">
+                <div class="w-32 h-32 rounded-full border border-bordercolor opacity-20"></div>
+            </div>
+            
+            <div class="absolute bottom-[20%] right-[20%] animate-ping-slow z-0">
+                <div class="w-12 h-12 rounded-full border border-accent opacity-40"></div>
+            </div>
+
+            <!-- VIP Ticket -->
+            <div class="absolute top-[15%] right-[5%] xl:right-[15%] rotate-6 hover:rotate-[2deg] transition-transform duration-500 z-30 cursor-hover-target hidden lg:block glass-panel rounded-t-2xl overflow-hidden w-64 shadow-2xl">
+                <div class="p-4 bg-background border-b border-dashed border-bordercolor flex justify-between items-center">
+                    <span class="text-xs font-mono font-bold tracking-widest text-textmuted">EST. 2024</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-brand"></i>
+                </div>
+                <div class="p-6 bg-surface">
+                    <h3 class="font-oswald text-4xl uppercase tracking-tighter mb-2 leading-none" data-i18n="ticket_title">Acesso<br>VIP</h3>
+                    <p class="text-xs text-textmuted mb-6 line-clamp-2" data-i18n="ticket_desc">Explore a nova era do design de interfaces.</p>
+                    <div class="w-full h-12 bg-textmain flex items-center justify-center rounded overflow-hidden">
+                        <div class="flex gap-1 h-8 px-2 mix-blend-difference opacity-50">
+                           <div class="w-[3px] bg-white h-full"></div>
+                           <div class="w-[6px] bg-white h-full"></div>
+                           <div class="w-[2px] bg-white h-full"></div>
+                           <div class="w-[8px] bg-white h-full"></div>
+                           <div class="w-[3px] bg-white h-full"></div>
+                           <div class="w-[1px] bg-white h-full"></div>
+                           <div class="w-[5px] bg-white h-full"></div>
+                           <div class="w-[2px] bg-white h-full"></div>
+                           <div class="w-[8px] bg-white h-full"></div>
+                           <div class="w-[4px] bg-white h-full"></div>
+                           <div class="w-[2px] bg-white h-full"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ticket-bottom bg-background"></div>
+            </div>
+
+            <!-- Main Typography -->
+            <div class="relative z-20 max-w-5xl mx-auto flex flex-col items-center lg:items-start text-center lg:text-left w-full">
+                
+                <div class="mb-6 md:mb-8 flex items-center gap-4 reveal delay-100">
+                    <div class="h-px w-12 bg-textmain"></div>
+                    <p class="text-xs md:text-sm font-semibold tracking-widest uppercase text-textmuted" data-i18n="hero_subtitle">
+                        Engenhando as interfaces digitais de amanhã, hoje.
+                    </p>
+                </div>
+
+                <h1 class="text-[18vw] md:text-[14vw] lg:text-[10rem] leading-[0.85] uppercase font-medium text-textmain tracking-tighter font-oswald cursor-hover-target" id="hero-title">
+                    <div class="text-reveal-wrapper">
+                        <span class="text-reveal-content delay-200" data-i18n="hero_title_1">Futuro</span>
+                    </div>
+                    <br />
+                    <div class="text-reveal-wrapper">
+                        <span class="text-reveal-content delay-300 text-transparent-stroke pl-0 lg:pl-32" data-i18n="hero_title_2">Design</span>
+                    </div>
+                </h1>
+
+                <div class="mt-12 flex flex-wrap justify-center lg:justify-start gap-4 reveal delay-500">
+                    <div class="px-5 py-2 rounded-full border border-bordercolor text-xs font-bold font-mono tracking-widest uppercase bg-background shadow-sm flex items-center gap-2 cursor-hover-target hover:bg-surface transition-colors">
+                        <div class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></div>
+                        <span data-i18n="hero_badge_1">Responsivo</span>
+                    </div>
+                    <div class="px-5 py-2 rounded-full border border-bordercolor text-xs font-bold font-mono tracking-widest uppercase bg-textmain text-primaryfg shadow-sm flex items-center gap-2 cursor-hover-target hover:opacity-80 transition-opacity">
+                        <i data-lucide="zap" class="w-3 h-3 text-brand text-current"></i>
+                        <span data-i18n="hero_badge_2" class="text-current">Cósmico</span>
+                    </div>
+                </div>
+
+            </div>
+            
+        </section>
+
+        <!-- Typography Section -->
+        <section id="typography" class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="mb-16 reveal">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest" data-i18n="section_01">01 / Fundação</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase" data-i18n="typography_title">Tipografia</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl" data-i18n="typography_desc">Hierarquia visual clara e legível. Uma combinação de fontes sem serifa modernas com toques arquitetônicos.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    
+                    <!-- Type Specimens -->
+                    <div class="space-y-12 reveal delay-100">
+                        <div class="p-8 border border-bordercolor rounded-2xl bg-surface relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 font-oswald text-9xl leading-none group-hover:scale-110 transition-transform duration-500">O</div>
+                            <div class="relative z-10">
+                                <span class="text-xs font-mono text-textmuted mb-4 block">Família Primária / Display</span>
+                                <h3 class="text-6xl font-oswald uppercase mb-2">Oswald</h3>
+                                <p class="text-sm text-textmuted mb-6">Light / Regular / Medium / Bold</p>
+                                <p class="font-oswald text-2xl uppercase tracking-tighter">Design System Vibe 2.0</p>
+                                <p class="font-oswald text-lg text-textmuted mt-2 uppercase tracking-wide">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$%&*()</p>
+                            </div>
+                        </div>
+
+                        <div class="p-8 border border-bordercolor rounded-2xl bg-surface relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 font-dm text-9xl leading-none group-hover:scale-110 transition-transform duration-500">D</div>
+                            <div class="relative z-10">
+                                <span class="text-xs font-mono text-textmuted mb-4 block">Família Secundária / Body</span>
+                                <h3 class="text-6xl font-dm tracking-tight mb-2">DM Sans</h3>
+                                <p class="text-sm text-textmuted mb-6">Regular / Medium / SemiBold / Bold</p>
+                                <p class="font-dm text-2xl tracking-tight">O rápido raposo marrom salta sobre o cachorro preguiçoso.</p>
+                                <p class="font-dm text-lg text-textmuted mt-2">abcdefghijklmnopqrstuvwxyz<br>0123456789 !@#$%&*()</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type Hierarchy -->
+                    <div class="space-y-8 reveal delay-200">
+                        <div class="border-b border-bordercolor pb-6">
+                            <span class="text-xs font-mono text-textmuted mb-2 block">Display Large — 160px / Bold / Uppercase</span>
+                            <div class="text-[4rem] md:text-[6rem] font-oswald uppercase leading-none tracking-tighter">Hero Title</div>
+                        </div>
+                        <div class="border-b border-bordercolor pb-6">
+                            <span class="text-xs font-mono text-textmuted mb-2 block">Heading 1 — 64px / Medium / Uppercase</span>
+                            <div class="text-5xl font-oswald uppercase tracking-tight">Section Header</div>
+                        </div>
+                        <div class="border-b border-bordercolor pb-6">
+                            <span class="text-xs font-mono text-textmuted mb-2 block">Heading 2 — 32px / Medium</span>
+                            <div class="text-3xl font-dm tracking-tight">Card Title</div>
+                        </div>
+                        <div class="border-b border-bordercolor pb-6">
+                            <span class="text-xs font-mono text-textmuted mb-2 block">Body Large — 18px / Regular</span>
+                            <div class="text-lg font-dm leading-relaxed text-textmuted">Este é um exemplo de texto de parágrafo grande. Usado geralmente para introduções e descrições curtas em cards longos.</div>
+                        </div>
+                        <div class="border-b border-bordercolor pb-6">
+                            <span class="text-xs font-mono text-textmuted mb-2 block">Label / Mono — 12px / Bold / Uppercase</span>
+                            <div class="text-xs font-mono font-bold tracking-widest uppercase text-brand">System Label</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Colors Section -->
+        <section id="colors" class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-surface">
+            <div class="max-w-7xl mx-auto">
+                
+                <div class="mb-16 reveal">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest" data-i18n="section_02">02 / Fundação</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase" data-i18n="colors_title">Cores</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl" data-i18n="colors_desc">Paleta vibrante em contraste com tons neutros profundos. Suporta modo claro e escuro fluidamente.</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    
+                    <!-- Color Swatch: Background -->
+                    <div class="reveal delay-100 group">
+                        <div class="h-32 w-full rounded-2xl bg-background border border-bordercolor mb-3 shadow-inner group-hover:scale-105 transition-transform duration-300 pointer-events-auto cursor-hover-target"></div>
+                        <div class="text-sm font-bold">Background</div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--bg-main)</div>
+                    </div>
+
+                    <!-- Color Swatch: Surface -->
+                    <div class="reveal delay-200 group">
+                        <div class="h-32 w-full rounded-2xl bg-surface border border-bordercolor mb-3 shadow-inner group-hover:scale-105 transition-transform duration-300 pointer-events-auto cursor-hover-target"></div>
+                        <div class="text-sm font-bold">Surface</div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--bg-surface)</div>
+                    </div>
+
+                    <!-- Color Swatch: Primary -->
+                    <div class="reveal delay-300 group">
+                        <div class="h-32 w-full rounded-2xl bg-textmain border border-bordercolor mb-3 shadow-inner group-hover:scale-105 transition-transform duration-300 flex items-center justify-center pointer-events-auto cursor-hover-target">
+                            <span class="text-primaryfg font-medium text-xs">A</span>
+                        </div>
+                        <div class="text-sm font-bold">Primary Text</div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--text-main)</div>
+                    </div>
+
+                    <!-- Color Swatch: Muted -->
+                    <div class="reveal delay-400 group">
+                        <div class="h-32 w-full rounded-2xl bg-textmuted mb-3 shadow-inner group-hover:scale-105 transition-transform duration-300 flex items-center justify-center pointer-events-auto cursor-hover-target">
+                            <span class="text-surface font-medium text-xs">A</span>
+                        </div>
+                        <div class="text-sm font-bold">Muted Text</div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--text-muted)</div>
+                    </div>
+
+                    <!-- Color Swatch: Accent (Brand) -->
+                    <div class="reveal delay-500 group">
+                        <div class="h-32 w-full rounded-2xl bg-brand mb-3 shadow-[0_0_20px_var(--glow-color)] group-hover:scale-105 transition-transform duration-300 flex items-center justify-center pointer-events-auto cursor-hover-target">
+                            <i data-lucide="zap" class="w-6 h-6 text-accentfg"></i>
+                        </div>
+                        <div class="text-sm font-bold flex items-center gap-2">Brand <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span></div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--brand-color)</div>
+                    </div>
+
+                    <!-- Color Swatch: Border -->
+                    <div class="reveal delay-500 group">
+                        <div class="h-32 w-full rounded-2xl border-2 border-bordercolor mb-3 bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform duration-300 pointer-events-auto cursor-hover-target">
+                             <div class="w-1/2 h-[1px] bg-bordercolor"></div>
+                        </div>
+                        <div class="text-sm font-bold">Border</div>
+                        <div class="text-xs font-mono text-textmuted mt-1 uppercase">var(--border-color)</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-16 reveal">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest" data-i18n="section_03">03 / Interface</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase" data-i18n="components_title">Componentes</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl" data-i18n="components_desc">Elementos modulares projetados para máxima usabilidade e impacto visual imediato.</p>
+                </div>
+
+                <div class="space-y-24">
+                    
+                    <!-- Buttons -->
+                    <div class="reveal delay-100">
+                        <h3 class="text-xl font-oswald uppercase tracking-tight mb-8 pb-4 border-b border-bordercolor">Buttons & Actions</h3>
+                        <div class="flex flex-wrap gap-6 items-center">
+                            
+                            <!-- Cosmic Primary Button (futureui style) -->
+                            <button class="cursor-hover-target group font-medium text-primaryfg bg-primary border border-bordercolor rounded-full px-8 py-3 relative overflow-hidden shadow-lg hover:shadow-[0_0_20px_var(--glow-color)] transition-all duration-300">
+                                <div class="absolute inset-0 bg-gradient-to-r from-brand/0 via-brand/20 to-brand/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                                <span class="relative flex items-center gap-2 text-sm font-bold tracking-widest uppercase">
+                                    Primary Action
+                                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </span>
+                            </button>
+
+                            <!-- Glass Outline Button -->
+                            <button class="cursor-hover-target glass-panel rounded-full px-8 py-3 text-sm font-bold tracking-widest uppercase text-textmain flex items-center gap-2 group">
+                                Secondary Outline
+                            </button>
+
+                            <!-- Icon Button -->
+                            <button class="cursor-hover-target w-12 h-12 rounded-full border border-bordercolor flex items-center justify-center hover:bg-surface group transition-colors">
+                                <i data-lucide="heart" class="w-5 h-5 text-textmuted group-hover:text-brand transition-colors"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Cards & Inputs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 reveal delay-200">
+                        
+                        <!-- Inputs -->
+                        <div>
+                            <h3 class="text-xl font-oswald uppercase tracking-tight mb-8 pb-4 border-b border-bordercolor">Form Elements</h3>
+                            <div class="space-y-6">
+                                <div class="relative">
+                                    <input type="text" id="input1" class="cursor-hover-target block px-4 py-4 w-full text-sm text-textmain bg-transparent rounded-lg border border-bordercolor appearance-none focus:outline-none focus:ring-0 focus:border-textmain peer" placeholder=" " />
+                                    <label for="input1" class="absolute text-sm text-textmuted duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-background px-2 peer-focus:px-2 peer-focus:text-textmain peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3">Email Address</label>
+                                </div>
+
+                                <div class="flex items-center gap-4">
+                                    <label class="relative inline-flex items-center cursor-pointer cursor-hover-target">
+                                        <input type="checkbox" value="" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-bordercolor peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand"></div>
+                                        <span class="ml-3 text-sm font-medium text-textmuted">Toggle Switch</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Card (Future UI logic) -->
+                        <div>
+                            <h3 class="text-xl font-oswald uppercase tracking-tight mb-8 pb-4 border-b border-bordercolor">Data Widgets</h3>
+                            <div class="glass-panel p-6 rounded-2xl cursor-hover-target">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div>
+                                        <p class="text-xs font-mono tracking-widest text-textmuted uppercase mb-1">Metrics</p>
+                                        <h4 class="text-2xl font-oswald tracking-tighter">System Pulse</h4>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-bordercolor flex items-center justify-center">
+                                        <i data-lucide="activity" class="w-4 h-4 text-brand"></i>
+                                    </div>
+                                </div>
+                                <div class="flex items-end gap-4">
+                                    <div class="text-5xl font-dm tracking-tighter font-medium">98.4<span class="text-xl text-textmuted">%</span></div>
+                                    <div class="flex items-center gap-1 text-xs font-bold text-accent mb-2">
+                                        <i data-lucide="trending-up" class="w-3 h-3"></i> +2.4%
+                                    </div>
+                                </div>
+                                <div class="mt-6 h-2 w-full bg-bordercolor rounded-full overflow-hidden">
+                                    <div class="h-full bg-brand w-[90%] rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Animations & Icons -->
+        <section id="animations" class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-surface overflow-hidden">
+            <!-- Marquee Division -->
+            <div class="w-full overflow-hidden py-4 border-y border-bordercolor bg-background mb-16 opacity-50 absolute top-0 left-0">
+                <div class="flex whitespace-nowrap animate-marquee">
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Design System</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Animation Library</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Fluid Interactions</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Cosmic Details</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Design System</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Animation Library</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Fluid Interactions</span> •
+                    <span class="text-xs font-mono uppercase tracking-widest mx-4">Cosmic Details</span> •
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto pt-16">
+                 <div class="mb-16 reveal">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest" data-i18n="section_04">04 / Dinâmica</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase" data-i18n="animations_title">Animações & Ícones</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl" data-i18n="animations_desc">Micro-interações fluidas e um conjunto de ícones consistente (Lucide e Solar) que trazem o sistema à vida.</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 reveal delay-200">
+                    
+                    <div class="p-8 border border-bordercolor rounded-2xl bg-background flex flex-col items-center justify-center gap-4 group cursor-hover-target">
+                        <div class="w-12 h-12 rounded-full border border-bordercolor flex items-center justify-center relative">
+                            <i data-lucide="loader" class="w-5 h-5 group-hover:animate-spin-slow transition-transform"></i>
+                            <div class="absolute inset-0 rounded-full border border-textmuted opacity-0 group-hover:opacity-100 group-hover:animate-ping-slow"></div>
+                        </div>
+                        <span class="text-xs font-mono text-textmuted">Spin & Ping</span>
+                    </div>
+
+                    <div class="p-8 border border-bordercolor rounded-2xl bg-background flex flex-col items-center justify-center gap-4 group cursor-hover-target">
+                        <div class="w-12 h-12 rounded-full bg-brand/20 flex items-center justify-center relative">
+                            <iconify-icon icon="solar:bell-bing-bold-duotone" class="text-2xl text-brand group-hover:animate-bounce"></iconify-icon>
+                            <div class="absolute inset-0 rounded-full bg-brand mix-blend-color-burn opacity-0 group-hover:opacity-100 group-hover:animate-pulse"></div>
+                        </div>
+                        <span class="text-xs font-mono text-textmuted">Bounce Pulse</span>
+                    </div>
+
+                    <div class="p-8 border border-bordercolor rounded-2xl bg-background flex flex-col items-center justify-center gap-4 group cursor-hover-target overflow-hidden">
+                        <iconify-icon icon="solar:planet-linear" class="text-5xl text-textmuted group-hover:scale-125 transition-transform duration-700"></iconify-icon>
+                        <span class="text-xs font-mono text-textmuted">Transform Scale</span>
+                    </div>
+
+                    <div class="p-8 border border-bordercolor rounded-2xl bg-background flex flex-col items-center justify-center gap-4 group cursor-hover-target">
+                        <div class="relative text-transparent-stroke text-4xl font-oswald font-bold">
+                            HOVER
+                        </div>
+                        <span class="text-xs font-mono text-textmuted mt-2">Transparent Stroke</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+        
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Cursor Logic
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        const root = document.documentElement;
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-hover-target');
+        interactiveElements.forEach((el) => {
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        let savedTheme = localStorage.getItem('vibe_theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        html.setAttribute('data-theme', savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('vibe_theme', newTheme);
+        });
+
+        // Language Toggle Logic
+        const translations = {
+            en: {
+                page_title: "Vibe - System 2.0",
+                nav_typography: "Typography",
+                nav_colors: "Colors",
+                nav_components: "Components",
+                hero_title_1: "Future",
+                hero_title_2: "Design",
+                hero_subtitle: "Engineering tomorrow's digital interfaces today.",
+                hero_badge_1: "Responsive",
+                hero_badge_2: "Cosmic",
+                ticket_title: "VIP<br>Access",
+                ticket_desc: "Explore the new era of interface design.",
+                section_01: "01 / Foundation",
+                typography_title: "Typography",
+                typography_desc: "Clear and readable visual hierarchy. A combination of modern sans-serif fonts with architectural touches.",
+                section_02: "02 / Foundation",
+                colors_title: "Colors",
+                colors_desc: "Vibrant palette contrasted with deep neutral tones. Fluidly supports light and dark modes.",
+                section_03: "03 / Interface",
+                components_title: "Components",
+                components_desc: "Modular elements designed for maximum usability and immediate visual impact.",
+                section_04: "04 / Dynamics",
+                animations_title: "Animations & Icons",
+                animations_desc: "Fluid micro-interactions and a consistent icon set (Lucide and Solar) that bring the system to life."
+            },
+            pt: {
+                page_title: "Vibe - System 2.0",
+                nav_typography: "Tipografia",
+                nav_colors: "Cores",
+                nav_components: "Componentes",
+                hero_title_1: "Futuro",
+                hero_title_2: "Design",
+                hero_subtitle: "Engenhando as interfaces digitais de amanhã, hoje.",
+                hero_badge_1: "Responsivo",
+                hero_badge_2: "Cósmico",
+                ticket_title: "Acesso<br>VIP",
+                ticket_desc: "Explore a nova era do design de interfaces.",
+                section_01: "01 / Fundação",
+                typography_title: "Tipografia",
+                typography_desc: "Hierarquia visual clara e legível. Uma combinação de fontes sem serifa modernas com toques arquitetônicos.",
+                section_02: "02 / Fundação",
+                colors_title: "Cores",
+                colors_desc: "Paleta vibrante em contraste com tons neutros profundos. Suporta modo claro e escuro fluidamente.",
+                section_03: "03 / Interface",
+                components_title: "Componentes",
+                components_desc: "Elementos modulares projetados para máxima usabilidade e impacto visual imediato.",
+                section_04: "04 / Dinâmica",
+                animations_title: "Animações & Ícones",
+                animations_desc: "Micro-interações fluidas e um conjunto de ícones consistente (Lucide e Solar) que trazem o sistema à vida."
+            }
+        };
+
+        const langBtn = document.getElementById('lang-toggle');
+        const langTextSpan = langBtn.querySelector('[data-lang-text]');
+        const flagBr = document.getElementById('flag-br');
+        const flagUs = document.getElementById('flag-us');
+        const bodyTag = document.body;
+
+        let currentLang = localStorage.getItem('vibe_lang') || 'pt';
+
+        function applyLanguage(lang) {
+            bodyTag.setAttribute('data-i18n-lang', lang);
+            langTextSpan.textContent = lang.toUpperCase();
+            
+            if (lang === 'en') {
+                flagBr.classList.add('hidden');
+                flagUs.classList.remove('hidden');
+            } else {
+                flagUs.classList.add('hidden');
+                flagBr.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key]; // Using innerHTML for <br> support in ticket
+                }
+            });
+        }
+
+        applyLanguage(currentLang);
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            localStorage.setItem('vibe_lang', currentLang);
+            applyLanguage(currentLang);
+        });
+
+        // Intersection Observer for Reveals
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        const textWrappers = entry.target.querySelectorAll('.text-reveal-wrapper');
+                        if(textWrappers.length > 0 || entry.target.classList.contains('text-reveal-wrapper')) {
+                            entry.target.classList.add('reveal-active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            setTimeout(() => {
+                const heroTitle = document.getElementById('hero-title');
+                if(heroTitle) heroTitle.classList.add('reveal-active');
+                document.querySelectorAll('.hero-badge').forEach(el => el.classList.add('active'));
+            }, 300);
+        });
+    </script>
+</body>
+</html>

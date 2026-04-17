@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Web Scraping - Luidy Enrico</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        oswald: ['Oswald', 'sans-serif'],
+                        instrument: ['Instrument Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        background: 'var(--bg-main)',
+                        surface: 'var(--bg-card)',
+                        stonebg: 'var(--bg-stone)',
+                        textmain: 'var(--text-main)',
+                        textmuted: 'var(--text-muted)',
+                        bordercolor: 'var(--border-color)',
+                        accent: 'var(--accent)',
+                        accentfg: 'var(--accent-fg)',
+                        glow: 'var(--glow-color)',
+                        brand: 'var(--brand-color)',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 10s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 3s infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'led-glitch': 'led-glitch 4s infinite',
+                        'scanline': 'scanline 4s linear infinite',
+                        'wave': 'wave 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(212, 242, 104, 0.4)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)', boxShadow: '0 0 20px 10px rgba(212, 242, 104, 0.2)' }
+                        },
+                        'led-glitch': {
+                            '0%, 84%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '85%': { opacity: 0.4, filter: 'brightness(1.5)' },
+                            '86%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '87%': { opacity: 0.5, filter: 'brightness(0.8)' },
+                            '88%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '89%': { opacity: 0.3, filter: 'brightness(1.2)' },
+                            '90%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '93%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '95%': { opacity: 0.1, filter: 'brightness(0.5)' },
+                            '98%, 100%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' }
+                        },
+                        'scanline': {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(200%)' }
+                        },
+                        'wave': {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '0 100%' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root[data-theme="light"] {
+            --bg-main: #D4D4D8;
+            --bg-card: #E4E4E7;
+            --bg-stone: #A1A1AA;
+            --text-main: #1C1C1C;
+            --text-muted: #57534e;
+            --border-color: #A1A1AA;
+            --accent: #1C1C1C;
+            --accent-fg: #FFFFFF;
+            --glow-color: rgba(28, 28, 28, 0.1);
+            --brand-color: #D4F268;
+            --cursor-color: rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(228, 228, 231, 0.8);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-main: #0c0a09;
+            --bg-card: #1c1917;
+            --bg-stone: #292524;
+            --text-main: #F9FAFB;
+            --text-muted: #a8a29e;
+            --border-color: #3f3f46;
+            --accent: #FFFFFF;
+            --accent-fg: #000000;
+            --glow-color: rgba(255, 255, 255, 0.1);
+            --brand-color: #C3E354;
+            --cursor-color: rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            cursor: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 36px;
+            height: 36px;
+            background-color: var(--glass-bg);
+            border-color: var(--text-muted);
+            backdrop-filter: blur(2px);
+        }
+
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            transition: all 0.5s ease;
+        }
+
+        .text-transparent-stroke:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 1px transparent;
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+
+        [data-i18n-lang="pt"] [data-i18n-en] {
+            display: none !important;
+        }
+
+        [data-i18n-lang="en"] [data-i18n-pt] {
+            display: none !important;
+        }
+
+        .gsap-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+
+<body data-i18n-lang="en">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div
+        class="max-w-[1400px] mx-auto border-x border-bordercolor relative min-h-screen flex flex-col bg-surface dark:bg-background shadow-2xl shadow-black/5 dark:shadow-none selection:bg-accent/30 selection:text-textmain">
+
+        <header
+            class="relative z-50 border-b border-bordercolor sticky top-0 bg-surface/80 dark:bg-background/80 backdrop-blur-md">
+            <div class="flex justify-between items-center px-4 md:px-8 py-5">
+                <a href="index.html" class="flex items-center gap-2 group cursor-hover-target">
+                    <div class="w-2 h-6 bg-brand group-hover:h-8 transition-all duration-300"></div>
+                    <span class="font-bold tracking-tighter text-lg text-textmain uppercase">Luidy<span
+                            class="text-textmuted">Enrico</span></span>
+                </a>
+
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle"
+                        class="cursor-hover-target w-10 h-10 rounded-full flex items-center justify-center hover:bg-textmain/5 transition-colors border border-transparent hover:border-bordercolor text-textmain group relative overflow-hidden"
+                        aria-label="Toggle Theme">
+                        <i data-lucide="moon"
+                            class="w-4 h-4 block dark:hidden relative z-10 group-hover:rotate-12 transition-transform"></i>
+                        <i data-lucide="sun"
+                            class="w-4 h-4 hidden dark:block relative z-10 group-hover:rotate-90 transition-transform"></i>
+                    </button>
+
+                    <button id="lang-toggle"
+                        class="cursor-hover-target px-3 py-1.5 rounded-full border border-bordercolor hover:bg-surface transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-textmain group">
+                        <iconify-icon icon="circle-flags:us" id="lang-flag-en" class="text-base"></iconify-icon>
+                        <iconify-icon icon="circle-flags:br" id="lang-flag-pt" class="text-base hidden"></iconify-icon>
+                        <span data-lang-text>EN</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- PROJECT HERO SECTION -->
+        <section class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-surface overflow-hidden">
+            <div class="max-w-5xl mx-auto flex flex-col items-center text-center">
+
+                <a href="projects.html"
+                    class="cursor-hover-target flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-textmuted hover:text-textmain transition-colors mb-12 gsap-reveal">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> <span data-i18n="back_projects">Back to
+                        Projects</span>
+                </a>
+
+                <div class="relative group mb-8 gsap-reveal delay-100">
+                    <h1
+                        class="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tighter leading-[0.9] font-oswald uppercase text-textmain">
+                        <span class="text-reveal-wrapper"><span class="text-reveal-content" data-i18n="tpl_title1">AI
+                                Document</span></span><br />
+                        <span class="text-reveal-wrapper"><span
+                                class="text-reveal-content delay-100 text-transparent-stroke pl-0 md:pl-12"
+                                data-i18n="tpl_title2">Agent</span></span>
+                    </h1>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3 mb-12 gsap-reveal delay-200">
+                    <span
+                        class="px-4 py-2 rounded-md border border-blue-500/30 bg-blue-500/10 text-[10px] font-mono tracking-widest uppercase text-blue-600 dark:text-blue-400 shadow-sm">Python</span>
+                    <span
+                        class="px-4 py-2 rounded-md border border-indigo-500/30 bg-indigo-500/10 text-[10px] font-mono tracking-widest uppercase text-indigo-600 dark:text-indigo-400 shadow-sm">SQL</span>
+                    <span
+                        class="px-4 py-2 rounded-md border border-amber-500/30 bg-amber-500/10 text-[10px] font-mono tracking-widest uppercase text-amber-600 dark:text-amber-500 shadow-sm">Power
+                        BI</span>
+                    <span
+                        class="px-4 py-2 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">APIs</span>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-4 gsap-reveal delay-300">
+                    <a href="https://github.com/Luidyenrico/WebScraping-FNS" target="_blank"
+                        class="cursor-hover-target px-8 py-4 bg-transparent border border-bordercolor text-textmain rounded-full text-xs font-bold uppercase tracking-widest hover:border-accent hover:bg-accent/5 transition-all duration-300 flex items-center gap-2">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> <span data-i18n="tpl_live_demo">Live
+                            Demo</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LARGE IMAGE PREVIEW -->
+        <section class="relative z-10 border-b border-bordercolor bg-background">
+            <div class="w-full aspect-video md:aspect-auto md:h-[70vh] md:max-h-[800px] overflow-hidden">
+                <img src="assets\project-images\Fluxo de dados minimalista.png" alt="Project Preview"
+                    class="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 transition-all duration-1000" />
+            </div>
+        </section>
+
+        <!-- PROJECT DESCRIPTION SECTION -->
+        <section class="relative z-10 py-24 px-6 md:px-12 bg-surface">
+            <div class="max-w-4xl mx-auto flex flex-col gap-16">
+
+                <!-- Problem -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 gsap-reveal">
+                    <div class="col-span-1">
+                        <h3 class="text-xs font-mono tracking-widest uppercase text-brand flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span> <span
+                                data-i18n="tpl_problem">Problem</span>
+                        </h3>
+                    </div>
+                    <div class="col-span-1 md:col-span-3">
+                        <h4 class="text-3xl font-instrument tracking-tight text-textmain mb-4"
+                            data-i18n="tpl_problem_title">The challenge with unstructured data at scale.</h4>
+                        <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_problem_desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full h-px bg-bordercolor opacity-50"></div>
+
+                <!-- Solution -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 gsap-reveal">
+                    <div class="col-span-1">
+                        <h3 class="text-xs font-mono tracking-widest uppercase text-brand flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span> <span
+                                data-i18n="tpl_solution">Solution</span>
+                        </h3>
+                    </div>
+                    <div class="col-span-1 md:col-span-3">
+                        <h4 class="text-3xl font-instrument tracking-tight text-textmain mb-4"
+                            data-i18n="tpl_solution_title">An intelligent, automated extraction pipeline.</h4>
+                        <p class="text-lg leading-relaxed text-textmuted font-light mb-6" data-i18n="tpl_solution_desc">
+                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                            anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                            accusantium doloremque laudantium.
+                        </p>
+                        <ul class="list-disc pl-5 text-lg leading-relaxed text-textmuted font-light space-y-2">
+                            <li data-i18n="tpl_solution_list1">Automated data ingestion via REST APIs</li>
+                            <li data-i18n="tpl_solution_list2">Natural Language Processing using LangChain</li>
+                            <li data-i18n="tpl_solution_list3">Real-time visualization in dynamic dashboards</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w-full h-px bg-bordercolor opacity-50"></div>
+
+                <!-- Technologies Used -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 gsap-reveal">
+                    <div class="col-span-1">
+                        <h3 class="text-xs font-mono tracking-widest uppercase text-brand flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span> <span
+                                data-i18n="tpl_tech_stack">Tech Stack</span>
+                        </h3>
+                    </div>
+                    <div class="col-span-1 md:col-span-3">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <div
+                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-300">
+                                <iconify-icon icon="simple-icons:python"
+                                    class="text-2xl text-textmuted group-hover:text-blue-500 transition-colors"></iconify-icon>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-blue-500 transition-colors">Python</span>
+                            </div>
+                            <div
+                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all duration-300">
+                                <iconify-icon icon="simple-icons:mysql"
+                                    class="text-2xl text-textmuted group-hover:text-indigo-500 transition-colors"></iconify-icon>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-indigo-500 transition-colors">SQL</span>
+                            </div>
+                            <div
+                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-amber-500/50 hover:bg-amber-500/5 transition-all duration-300">
+                                <iconify-icon icon="simple-icons:powerbi"
+                                    class="text-2xl text-textmuted group-hover:text-amber-500 transition-colors"></iconify-icon>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-amber-500 transition-colors">Power
+                                    BI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full h-px bg-bordercolor opacity-50"></div>
+
+                <!-- Results -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 gsap-reveal">
+                    <div class="col-span-1">
+                        <h3 class="text-xs font-mono tracking-widest uppercase text-brand flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span> <span
+                                data-i18n="tpl_results">Results</span>
+                        </h3>
+                    </div>
+                    <div class="col-span-1 md:col-span-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                            <div
+                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
+                                <p class="text-4xl font-oswald text-textmain mb-1">85<span class="text-brand">%</span>
+                                </p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
+                                    data-i18n="tpl_time_saved">Time Saved</p>
+                            </div>
+                            <div
+                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
+                                <p class="text-4xl font-oswald text-textmain mb-1">99.9<span class="text-brand">%</span>
+                                </p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
+                                    data-i18n="tpl_accuracy">Accuracy</p>
+                            </div>
+                            <div
+                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
+                                <p class="text-4xl font-oswald text-textmain mb-1">10<span class="text-brand">k+</span>
+                                </p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
+                                    data-i18n="tpl_docs_day">Docs/Day</p>
+                            </div>
+                        </div>
+                        <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_results_desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NEXT PROJECT SECTION -->
+        <section
+            class="relative z-10 py-24 px-6 md:px-12 bg-background border-t border-bordercolor flex justify-center">
+            <a href="project-agente-conteudo.html" class="group cursor-hover-target flex flex-col items-center">
+                <span
+                    class="text-[10px] font-mono uppercase tracking-widest text-textmuted mb-2 group-hover:text-brand transition-colors"
+                    data-i18n="tpl_next_project_label">Next Project</span>
+                <h4 class="text-3xl md:text-5xl font-oswald uppercase text-textmain group-hover:text-transparent-stroke transition-colors text-center"
+                    data-i18n="tpl_next_project_title">
+                    Automação de ETL
+                </h4>
+            </a>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="relative z-10 bg-surface border-t border-bordercolor py-16">
+            <div
+                class="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex gap-2 text-textmain uppercase font-oswald text-xl tracking-tighter">
+                    Luidy <span class="text-textmuted">Enrico</span>
+                </div>
+
+                <div class="flex items-center gap-6">
+                    <a href="https://github.com/luidyenrico" target="_blank"
+                        class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                        <iconify-icon icon="lucide:github"
+                            class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                    </a>
+                    <a href="https://linkedin.com/in/luidy-enrico" target="_blank"
+                        class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                        <iconify-icon icon="lucide:linkedin"
+                            class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                    </a>
+                    <a href="https://wa.me/5561992911028" target="_blank"
+                        class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                        <iconify-icon icon="lucide:message-circle"
+                            class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                    </a>
+                    <a href="mailto:contact@example.com"
+                        class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                        <iconify-icon icon="lucide:mail"
+                            class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-hover-target, iconify-icon');
+        interactiveElements.forEach((el) => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        let savedTheme = localStorage.getItem('vibe_theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        html.setAttribute('data-theme', savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('vibe_theme', newTheme);
+        });
+
+        // i18n Translations
+        const translations = {
+            en: {
+                back_projects: "Back to Projects",
+                tpl_title1: "Public Health",
+                tpl_title2: "Data Scraper",
+                tpl_live_demo: "View Code",
+                tpl_problem: "Problem",
+                tpl_problem_title: "Accessing scattered public healthcare data.",
+                tpl_problem_desc: "Public healthcare funding data is often distributed across multiple difficult-to-scrape sources.",
+                tpl_solution: "Solution",
+                tpl_solution_title: "Robust web scraping pipelines for public data.",
+                tpl_solution_desc: "Using Python to systematically scrape, clean and structure health fund data.",
+                tpl_solution_list1: "Automated data ingestion",
+                tpl_solution_list2: "Advanced HTML parsing using Python",
+                tpl_solution_list3: "Structured data storage",
+                tpl_tech_stack: "Tech Stack",
+                tpl_results: "Results",
+                tpl_time_saved: "Time Saved",
+                tpl_accuracy: "Data Points",
+                tpl_docs_day: "Rows Extracted",
+                tpl_results_desc: "Unlocking previously inaccessible public data for better analysis.",
+                tpl_next_project_label: "Next Project",
+                tpl_next_project_title: "Content Creator Agent"
+            },
+            pt: {
+                back_projects: "Voltar a Projetos",
+                tpl_title1: "Web Scraping",
+                tpl_title2: "Saúde Pública",
+                tpl_live_demo: "Ver Código",
+                tpl_problem: "Problema",
+                tpl_problem_title: "Acesso a dados fragmentados de saúde pública.",
+                tpl_problem_desc: "Os dados de financiamento de saúde pública costumam estar distribuídos em diversas fontes de difícil extração.",
+                tpl_solution: "Solução",
+                tpl_solution_title: "Pipelines robustos de web scraping para dados públicos.",
+                tpl_solution_desc: "Utilizando Python para realizar extração, limpeza e estruturação sistemática de fundos de saúde.",
+                tpl_solution_list1: "Ingestão automatizada de múltiplas fontes",
+                tpl_solution_list2: "Processamento avançado de HTML",
+                tpl_solution_list3: "Estruturação para Analytics",
+                tpl_tech_stack: "Tecnologias Usadas",
+                tpl_results: "Resultados",
+                tpl_time_saved: "Tempo Salvo",
+                tpl_accuracy: "Precisão",
+                tpl_docs_day: "Dados Obtidos",
+                tpl_results_desc: "Disponibilização rápida de bases de dados antes inacessíveis.",
+                tpl_next_project_label: "Próximo Projeto",
+                tpl_next_project_title: "Agente de Conteúdo"
+            }
+        };
+
+        const langBtn = document.getElementById('lang-toggle');
+        const langTextSpan = langBtn.querySelector('[data-lang-text]');
+        const flagEn = document.getElementById('lang-flag-en');
+        const flagPt = document.getElementById('lang-flag-pt');
+        const bodyTag = document.body;
+
+        let currentLang = localStorage.getItem('vibe_lang') || 'en';
+
+        function applyLanguage(lang) {
+            bodyTag.setAttribute('data-i18n-lang', lang);
+
+            if (lang === 'en') {
+                langTextSpan.textContent = 'EN';
+                flagEn.classList.remove('hidden');
+                flagPt.classList.add('hidden');
+            } else {
+                langTextSpan.textContent = 'PT';
+                flagPt.classList.remove('hidden');
+                flagEn.classList.add('hidden');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        applyLanguage(currentLang);
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+            localStorage.setItem('vibe_lang', currentLang);
+            applyLanguage(currentLang);
+        });
+
+        // GSAP Nav Reveal + Animations
+        document.addEventListener("DOMContentLoaded", (event) => {
+            document.body.classList.add('reveal-active');
+            gsap.registerPlugin(ScrollTrigger);
+
+            const lenis = new Lenis({
+                duration: 0.6,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            gsap.utils.toArray('.gsap-reveal').forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 30, opacity: 0 },
+                    {
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: "power3.out"
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+
+</html>

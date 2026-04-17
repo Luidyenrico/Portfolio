@@ -1,0 +1,17 @@
+# Temporary/Scratch Files
+prompt.txt
+tmp_exp.html
+
+# OS Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# AI/Metadata
+.gemini/
+.antigravity/
+brain/
+scratch/
+implementation_plan.md
+task.md
+walkthrough.md

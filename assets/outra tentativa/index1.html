@@ -1,0 +1,1392 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System — Data / AI / Automation Portfolio</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300..900;1,300..900&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icon Libraries -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind (utilities) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* =========================================
+       CSS VARIABLES — THEME SYSTEM
+       ========================================= */
+        :root {
+            /* Light (default) */
+            --bg-primary: #EAEAE5;
+            --bg-secondary: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.55);
+            --text-primary: #1C1C1C;
+            --text-secondary: rgba(28, 28, 28, 0.55);
+            --border-color: rgba(28, 28, 28, 0.12);
+            --accent-color: #1C1C1C;
+            --accent-blue: #007bff;
+            --accent-glow: rgba(0, 123, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shimmer: rgba(255, 255, 255, 0.6);
+
+            /* Typography */
+            --font-heading: 'DM Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #050a14;
+            --bg-secondary: #0a1122;
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --accent-color: #007bff;
+            --accent-blue: #007bff;
+            --accent-glow: rgba(0, 123, 255, 0.18);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shimmer: rgba(255, 255, 255, 0.04);
+        }
+
+        /* =========================================
+       BASE
+       ========================================= */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            cursor: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: var(--font-heading);
+            font-weight: 300;
+        }
+
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.78em;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-all;
+            color: var(--text-secondary);
+        }
+
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            cursor: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+
+        /* =========================================
+       CUSTOM CURSOR
+       ========================================= */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 36px;
+            height: 36px;
+            background-color: var(--bg-glass);
+            border-color: var(--text-secondary);
+            backdrop-filter: blur(2px);
+        }
+
+        /* =========================================
+       BACKGROUND GRID
+       ========================================= */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bg-grid-lines {
+            width: 100%;
+            max-width: 1440px;
+            height: 100%;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 3rem;
+        }
+
+        .bg-grid-line {
+            width: 1px;
+            height: 100%;
+            background-color: var(--border-color);
+        }
+
+        /* =========================================
+       AMBIENT BLOBS
+       ========================================= */
+        .liquid-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+            animation: float 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .liquid-blob {
+            opacity: 0.15;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 50px) scale(1.1);
+            }
+        }
+
+        /* =========================================
+       GLASS PANEL
+       ========================================= */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1rem;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glass-shimmer), transparent);
+            transition: 0.6s;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .glass-panel:hover::before {
+            left: 100%;
+            transition: 0.8s ease-in-out;
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            border-color: var(--text-secondary);
+        }
+
+        [data-theme="dark"] .glass-panel {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* =========================================
+       NAVBAR
+       ========================================= */
+        .controls-nav {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .controls-nav.glass-panel:hover {
+            transform: translateX(-50%) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .controls-nav.glass-panel:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-left: 2rem;
+        }
+
+        .nav-link {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.65;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* =========================================
+       LAYOUT UTILITIES
+       ========================================= */
+        .container-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .section-padding {
+            padding: 6rem 3rem;
+        }
+
+        .border-b-grid {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .border-t-grid {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .ds-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-mono);
+        }
+
+        /* =========================================
+       TEXT REVEAL (from Digital Architect)
+       ========================================= */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s;
+        }
+
+        /* TRANSPARENT STROKE LETTERING */
+        .text-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--text-secondary);
+            transition: all 0.4s ease;
+        }
+
+        .text-stroke:hover {
+            color: var(--text-primary);
+            -webkit-text-stroke: 0px;
+            text-shadow: none;
+        }
+
+        [data-theme="dark"] .text-stroke {
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);
+        }
+
+        [data-theme="dark"] .text-stroke:hover {
+            color: white;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Marquee */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: scroll 35s linear infinite;
+            flex-shrink: 0;
+            min-width: 100%;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Code blocks */
+        pre,
+        code {
+            background: rgba(0, 0, 0, 0.04);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            overflow-x: auto;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] pre,
+        [data-theme="dark"] code {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* Hero glow pulse */
+        @keyframes glow-pulse {
+
+            0%,
+            100% {
+                opacity: 0.03;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                opacity: 0.06;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        .hero-glow {
+            animation: glow-pulse 5s ease-in-out infinite;
+        }
+
+        /* Ping dot */
+        @keyframes ping {
+
+            75%,
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .animate-ping {
+            animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        /* Corner accent expand */
+        .corner-accent {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .corner-accent {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* LED flicker on hero "Design" word */
+        @keyframes led-flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            92% {
+                opacity: 1;
+            }
+
+            93% {
+                opacity: 0.3;
+            }
+
+            94% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.4;
+            }
+
+            97% {
+                opacity: 1;
+            }
+
+            99% {
+                opacity: 0.2;
+            }
+        }
+
+        .flicker-word {
+            animation: led-flicker 4s 2s infinite;
+        }
+
+        /* Section number badge */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .section-badge::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- AMBIENT BLOBS -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="liquid-blob"
+            style="background:#1C1C1C;width:500px;height:500px;top:-100px;left:-100px;animation-duration:15s;"></div>
+        <div class="liquid-blob"
+            style="background:#007bff;width:350px;height:350px;top:40%;right:-80px;animation-duration:21s;animation-delay:-6s;">
+        </div>
+        <div class="liquid-blob"
+            style="background:#7c3aed;width:300px;height:300px;bottom:-80px;left:25%;animation-duration:18s;animation-delay:-10s;">
+        </div>
+    </div>
+
+    <!-- BACKGROUND GRID -->
+    <div class="bg-grid">
+        <div class="bg-grid-lines">
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden lg:block"></div>
+            <div class="bg-grid-line"></div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="glass-panel controls-nav">
+        <!-- Brand -->
+        <div class="flex items-center gap-2">
+            <iconify-icon icon="solar:atom-bold-duotone" class="text-lg"
+                style="color:var(--accent-blue)"></iconify-icon>
+            <span class="font-heading font-semibold text-sm tracking-tight"
+                style="color:var(--text-primary)">DS.SYSTEM</span>
+        </div>
+
+        <!-- Nav links (hidden on small screens) -->
+        <div class="nav-links hidden md:flex">
+            <a href="#hero" class="nav-link" data-i18n="nav_hero">Hero</a>
+            <a href="#projects" class="nav-link" data-i18n="nav_projects">Projects</a>
+            <a href="#ai-automation" class="nav-link" data-i18n="nav_ai">AI</a>
+            <a href="#dashboards" class="nav-link" data-i18n="nav_dashboards">Dashboards</a>
+            <a href="#about" class="nav-link" data-i18n="nav_about">About</a>
+            <a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+        </div>
+
+        <div class="w-px h-4" style="background:var(--border-color)"></div>
+
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="toggle-btn" aria-label="Toggle Theme">
+            <i data-lucide="moon" class="w-4 h-4 dark-icon hidden"></i>
+            <i data-lucide="sun" class="w-4 h-4 light-icon"></i>
+            <span data-i18n="theme_label">Dark</span>
+        </button>
+
+        <div class="w-px h-4" style="background:var(--border-color)"></div>
+
+        <!-- Language Toggle -->
+        <button id="langToggle" class="toggle-btn" aria-label="Toggle Language">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span id="langLabel">EN</span>
+        </button>
+    </nav>
+
+    <main class="container-content">
+
+        <!-- ═══════════════════════════════════════
+         01. HERO DEMO
+         ═══════════════════════════════════════ -->
+        <section id="hero"
+            class="min-h-screen flex flex-col justify-center section-padding border-b-grid relative overflow-hidden">
+            <!-- Central glow -->
+            <div class="hero-glow"
+                style="position:absolute;top:50%;left:50%;width:900px;height:900px;background:var(--text-primary);opacity:0.03;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;transform:translate(-50%,-50%)">
+            </div>
+
+            <!-- Eyebrow -->
+            <div class="flex justify-between items-center ds-label mb-10 relative z-10">
+                <span>(*01)</span>
+                <span data-i18n="hero_eyebrow">Visual Manifesto</span>
+                <span>2025</span>
+            </div>
+
+            <!-- Hero Title -->
+            <h1 id="hero-title"
+                style="font-size:clamp(3.5rem,8.5vw,11rem);line-height:0.85;letter-spacing:-0.03em;text-transform:uppercase;display:flex;flex-wrap:wrap;align-items:center;gap:0.25em;position:relative;z-index:10;"
+                class="font-heading">
+
+                <span class="text-reveal-wrapper">
+                    <span class="text-reveal-content delay-100 font-heading" style="display:block">Luidy Enrico</span>
+                </span>
+            </h1>
+
+            <!-- Hero sub-grid -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
+                <div class="md:col-span-4 border-t-grid pt-4">
+                    <span class="ds-label">[ Data • AI • Automation • Python • SQL • BI]</span>
+                    <div class="flex items-center gap-2 mt-4">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                                style="background:var(--accent-blue)"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2"
+                                style="background:var(--accent-blue)"></span>
+                        </span>
+                        <span class="text-xs font-mono" style="color:var(--text-secondary)">Available for work</span>
+                    </div>
+                </div>
+                <div class="md:col-span-8 text-base md:text-lg leading-relaxed max-w-3xl font-body"
+                    style="color:var(--text-secondary)">
+                    <span class="text-reveal-wrapper">
+                        <span class="text-reveal-content delay-300 inline-block font-light">A technical professional
+                            specializing in data intelligence, AI models, and scalable automation systems crafting
+                            fluid, premium digital experiences.</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Marquee Divider -->
+            <div class="w-full mt-24 py-10 border-y relative overflow-hidden reveal glass-panel"
+                style="border-color:var(--border-color);background:var(--bg-glass);backdrop-filter:blur(8px)">
+                <div class="marquee-container">
+                    <div class="marquee-content font-heading uppercase tracking-tighter opacity-30"
+                        style="font-size:clamp(2rem,4vw,4rem)">
+                        <span class="mx-8">AI</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">INTELLIGENCE</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">AUTOMATION</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">SYSTEMS</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">DATA</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">ANALYTICS</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">PYTHON</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                    </div>
+                    <!-- Duplicate for infinite scroll -->
+                    <div class="marquee-content font-heading uppercase tracking-tighter opacity-30"
+                        style="font-size:clamp(2rem,4vw,4rem)">
+                        <span class="mx-8">AI</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">INTELLIGENCE</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">AUTOMATION</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">SYSTEMS</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">DATA</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">ANALYTICS</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                        <span class="mx-8">PYTHON</span>
+                        <iconify-icon icon="solar:star-fall-bold-duotone" class="text-4xl self-center"
+                            style="color:var(--accent-blue)"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="mt-12 flex flex-wrap gap-4 relative z-10">
+                <button class="btn-primary px-7 py-3 rounded-full font-medium text-sm flex items-center gap-2 group"
+                    style="background:var(--text-primary);color:var(--bg-primary);transition:all 0.3s">
+                    <span data-i18n="hero_cta1">Explore System</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                </button>
+                <button class="btn-outline px-7 py-3 rounded-full font-medium text-sm flex items-center gap-2 group"
+                    style="border:1px solid var(--text-primary);color:var(--text-primary);background:transparent;transition:all 0.3s"
+                    onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--text-primary');this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--bg-primary')"
+                    onmouseout="this.style.background='transparent';this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')">
+                    <span data-i18n="hero_cta2">View Portfolio</span>
+                </button>
+            </div>
+
+            <!-- Floating sphere decoration -->
+            <div
+                style="position:absolute;bottom:10%;right:8%;width:80px;height:80px;background:var(--accent-blue);opacity:0.15;border-radius:50%;filter:blur(40px);pointer-events:none;animation:float 7s ease-in-out infinite;z-index:0">
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         02. PROJECTS
+         ═══════════════════════════════════════ -->
+        <section id="projects" class="section-padding border-b-grid relative">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*02)</span><span>Projects</span>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
+                <!-- Project 1 -->
+                <div class="glass-panel p-8 group relative overflow-hidden flex flex-col h-full cursor-hover-target">
+                    <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-[64px] -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700 pointer-events-none"
+                        style="background:var(--accent-blue);opacity:0.25"></div>
+                    <div class="relative z-10 flex-1 flex flex-col">
+                        <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg"
+                            style="background:var(--bg-primary);border:1px solid var(--border-color)">
+                            <i data-lucide="database" class="w-6 h-6" style="color:var(--text-primary)"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading mb-3 font-medium">Data Lake Architecture</h4>
+                        <p class="text-base mb-6 font-body leading-relaxed flex-1" style="color:var(--text-secondary)">
+                            A hyper-scalable data lake implementation handling 50TB+ of daily streaming data, optimized
+                            for milliseconds latency querying and ML training pipelines.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">Kafka</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">Spark</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">AWS</span>
+                        </div>
+                        <a href="#"
+                            class="inline-flex items-center gap-2 text-sm font-medium transition-colors w-fit group/link"
+                            style="color:var(--text-primary)"
+                            onmouseover="this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--accent-blue')"
+                            onmouseout="this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')">
+                            <span>View Architecture</span>
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 transition-transform group-hover/link:translate-x-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-panel p-8 group relative overflow-hidden flex flex-col h-full cursor-hover-target">
+                    <div class="absolute top-0 right-0 w-48 h-48 rounded-full blur-[64px] -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700 pointer-events-none"
+                        style="background:var(--accent-blue);opacity:0.25"></div>
+                    <div class="relative z-10 flex-1 flex flex-col">
+                        <div class="w-12 h-12 mb-6 flex items-center justify-center rounded-lg"
+                            style="background:var(--bg-primary);border:1px solid var(--border-color)">
+                            <i data-lucide="cpu" class="w-6 h-6" style="color:var(--text-primary)"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading mb-3 font-medium">Neural Trading Engine</h4>
+                        <p class="text-base mb-6 font-body leading-relaxed flex-1" style="color:var(--text-secondary)">
+                            Autonomous trading system leveraging deep reinforcement learning to execute high-frequency
+                            trades across decentralized exchanges with 99.99% uptime.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">PyTorch</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">Rust</span>
+                            <span class="text-xs font-mono px-2 py-1 rounded"
+                                style="background:var(--bg-primary);border:1px solid var(--border-color);color:var(--text-secondary)">Web3</span>
+                        </div>
+                        <a href="#"
+                            class="inline-flex items-center gap-2 text-sm font-medium transition-colors w-fit group/link"
+                            style="color:var(--text-primary)"
+                            onmouseover="this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--accent-blue')"
+                            onmouseout="this.style.color=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')">
+                            <span>View Architecture</span>
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 transition-transform group-hover/link:translate-x-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         03. AI & AUTOMATION
+         ═══════════════════════════════════════ -->
+        <section id="ai-automation" class="section-padding border-b-grid relative">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*03)</span><span>AI & Automation</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 reveal">
+                <div class="lg:col-span-7 flex flex-col justify-center">
+                    <h3 class="text-3xl md:text-5xl font-heading mb-6 tracking-tight leading-tight">
+                        Intelligent workflows <br />
+                        <span class="text-stroke">running 24/7.</span>
+                    </h3>
+                    <p class="text-lg font-body max-w-xl leading-relaxed mb-8" style="color:var(--text-secondary)">
+                        Designing robust, scalable AI architectures that seamlessly integrate into existing platforms.
+                        From NLP-powered concierges to fully autonomous ETL pipelines, prioritizing ultra-low latency
+                        and fault tolerance.
+                    </p>
+                    <div class="flex gap-12 font-mono text-sm">
+                        <div class="flex flex-col gap-2">
+                            <span class="text-3xl font-heading" style="color:var(--text-primary)">99.9%</span>
+                            <span style="color:var(--text-secondary)">Uptime</span>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <span class="text-3xl font-heading" style="color:var(--text-primary)">5M+</span>
+                            <span style="color:var(--text-secondary)">Tasks Auto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 relative mt-12 lg:mt-0">
+                    <!-- Terminal Card Component -->
+                    <div class="p-8 relative overflow-hidden group w-full h-full min-h-[350px]"
+                        style="border:1px solid var(--border-color);background:var(--bg-secondary)">
+                        <div class="corner-accent"
+                            style="top:0;left:0;border-top:1px solid var(--text-primary);border-left:1px solid var(--text-primary)">
+                        </div>
+                        <div class="corner-accent"
+                            style="top:0;right:0;border-top:1px solid var(--text-primary);border-right:1px solid var(--text-primary)">
+                        </div>
+                        <div class="corner-accent"
+                            style="bottom:0;left:0;border-bottom:1px solid var(--text-primary);border-left:1px solid var(--text-primary)">
+                        </div>
+                        <div class="corner-accent"
+                            style="bottom:0;right:0;border-bottom:1px solid var(--text-primary);border-right:1px solid var(--text-primary)">
+                        </div>
+
+                        <div class="flex justify-between items-start mb-8 relative z-10">
+                            <span class="text-xs font-mono tracking-widest" style="color:var(--text-secondary)">[
+                                SYS.AUTO ]</span>
+                            <span class="relative flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                                    style="background:var(--accent-blue)"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3"
+                                    style="background:#22c55e"></span>
+                            </span>
+                        </div>
+
+                        <h4 class="text-2xl font-heading mb-2 uppercase tracking-wide relative z-10">Cron Node Omega
+                        </h4>
+                        <div class="h-px w-full my-4 relative z-10"
+                            style="background:linear-gradient(to right,var(--border-color),transparent)"></div>
+
+                        <div class="font-mono text-xs space-y-2 mt-6 relative z-10" style="color:var(--text-secondary)">
+                            <p class="mb-4">&gt; INITIALIZING AGENT SWARM...</p>
+                            <div class="flex justify-between border-b pb-2" style="border-color:var(--border-color)">
+                                <span>Task: NLP Extraction</span>
+                                <span style="color:var(--text-primary)">Running</span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2 pt-2"
+                                style="border-color:var(--border-color)">
+                                <span>Task: Model Retraining</span>
+                                <span style="color:#22c55e">Completed</span>
+                            </div>
+                            <div class="flex justify-between pt-2">
+                                <span>Task: API Sync</span>
+                                <span class="animate-pulse" style="color:var(--accent-blue)">Processing</span>
+                            </div>
+
+                            <p class="mt-6" style="color:var(--text-primary)">&gt; SYSTEM STATUS: <span
+                                    style="color:#22c55e">OPTIMAL</span></p>
+                        </div>
+
+                        <!-- Scanline effect -->
+                        <div class="absolute inset-0 pointer-events-none opacity-20"
+                            style="background:linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 51%);background-size:100% 4px;z-index:1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         04. DASHBOARDS
+         ═══════════════════════════════════════ -->
+        <section id="dashboards" class="section-padding border-b-grid relative">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*04)</span><span>Dashboards</span>
+            </div>
+
+            <div class="mb-12 reveal">
+                <h2 class="text-3xl md:text-5xl font-heading tracking-tight mb-4">Actionable Analytics.</h2>
+                <p class="text-lg" style="color:var(--text-secondary)">Bringing complex datasets to the surface with
+                    bespoke visualization interfaces.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+                <!-- Metric Panel 1 -->
+                <div class="glass-panel p-6 relative overflow-hidden group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                            style="background:var(--bg-secondary);border:1px solid var(--border-color)">
+                            <i data-lucide="activity" class="w-5 h-5 text-current"></i>
+                        </div>
+                        <span class="text-xs font-mono px-2 py-1 rounded"
+                            style="background:rgba(34,197,94,0.1);color:#22c55e">+14.5%</span>
+                    </div>
+                    <p class="text-sm font-mono mb-1" style="color:var(--text-secondary)">Stream Throughput</p>
+                    <p class="text-3xl font-heading mb-4">42.8 GB/s</p>
+                    <div class="w-full h-8 flex items-end gap-1 opacity-60">
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-8 h-3"></div>
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-5 h-5"></div>
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-2 h-7"></div>
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-6 h-4"></div>
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-8 h-8"></div>
+                        <div class="w-full bg-current rounded-t-sm transition-all group-hover:h-4 h-6"></div>
+                    </div>
+                </div>
+
+                <!-- Metric Panel 2 -->
+                <div class="glass-panel p-6 relative overflow-hidden group"
+                    style="background:var(--text-primary);color:var(--bg-primary)">
+                    <div class="absolute inset-0 opacity-10"
+                        style="background-image:radial-gradient(circle at 50% 0%, var(--bg-primary) 0%, transparent 70%)">
+                    </div>
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                            style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
+                            <i data-lucide="layers" class="w-5 h-5 text-current"></i>
+                        </div>
+                        <span class="text-xs font-mono px-2 py-1 rounded bg-white text-black font-semibold">LIVE</span>
+                    </div>
+                    <p class="text-sm font-mono mb-1 relative z-10" style="color:var(--bg-secondary)">Active Pipelines
+                    </p>
+                    <p class="text-3xl font-heading mb-4 relative z-10">1,204</p>
+                    <p class="text-xs font-mono relative z-10 opacity-70">Processing 2.4M rows/min</p>
+                </div>
+
+                <div
+                    class="glass-panel p-6 relative flex flex-col justify-center items-center text-center cursor-pointer group hover:bg-transparent">
+                    <div class="w-12 h-12 rounded-full mb-4 flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-12"
+                        style="background:transparent;border:1px dashed var(--text-primary)">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-heading font-medium text-lg">View Use Cases</h4>
+                    <p class="text-xs font-mono mt-2" style="color:var(--text-secondary)">Case Studies &rarr;</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         05. ABOUT
+         ═══════════════════════════════════════ -->
+        <section id="about" class="section-padding border-b-grid relative">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*05)</span><span>About</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 reveal items-center">
+                <div class="lg:col-span-8 max-w-4xl">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading leading-tight mb-8">
+                        Crafting <span class="text-stroke text-transparent-stroke">technological experiences</span> that
+                        fuse precision engineering with stunning aesthetics.
+                    </h2>
+                    <p class="text-lg md:text-xl font-light leading-relaxed font-body"
+                        style="color:var(--text-secondary)">
+                        I believe that enterprise software doesn't have to be brutalist. By bringing design systems
+                        thinking to data engineering and AI development, I build architectures that are not just highly
+                        performant and scalable, but intuitive and beautiful.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-4 flex justify-center lg:justify-end">
+                    <!-- Abstract Decorative Element from design_system_main -->
+                    <div class="relative w-64 h-64 lg:w-80 lg:h-80 cursor-hover-target">
+                        <div class="absolute inset-0 rounded-full animate-[spin_40s_linear_infinite]"
+                            style="border:1px solid var(--border-color)"></div>
+                        <div class="absolute inset-4 border-dashed rounded-full animate-[spin_30s_linear_infinite_reverse]"
+                            style="border:1px solid var(--border-color)"></div>
+                        <div
+                            class="absolute inset-1/4 glass-panel rounded-full flex flex-col items-center justify-center backdrop-blur-xl">
+                            <div class="text-3xl font-heading font-medium text-current">100%</div>
+                            <div class="text-[10px] font-mono uppercase tracking-widest mt-1"
+                                style="color:var(--text-secondary)">Driven</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         06. CONTACT
+         ═══════════════════════════════════════ -->
+        <section id="contact" class="section-padding relative">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*06)</span><span>Contact</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 reveal">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-heading mb-6">Let's build<br />something <span
+                            style="color:var(--accent-blue)">extraordinary.</span></h2>
+                    <p class="text-lg mb-8" style="color:var(--text-secondary)">Available for freelance opportunities,
+                        AI infrastructure consulting, and design system engineering.</p>
+
+                    <div class="flex flex-col gap-4 font-mono text-sm">
+                        <a href="mailto:hello@portfolio.com"
+                            class="hover:underline transition-all hover:text-[var(--accent-blue)] w-fit flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4"></i> hello@jane.dev
+                        </a>
+                        <a href="#"
+                            class="hover:underline transition-all hover:text-[var(--accent-blue)] w-fit flex items-center gap-2">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                        </a>
+                        <a href="#"
+                            class="hover:underline transition-all hover:text-[var(--accent-blue)] w-fit flex items-center gap-2">
+                            <i data-lucide="github" class="w-4 h-4"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 max-w-xl w-full justify-self-end">
+                    <form class="flex flex-col gap-6" onsubmit="event.preventDefault()">
+                        <div class="flex flex-col gap-2 relative">
+                            <label class="text-xs font-mono" style="color:var(--text-secondary)">Name</label>
+                            <div class="relative group">
+                                <i data-lucide="user"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors"
+                                    style="color:var(--text-secondary)"></i>
+                                <input type="text" placeholder="John Doe"
+                                    class="w-full py-3 pl-12 pr-4 rounded-lg text-sm transition-all focus:outline-none"
+                                    style="background:transparent;border:1px solid var(--border-color);color:var(--text-primary);"
+                                    onfocus="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')"
+                                    onblur="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--border-color')">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2 relative">
+                            <label class="text-xs font-mono" style="color:var(--text-secondary)">Email Address</label>
+                            <div class="relative group">
+                                <i data-lucide="mail"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors"
+                                    style="color:var(--text-secondary)"></i>
+                                <input type="email" placeholder="hello@portfolio.ai"
+                                    class="w-full py-3 pl-12 pr-4 rounded-lg text-sm transition-all focus:outline-none"
+                                    style="background:transparent;border:1px solid var(--border-color);color:var(--text-primary);"
+                                    onfocus="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')"
+                                    onblur="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--border-color')">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2 relative">
+                            <label class="text-xs font-mono" style="color:var(--text-secondary)">Message</label>
+                            <textarea placeholder="How can I help you?" rows="4"
+                                class="w-full py-3 px-4 rounded-lg text-sm transition-all focus:outline-none resize-none"
+                                style="background:transparent;border:1px solid var(--border-color);color:var(--text-primary);"
+                                onfocus="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--text-primary')"
+                                onblur="this.style.borderColor=getComputedStyle(document.documentElement).getPropertyValue('--border-color')"></textarea>
+                        </div>
+
+                        <button
+                            class="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 group transition-all hover:scale-[1.02]"
+                            style="background:var(--text-primary);color:var(--bg-primary)">
+                            <span>Send Message</span>
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════ -->
+        <footer class="section-padding border-t w-full mt-24" style="border-color:var(--border-color)">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <iconify-icon icon="solar:atom-bold-duotone" class="text-xl"
+                        style="color:var(--accent-blue)"></iconify-icon>
+                    <span class="font-heading font-semibold tracking-tight">DS.SYSTEM</span>
+                </div>
+                <div class="text-xs font-mono opacity-60">
+                    &copy; 2025 Jane Doe. All systems nominal.
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════
+       JAVASCRIPT
+       ═══════════════════════════════════════ -->
+    <script>
+        // ── TRANSLATIONS ──────────────────────────────────────────
+        const translations = {
+            en: {
+                nav_hero: "Hero", nav_type: "Type", nav_colors: "Colors", nav_comp: "Components", nav_icons: "Icons", nav_motion: "Motion", nav_theme: "Theme",
+                theme_label: "Dark", hero_eyebrow: "Visual Manifesto", hero_status: "[ Systems Online ]", hero_online: "Data / AI / Automation",
+                hero_desc: "This document is the canonical pattern library — cataloguing typography, color, interaction models, and component architecture that form the visual language of a modern data and AI portfolio.",
+                hero_cta1: "Explore System", hero_cta2: "View Portfolio",
+                nav_projects: "Projects", nav_ai: "AI & Automation", nav_dashboards: "Dashboards", nav_about: "About", nav_contact: "Contact",
+                type_eyebrow: "Typography", type_families: "Font Families", type_scale: "Type Scale",
+                color_eyebrow: "Color System", color_opacity: "Opacity Variants", color_gradients: "Gradient Usage", color_usage: "Usage Rules",
+                comp_eyebrow: "UI Components", comp_buttons: "Buttons & Interactions", btn_primary: "Primary Action", btn_secondary: "Outline Action", btn_ghost: "Ghost Link",
+                comp_cards: "Cards & Panels", card_title: "Processing Unit", card_desc: "Advanced data processing modules with real-time feedback and glass-morphism aesthetics.", card_link: "Explore Module",
+                comp_forms: "Inputs & Controls", form_label: "Email Address", form_toggle: "Notifications", form_toggle_active: "Active",
+                comp_badges: "Badges & Labels",
+                icon_eyebrow: "Iconography", icon_stroke: "(Stroke)", icon_fill: "(Duotone)", icon_lucide_desc: "Clean stroke icons. Loaded via unpkg, rendered with data-lucide attributes.", icon_iconify_desc: "Rich duotone icons from Solar via Iconify. Used for decorative and featured contexts.",
+                anim_eyebrow: "Motion Basics", anim_hover_scale: "Hover Scale", anim_float: "Continuous Float", anim_text_reveal: "Text Reveal (Masked)", anim_flicker: "LED Flicker", anim_timings: "Transition Timings",
+                toggle_eyebrow: "Theme & Language System", toggle_theme_title: "Dark / Light Mode",
+                toggle_theme_desc: "CSS custom properties on :root and [data-theme='dark'] drive all color changes. The toggle writes to localStorage and sets data-theme on the html element.",
+                toggle_current: "Current theme:", toggle_lang_title: "Language Toggle (PT/EN)",
+                toggle_lang_desc: "Elements carry data-i18n attributes. A JS dictionary maps keys to translations. On toggle, all matching elements have textContent updated instantly.",
+                toggle_lang_current: "Current language:", toggle_nav_title: "Navbar Control Integration", toggle_nav_desc: "Both controls live in a fixed glass navbar at the top of the page.",
+            },
+            pt: {
+                nav_hero: "Hero", nav_type: "Tipo", nav_colors: "Cores", nav_comp: "Componentes", nav_icons: "\u00cdcones", nav_motion: "Movimento", nav_theme: "Tema",
+                theme_label: "Escuro", hero_eyebrow: "Manifesto Visual", hero_status: "[ Sistemas Online ]", hero_online: "Dados / IA / Automa\u00e7\u00e3o",
+                hero_desc: "Este documento \u00e9 a biblioteca de padr\u00f5es can\u00f4nica \u2014 catalogando tipografia, cores, modelos de intera\u00e7\u00e3o e arquitetura de componentes que formam a linguagem visual de um portf\u00f3lio moderno de dados e IA.",
+                hero_cta1: "Explorar Sistema", hero_cta2: "Ver Portf\u00f3lio",
+                nav_projects: "Projetos", nav_ai: "IA e Automa\u00e7\u00e3o", nav_dashboards: "Dashboards", nav_about: "Sobre", nav_contact: "Contato",
+                type_eyebrow: "Tipografia", type_families: "Fam\u00edlias de Fontes", type_scale: "Escala Tipogr\u00e1fica",
+                color_eyebrow: "Sistema de Cores", color_opacity: "Variantes de Opacidade", color_gradients: "Uso de Gradientes", color_usage: "Regras de Uso",
+                comp_eyebrow: "Componentes de UI", comp_buttons: "Bot\u00f5es e Intera\u00e7\u00f5es", btn_primary: "A\u00e7\u00e3o Principal", btn_secondary: "A\u00e7\u00e3o Contorno", btn_ghost: "Link Fantasma",
+                comp_cards: "Cards e Pain\u00e9is", card_title: "Unidade de Processamento", card_desc: "M\u00f3dulos avan\u00e7ados de processamento de dados com feedback em tempo real e est\u00e9tica glass-morphism.", card_link: "Explorar M\u00f3dulo",
+                comp_forms: "Entradas e Controles", form_label: "Endere\u00e7o de E-mail", form_toggle: "Notifica\u00e7\u00f5es", form_toggle_active: "Ativo",
+                comp_badges: "Badges e Labels",
+                icon_eyebrow: "Iconografia", icon_stroke: "(Contorno)", icon_fill: "(Duotone)", icon_lucide_desc: "\u00cdcones de contorno limpos via unpkg, renderizados com atributos data-lucide.", icon_iconify_desc: "\u00cdcones duotone ricos do Solar via Iconify. Usados em contextos decorativos.",
+                anim_eyebrow: "Princ\u00edpios de Movimento", anim_hover_scale: "Escala no Hover", anim_float: "Flutua\u00e7\u00e3o Cont\u00ednua", anim_text_reveal: "Revela\u00e7\u00e3o de Texto", anim_flicker: "Piscar LED", anim_timings: "Tempos de Transi\u00e7\u00e3o",
+                toggle_eyebrow: "Sistema de Tema e Idioma", toggle_theme_title: "Modo Escuro / Claro",
+                toggle_theme_desc: "Propriedades CSS em :root e [data-theme='dark'] controlam todas as cores. O toggle escreve no localStorage e define data-theme no elemento html.",
+                toggle_current: "Tema atual:", toggle_lang_title: "Toggle de Idioma (PT/EN)",
+                toggle_lang_desc: "Elementos carregam atributos data-i18n. Um dicion\u00e1rio JS mapeia chaves para tradu\u00e7\u00f5es.",
+                toggle_lang_current: "Idioma atual:", toggle_nav_title: "Integra\u00e7\u00e3o na Navbar", toggle_nav_desc: "Ambos os controles ficam na navbar de vidro fixada no topo da p\u00e1gina.",
+            }
+        };
+
+        let currentLang = localStorage.getItem('ds-lang') || 'en';
+        let currentTheme = localStorage.getItem('ds-theme') || 'light';
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('ds-lang', lang);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            const ll = document.getElementById('langLabel');
+            if (ll) ll.textContent = lang === 'pt' ? 'PT-BR' : 'EN';
+            const ld = document.getElementById('lang-display');
+            if (ld) ld.textContent = lang === 'pt' ? 'PT-BR' : 'EN';
+            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+            // sync theme label text
+            document.querySelectorAll('[data-i18n="theme_label"]').forEach(el => {
+                el.textContent = currentTheme === 'dark'
+                    ? (lang === 'pt' ? 'Claro' : 'Light')
+                    : (lang === 'pt' ? 'Escuro' : 'Dark');
+            });
+        }
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('ds-theme', theme);
+            document.documentElement.setAttribute('data-theme', theme);
+            const lightIcons = document.querySelectorAll('.light-icon, .light-icon-demo');
+            const darkIcons = document.querySelectorAll('.dark-icon, .dark-icon-demo');
+            const themeDisp = document.getElementById('theme-display');
+            if (theme === 'dark') {
+                lightIcons.forEach(i => i.classList.add('hidden'));
+                darkIcons.forEach(i => i.classList.remove('hidden'));
+                if (themeDisp) themeDisp.textContent = currentLang === 'pt' ? 'Escuro' : 'Dark';
+            } else {
+                darkIcons.forEach(i => i.classList.add('hidden'));
+                lightIcons.forEach(i => i.classList.remove('hidden'));
+                if (themeDisp) themeDisp.textContent = currentLang === 'pt' ? 'Claro' : 'Light';
+            }
+            document.querySelectorAll('[data-i18n="theme_label"]').forEach(el => {
+                el.textContent = theme === 'dark'
+                    ? (currentLang === 'pt' ? 'Claro' : 'Light')
+                    : (currentLang === 'pt' ? 'Escuro' : 'Dark');
+            });
+        }
+
+        function setLangDemo(lang) {
+            applyLanguage(lang);
+            ['en', 'pt'].forEach(l => {
+                const btn = document.getElementById('btn-' + l);
+                if (!btn) return;
+                const cs = getComputedStyle(document.documentElement);
+                if (l === lang) {
+                    btn.style.background = cs.getPropertyValue('--text-primary').trim();
+                    btn.style.color = cs.getPropertyValue('--bg-primary').trim();
+                    btn.style.border = 'none';
+                } else {
+                    btn.style.background = 'transparent';
+                    btn.style.color = cs.getPropertyValue('--text-secondary').trim();
+                    btn.style.border = '1px solid ' + cs.getPropertyValue('--border-color').trim();
+                }
+            });
+        }
+
+        // Wire top-bar toggles
+        document.getElementById('themeToggle').addEventListener('click', () => applyTheme(currentTheme === 'light' ? 'dark' : 'light'));
+        document.getElementById('themeToggleDemo')?.addEventListener('click', () => applyTheme(currentTheme === 'light' ? 'dark' : 'light'));
+        document.getElementById('langToggle').addEventListener('click', () => applyLanguage(currentLang === 'en' ? 'pt' : 'en'));
+
+        // ── Boot sequence (runs immediately — script is at end of body)
+        (function boot() {
+            // 1. Apply saved theme + language immediately
+            applyTheme(currentTheme);
+            applyLanguage(currentLang);
+
+            // 2. Render Lucide icons NOW (not deferred)
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // 3. GSAP setup
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                // Glow breathe
+                gsap.to('.hero-glow', {
+                    scale: 1.15, opacity: 0.07, duration: 4.5,
+                    repeat: -1, yoyo: true, ease: 'sine.inOut'
+                });
+            }
+
+            // 4. Hero title entrance — slight delay for dramatic effect
+            setTimeout(() => {
+                const ht = document.getElementById('hero-title');
+                if (ht) ht.classList.add('reveal-active');
+            }, 350);
+
+            // 5. Scroll-reveal observer
+            //    rootMargin brings elements into range 80px before they hit the viewport
+            const revealObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    e.target.classList.add('active');
+                    if (e.target.querySelectorAll('.text-reveal-wrapper').length) {
+                        e.target.classList.add('reveal-active');
+                    }
+                    // Once revealed, stop observing
+                    revealObs.unobserve(e.target);
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+            // 6. Custom cursor — GSAP-powered smooth tracking
+            const dot = document.getElementById('cursor-dot');
+            const outline = document.getElementById('cursor-outline');
+
+            // Place cursors at center to avoid initial jump from corner
+            if (dot) { dot.style.left = window.innerWidth / 2 + 'px'; dot.style.top = window.innerHeight / 2 + 'px'; }
+            if (outline) { outline.style.left = window.innerWidth / 2 + 'px'; outline.style.top = window.innerHeight / 2 + 'px'; }
+
+            if (typeof gsap !== 'undefined' && dot && outline) {
+                const xDot = gsap.quickTo(dot, 'left', { duration: 0.2, ease: 'power3' });
+                const yDot = gsap.quickTo(dot, 'top', { duration: 0.2, ease: 'power3' });
+                const xRing = gsap.quickTo(outline, 'left', { duration: 0.55, ease: 'power2.out' });
+                const yRing = gsap.quickTo(outline, 'top', { duration: 0.55, ease: 'power2.out' });
+
+                window.addEventListener('mousemove', e => {
+                    xDot(e.clientX); yDot(e.clientY);
+                    xRing(e.clientX); yRing(e.clientY);
+                });
+
+                // Hide cursors when mouse leaves window
+                document.addEventListener('mouseleave', () => {
+                    gsap.to([dot, outline], { opacity: 0, duration: 0.3 });
+                });
+                document.addEventListener('mouseenter', () => {
+                    gsap.to([dot, outline], { opacity: 1, duration: 0.3 });
+                });
+            }
+
+            // 7. Cursor hover states (decorative elements)
+            function bindCursorHover() {
+                document.querySelectorAll('a, button, input, select, [data-lucide], iconify-icon, .cursor-crosshair, .glass-panel').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+                });
+            }
+            bindCursorHover();
+
+            // 8. Subtle entrance for sections already in viewport on load
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('active');
+                        if (el.querySelectorAll('.text-reveal-wrapper').length) {
+                            el.classList.add('reveal-active');
+                        }
+                    }
+                });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

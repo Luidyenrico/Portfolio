@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Luidy Enrico - Portfolio</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        oswald: ['Oswald', 'sans-serif'],
+                        instrument: ['Instrument Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        background: 'var(--bg-main)',
+                        surface: 'var(--bg-card)',
+                        stonebg: 'var(--bg-stone)',
+                        textmain: 'var(--text-main)',
+                        textmuted: 'var(--text-muted)',
+                        bordercolor: 'var(--border-color)',
+                        accent: 'var(--accent)',
+                        accentfg: 'var(--accent-fg)',
+                        glow: 'var(--glow-color)',
+                        brand: 'var(--brand-color)',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 10s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 3s infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                        'led-glitch': 'led-glitch 4s infinite',
+                        'scanline': 'scanline 4s linear infinite',
+                        'wave': 'wave 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(212, 242, 104, 0.4)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)', boxShadow: '0 0 20px 10px rgba(212, 242, 104, 0.2)' }
+                        },
+                        'led-glitch': {
+                            '0%, 84%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '85%': { opacity: 0.4, filter: 'brightness(1.5)' },
+                            '86%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '87%': { opacity: 0.5, filter: 'brightness(0.8)' },
+                            '88%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '89%': { opacity: 0.3, filter: 'brightness(1.2)' },
+                            '90%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '93%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
+                            '95%': { opacity: 0.1, filter: 'brightness(0.5)' },
+                            '98%, 100%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' }
+                        },
+                        'scanline': {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(200%)' }
+                        },
+                        'wave': {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '0 100%' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root[data-theme="light"] {
+            --bg-main: #D4D4D8;
+            --bg-card: #E4E4E7;
+            --bg-stone: #A1A1AA;
+            --text-main: #1C1C1C;
+            --text-muted: #57534e;
+            --border-color: #A1A1AA;
+            --accent: #1C1C1C;
+            --accent-fg: #FFFFFF;
+            --glow-color: rgba(28, 28, 28, 0.1);
+            --brand-color: #6a801b;
+            --cursor-color: rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(228, 228, 231, 0.8);
+        }
+
+        :root[data-theme="dark"] {
+            --bg-main: #0c0a09;
+            --bg-card: #1c1917;
+            --bg-stone: #292524;
+            --text-main: #F9FAFB;
+            --text-muted: #a8a29e;
+            --border-color: #3f3f46;
+            --accent: #FFFFFF;
+            --accent-fg: #000000;
+            --glow-color: rgba(255, 255, 255, 0.1);
+            --brand-color: #C3E354;
+            --cursor-color: rgba(255, 255, 255, 0.5);
+            --glass-bg: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none;
+            overflow-x: hidden;
+        }
+
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            cursor: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 36px;
+            height: 36px;
+            background-color: var(--glass-bg);
+            border-color: var(--text-muted);
+            backdrop-filter: blur(2px);
+        }
+
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            transition: all 0.5s ease;
+        }
+
+        .text-transparent-stroke:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 1px transparent;
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+
+        [data-i18n-lang="pt"] [data-i18n-en] {
+            display: none !important;
+        }
+
+        [data-i18n-lang="en"] [data-i18n-pt] {
+            display: none !important;
+        }
+
+        .led-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .wave-overlay {
+            background: repeating-linear-gradient(to bottom,
+                    transparent,
+                    rgba(0, 0, 0, 0.08) 30px,
+                    transparent 60px);
+            background-size: 100% 200%;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        .hero-pattern {
+            background-image: linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 70%);
+        }
+
+        .gsap-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+
+<body data-i18n-lang="en">
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div
+        class="max-w-[1400px] mx-auto border-x border-bordercolor relative min-h-screen flex flex-col bg-surface dark:bg-background shadow-2xl shadow-black/5 dark:shadow-none selection:bg-accent/30 selection:text-textmain">
+
+        <header
+            class="relative z-50 border-b border-bordercolor sticky top-0 bg-surface/80 dark:bg-background/80 backdrop-blur-md">
+            <div class="flex justify-between items-center px-4 md:px-8 py-5">
+                <div class="flex items-center gap-2 group cursor-hover-target">
+                    <div class="w-2 h-6 bg-brand group-hover:h-8 transition-all duration-300"></div>
+                    <span class="font-bold tracking-tighter text-lg text-textmain uppercase">Luidy<span
+                            class="text-textmuted">Enrico</span></span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-8 cursor-hover-target">
+                    <a class="text-xs font-medium tracking-widest uppercase hover:text-textmain text-textmuted transition-colors"
+                        href="#projects" data-i18n="nav_projects">Projetos</a>
+                    <a class="text-xs font-medium tracking-widest uppercase hover:text-textmain text-textmuted transition-colors"
+                        href="#experience" data-i18n="nav_experience">Experiência</a>
+                    <a class="text-xs font-medium tracking-widest uppercase hover:text-textmain text-textmuted transition-colors"
+                        href="#about" data-i18n="nav_about">Sobre</a>
+                    <a class="text-xs font-medium tracking-widest uppercase hover:text-textmain text-textmuted transition-colors"
+                        href="#certifications" data-i18n="nav_certifications">Certificações</a>
+                    <a class="text-xs font-medium tracking-widest uppercase hover:text-textmain text-textmuted transition-colors"
+                        href="#contact" data-i18n="nav_contact">Contato</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle"
+                        class="cursor-hover-target w-10 h-10 rounded-full flex items-center justify-center hover:bg-textmain/5 transition-colors border border-transparent hover:border-bordercolor text-textmain group relative overflow-hidden"
+                        aria-label="Toggle Theme">
+                        <i data-lucide="moon"
+                            class="w-4 h-4 block dark:hidden relative z-10 group-hover:rotate-12 transition-transform"></i>
+                        <i data-lucide="sun"
+                            class="w-4 h-4 hidden dark:block relative z-10 group-hover:rotate-90 transition-transform"></i>
+                    </button>
+
+                    <button id="lang-toggle"
+                        class="cursor-hover-target px-3 py-1.5 rounded-full border border-bordercolor hover:bg-surface transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-textmain group">
+                        <iconify-icon icon="circle-flags:us" id="lang-flag-en" class="text-base"></iconify-icon>
+                        <iconify-icon icon="circle-flags:br" id="lang-flag-pt" class="text-base hidden"></iconify-icon>
+                        <span data-lang-text>EN</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section id="hero"
+            class="relative z-10 grid grid-cols-1 md:grid-cols-12 border-b border-bordercolor min-h-[calc(100vh-80px)] overflow-hidden bg-stonebg/10 flex-grow">
+
+            <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-20"></div>
+
+            <!-- Floating Tech Icons (Randomized Cloud) -->
+            <div class="absolute inset-0 pointer-events-none z-20 hidden lg:block overflow-hidden">
+                <!-- Python -->
+                <div class="absolute top-[10%] right-[20%] pointer-events-auto animate-float border border-black/5 dark:border-bordercolor/10 bg-black/[0.03] dark:bg-surface/10 hover:bg-black/10 dark:hover:bg-surface/40 hover:border-black/10 dark:hover:border-bordercolor/40 opacity-70 dark:opacity-30 hover:opacity-100 hover:scale-110 transition-all duration-500 backdrop-blur-sm shadow-sm w-10 h-10 rounded-xl flex items-center justify-center"
+                    style="animation-delay: 0s;">
+                    <iconify-icon icon="simple-icons:python"
+                        class="text-xl text-[#3776AB] drop-shadow-[0_2px_4px_rgba(55,118,171,0.3)] dark:drop-shadow-[0_0_4px_rgba(55,118,171,0.2)] hover:drop-shadow-[0_4px_8px_rgba(55,118,171,0.5)] dark:hover:drop-shadow-[0_0_8px_rgba(55,118,171,0.6)] transition-all"></iconify-icon>
+                </div>
+
+                <!-- Power BI -->
+                <div class="absolute top-[25%] right-[5%] pointer-events-auto animate-float border border-black/5 dark:border-bordercolor/10 bg-black/[0.03] dark:bg-surface/10 hover:bg-black/10 dark:hover:bg-surface/40 hover:border-black/10 dark:hover:border-bordercolor/40 opacity-70 dark:opacity-30 hover:opacity-100 hover:scale-110 transition-all duration-500 backdrop-blur-sm shadow-sm w-10 h-10 rounded-xl flex items-center justify-center"
+                    style="animation-delay: 0.4s;">
+                    <iconify-icon icon="simple-icons:powerbi"
+                        class="text-xl text-[#d9a300] dark:text-[#F2C811] drop-shadow-[0_2px_4px_rgba(217,163,0,0.3)] dark:drop-shadow-[0_0_4px_rgba(242,200,17,0.2)] hover:drop-shadow-[0_4px_8px_rgba(217,163,0,0.5)] dark:hover:drop-shadow-[0_0_8px_rgba(242,200,17,0.6)] transition-all"></iconify-icon>
+                </div>
+
+                <!-- AI -->
+                <div class="absolute top-[25%] right-[25%] pointer-events-auto animate-float border border-black/5 dark:border-bordercolor/10 bg-black/[0.03] dark:bg-surface/20 hover:bg-black/10 dark:hover:bg-surface/50 hover:border-black/10 dark:hover:border-bordercolor/40 opacity-80 dark:opacity-40 hover:opacity-100 hover:scale-110 transition-all duration-500 backdrop-blur-sm shadow-sm w-10 h-10 rounded-xl flex items-center justify-center"
+                    style="animation-delay: 0.8s;">
+                    <iconify-icon icon="lucide:brain-circuit"
+                        class="text-xl text-brand flex transition-all drop-shadow-[0_2px_4px_rgba(0,0,0,0.1)] dark:drop-shadow-none hover:drop-shadow-[0_4px_8px_rgba(0,0,0,0.15)] dark:hover:drop-shadow-[0_0_8px_var(--brand-color)]"></iconify-icon>
+                </div>
+
+                <!-- Machine Learning -->
+                <div class="absolute top-[25%] right-[15%] pointer-events-auto animate-float border border-black/5 dark:border-bordercolor/10 bg-black/[0.03] dark:bg-surface/10 hover:bg-black/10 dark:hover:bg-surface/40 hover:border-black/10 dark:hover:border-bordercolor/40 opacity-70 dark:opacity-30 hover:opacity-100 hover:scale-110 transition-all duration-500 backdrop-blur-sm shadow-sm w-10 h-10 rounded-xl flex items-center justify-center"
+                    style="animation-delay: 1.2s;">
+                    <iconify-icon icon="carbon:machine-learning-model"
+                        class="text-xl text-purple-600 dark:text-purple-500 drop-shadow-[0_2px_4px_rgba(147,51,234,0.3)] dark:drop-shadow-[0_0_4px_rgba(168,85,247,0.2)] hover:drop-shadow-[0_4px_8px_rgba(147,51,234,0.5)] dark:hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)] transition-all"></iconify-icon>
+                </div>
+
+                <!-- SQL -->
+                <div class="absolute top-[40%] right-[10%] pointer-events-auto animate-float border border-black/5 dark:border-bordercolor/10 bg-black/[0.03] dark:bg-surface/10 hover:bg-black/10 dark:hover:bg-surface/40 hover:border-black/10 dark:hover:border-bordercolor/40 opacity-70 dark:opacity-30 hover:opacity-100 hover:scale-110 transition-all duration-500 backdrop-blur-sm shadow-sm w-10 h-10 rounded-xl flex items-center justify-center"
+                    style="animation-delay: 1.6s;">
+                    <iconify-icon icon="simple-icons:mysql"
+                        class="text-xl text-[#3a6585] dark:text-[#4479A1] drop-shadow-[0_2px_4px_rgba(58,101,133,0.3)] dark:drop-shadow-[0_0_4px_rgba(68,121,161,0.2)] hover:drop-shadow-[0_4px_8px_rgba(58,101,133,0.5)] dark:hover:drop-shadow-[0_0_8px_rgba(68,121,161,0.6)] transition-all"></iconify-icon>
+                </div>
+            </div>
+
+            <div
+                class="col-span-1 md:col-span-5 min-h-[50vh] md:min-h-0 relative overflow-hidden group border-b md:border-b-0 md:border-r border-bordercolor bg-surface flex items-start">
+                <div
+                    class="absolute inset-0 bg-surface dark:bg-background mix-blend-color z-10 opacity-20 group-hover:opacity-0 transition-opacity duration-1000">
+                </div>
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-surface dark:from-background via-surface/20 dark:via-background/20 to-transparent pointer-events-none z-10 group-hover:opacity-0 transition-opacity duration-1000">
+                </div>
+
+                <div
+                    class="relative w-full h-[120%] overflow-hidden group-hover:scale-105 transition-transform duration-1000">
+                    <img src="assets/image 3.png"
+                        class="absolute w-full h-full object-cover object-top animate-led-glitch group-hover:animate-none group-hover:filter-none group-hover:brightness-100 transition-all duration-700"
+                        alt="Luidy Enrico" />
+                    <div
+                        class="absolute inset-0 led-overlay z-20 group-hover:opacity-0 transition-opacity duration-700">
+                    </div>
+                    <div
+                        class="absolute inset-0 wave-overlay z-20 animate-wave group-hover:opacity-0 transition-opacity duration-700">
+                    </div>
+                    <div
+                        class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent via-brand/10 to-transparent z-20 animate-scanline pointer-events-none mix-blend-screen group-hover:opacity-0 transition-opacity duration-700">
+                    </div>
+                </div>
+
+                <div class="absolute bottom-6 left-6 z-30">
+                    <div
+                        class="px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-widest text-textmain border border-bordercolor shadow-sm bg-surface/50 backdrop-blur-md flex items-center gap-2">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand"></span>
+                        </span>
+                        <span data-i18n="hero_status">System Online</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-1 md:col-span-7 relative p-8 md:p-16 flex flex-col z-10">
+
+                <div class="flex-1 flex flex-col justify-center">
+                    <div
+                        class="mb-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-bordercolor bg-surface/50 backdrop-blur-md shadow-sm w-fit gsap-reveal">
+                        <i data-lucide="cpu" class="w-3 h-3 text-textmuted"></i>
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-textmain"
+                            data-i18n="hero_role">Data • AI • Automation</span>
+                    </div>
+
+                    <div class="relative group mt-2 mb-6">
+                        <h1
+                            class="text-[11vw] md:text-7xl lg:text-8xl font-semibold tracking-tighter leading-[0.9] font-oswald uppercase text-textmain">
+                            <span class="text-reveal-wrapper"><span
+                                    class="text-reveal-content delay-100">Luidy</span></span><br />
+                            <span class="text-reveal-wrapper"><span
+                                    class="text-reveal-content delay-200 text-transparent-stroke pl-0 md:pl-12">Enrico</span></span>
+                        </h1>
+                    </div>
+
+                    <p
+                        class="text-base md:text-lg text-textmuted max-w-lg font-light leading-relaxed font-instrument mb-10 gsap-reveal">
+                        <span data-i18n="hero_desc_1">Building data-driven systems, automation tools, and intelligent
+                            solutions that transform data into decisions.</span>
+                        <span data-i18n="hero_desc_2" class="hidden">Construindo sistemas baseados em dados, ferramentas
+                            de automação e soluções inteligentes que transformam dados em decisões.</span>
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 mb-4 gsap-reveal">
+                        <a href="projects.html" target="_blank"
+                            class="cursor-hover-target px-8 py-4 bg-accent text-accentfg rounded-full text-xs font-semibold uppercase tracking-widest hover:scale-105 hover:shadow-lg hover:shadow-glow transition-all duration-300 flex items-center gap-2">
+                            <span data-i18n="btn_projects">View Projects</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+
+                        <a href="#contact"
+                            class="cursor-hover-target px-8 py-4 bg-transparent border border-bordercolor text-textmain rounded-full text-xs font-semibold uppercase tracking-widest hover:border-accent hover:bg-accent/5 transition-all duration-300">
+                            <span data-i18n="btn_contact">Contact</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center justify-between w-full max-w-lg mt-12 pt-8 border-t border-bordercolor border-dashed gsap-reveal mt-auto">
+                    <div class="flex items-center gap-6">
+                        <a href="https://github.com/luidyenrico" target="_blank"
+                            class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                            <iconify-icon icon="lucide:github"
+                                class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                        </a>
+                        <a href="https://linkedin.com/in/luidy-enrico" target="_blank"
+                            class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                            <iconify-icon icon="lucide:linkedin"
+                                class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                        </a>
+                        <a href="https://wa.me/5561992911028" target="_blank"
+                            class="cursor-hover-target text-textmuted hover:text-textmain transition-colors group">
+                            <iconify-icon icon="lucide:message-circle"
+                                class="text-xl group-hover:scale-110 transition-transform"></iconify-icon>
+                        </a>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Stack</span>
+                        <div class="flex items-center gap-3 text-textmuted">
+                            <iconify-icon icon="simple-icons:python"
+                                class="text-lg hover:text-[#3776AB] transition-colors cursor-hover-target"
+                                title="Python"></iconify-icon>
+                            <iconify-icon icon="simple-icons:mysql"
+                                class="text-lg hover:text-[#4479A1] transition-colors cursor-hover-target"
+                                title="SQL"></iconify-icon>
+                            <iconify-icon icon="simple-icons:powerbi"
+                                class="text-lg hover:text-[#F2C811] transition-colors cursor-hover-target"
+                                title="Power BI"></iconify-icon>
+                            <iconify-icon icon="lucide:brain-circuit"
+                                class="text-lg hover:text-brand transition-colors cursor-hover-target"
+                                title="AI/ML"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects"
+            class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-surface overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-16 reveal">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest"
+                        data-i18n="idx_proj_kicker">Trabalhos</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase text-textmain"
+                        data-i18n="idx_proj_title">Projetos</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl font-instrument text-lg" data-i18n="idx_proj_subtitle">
+                        Selected work in Data, AI and Automation.</p>
+                </div>
+
+                <div class="flex flex-col gap-16">
+
+                    <!-- Featured Project (Large) -->
+                    <a href="project-job-matcher.html" class="group cursor-hover-target block w-full relative">
+                        <div
+                            class="glass-panel p-6 md:p-8 rounded-3xl flex flex-col md:flex-row gap-8 lg:gap-12 items-center hover:bg-background transition-colors duration-500">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full md:w-3/5 rounded-2xl overflow-hidden relative aspect-video border border-bordercolor shadow-md shadow-glow group-hover:shadow-xl transition-shadow duration-500">
+                                <div
+                                    class="absolute inset-0 bg-accent/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+                                </div>
+                                <img src="assets/project-images/AI-Job-Matcher.png" alt="AI Job Matcher"
+                                    class="w-full h-full object-cover grayscale opacity-90 transition-transform duration-1000 group-hover:scale-105 group-hover:grayscale-0" />
+                            </div>
+
+                            <!-- Content -->
+                            <div class="w-full md:w-2/5 flex flex-col justify-center">
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-brand mb-4 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+                                    <span data-i18n="idx_proj_featured">Destaque</span>
+                                </span>
+                                <h3 class="text-3xl lg:text-5xl font-oswald tracking-tight uppercase text-textmain mb-4 group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_proj_card1_title">AI Job Matcher</h3>
+                                <p class="text-textmuted leading-relaxed font-instrument text-lg mb-8"
+                                    data-i18n="idx_proj_card1_desc">
+                                    An AI-powered system that searches job listings via API, filters them based on your skills, and provides intelligent analysis for each matching vacancy.
+                                </p>
+
+                                <div class="flex flex-wrap items-center gap-3 mb-10">
+                                    <span
+                                        class="px-3 py-1.5 rounded-md border border-blue-500/30 bg-blue-500/10 text-[10px] font-mono tracking-widest uppercase text-blue-600 dark:text-blue-400 shadow-sm">Python</span>
+                                    <span
+                                        class="px-3 py-1.5 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">OpenAI</span>
+                                    <span
+                                        class="px-3 py-1.5 rounded-md border border-cyan-500/30 bg-cyan-500/10 text-[10px] font-mono tracking-widest uppercase text-cyan-600 dark:text-cyan-400 shadow-sm">APIs</span>
+                                    <span
+                                        class="px-3 py-1.5 rounded-md border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono tracking-widest uppercase text-emerald-600 dark:text-emerald-400 shadow-sm">Agno</span>
+                                </div>
+
+                                <div
+                                    class="font-bold tracking-widest uppercase text-xs flex items-center gap-2 text-textmain group-hover:text-accent transition-colors w-fit pb-1 border-b border-transparent group-hover:border-accent">
+                                    <span data-i18n="idx_proj_view">View Project</span> <i data-lucide="arrow-right"
+                                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Secondary Projects Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <!-- Secondary Project 1 — BI Principal -->
+                        <a href="project-bi-principal.html" class="group cursor-hover-target block">
+                            <div
+                                class="bg-background border border-bordercolor p-5 rounded-3xl hover:shadow-xl hover:shadow-glow hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
+                                <div
+                                    class="w-full rounded-2xl overflow-hidden relative aspect-video border border-bordercolor mb-6">
+                                    <img src="assets/project-images/bi_principal/Group 4.jpg"
+                                        alt="Full BI Pipeline"
+                                        class="w-full h-full object-cover grayscale opacity-80 transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0" />
+                                </div>
+
+                                <div class="flex-grow flex flex-col">
+                                    <h4 class="text-2xl font-oswald uppercase text-textmain mb-3"
+                                        data-i18n="idx_proj_card2_title">Full BI Pipeline</h4>
+                                    <p class="text-sm text-textmuted font-instrument leading-relaxed mb-6 flex-grow"
+                                        data-i18n="idx_proj_card2_desc">
+                                        Complete BI project from SQL extraction to full visualization in Power BI.
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-2 mt-auto">
+                                        <span
+                                            class="px-2 py-1 rounded border border-amber-500/30 bg-amber-500/10 text-[9px] font-mono tracking-widest uppercase text-amber-600 dark:text-amber-500">Power
+                                            BI</span>
+                                        <span
+                                            class="px-2 py-1 rounded border border-yellow-500/30 bg-yellow-500/10 text-[9px] font-mono tracking-widest uppercase text-yellow-600 dark:text-yellow-500">DAX</span>
+                                        <span
+                                            class="px-2 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-[9px] font-mono tracking-widest uppercase text-indigo-600 dark:text-indigo-400">SQL
+                                            Server</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Secondary Project 2 — Web Scraping -->
+                        <a href="project-web-scraping.html" class="group cursor-hover-target block">
+                            <div
+                                class="bg-background border border-bordercolor p-5 rounded-3xl hover:shadow-xl hover:shadow-glow hover:-translate-y-2 transition-all duration-500 h-full flex flex-col">
+                                <div
+                                    class="w-full rounded-2xl overflow-hidden relative aspect-video border border-bordercolor mb-6">
+                                    <img src="assets/project-images/Fluxo de dados minimalista.png"
+                                        alt="Web Scraping"
+                                        class="w-full h-full object-cover grayscale opacity-80 transition-transform duration-700 group-hover:scale-105 group-hover:grayscale-0" />
+                                </div>
+
+                                <div class="flex-grow flex flex-col">
+                                    <h4 class="text-2xl font-oswald uppercase text-textmain mb-3"
+                                        data-i18n="idx_proj_card3_title">Web Scraping</h4>
+                                    <p class="text-sm text-textmuted font-instrument leading-relaxed mb-6 flex-grow"
+                                        data-i18n="idx_proj_card3_desc">
+                                        Web scraping public health funds data with Python automation.
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-2 mt-auto">
+                                        <span
+                                            class="px-2 py-1 rounded border border-blue-500/30 bg-blue-500/10 text-[9px] font-mono tracking-widest uppercase text-blue-600 dark:text-blue-400">Python</span>
+                                        <span
+                                            class="px-2 py-1 rounded border border-indigo-500/30 bg-indigo-500/10 text-[9px] font-mono tracking-widest uppercase text-indigo-600 dark:text-indigo-400">SQL</span>
+                                        <span
+                                            class="px-2 py-1 rounded border border-orange-500/30 bg-orange-500/10 text-[9px] font-mono tracking-widest uppercase text-orange-600 dark:text-orange-400">APIs</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <!-- View All Button -->
+                <div class="mt-20 flex justify-center reveal delay-200">
+                    <a href="projects.html"
+                        class="cursor-hover-target group font-medium text-primaryfg bg-accent text-accentfg border border-bordercolor rounded-full px-10 py-4 relative overflow-hidden shadow-lg hover:shadow-[0_0_20px_var(--glow-color)] transition-all duration-300">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700">
+                        </div>
+                        <span class="relative flex items-center gap-3 text-sm font-bold tracking-widest uppercase">
+                            <span data-i18n="idx_proj_view_all">View all projects</span>
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience"
+            class="relative z-10 py-24 border-b border-bordercolor bg-background overflow-hidden flex flex-col">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-10"></div>
+
+            <!-- Header -->
+            <div class="px-6 md:px-12 max-w-7xl mx-auto w-full mb-4 reveal relative z-20 pointer-events-none">
+                <div class="pointer-events-auto">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest"
+                        data-i18n="idx_exp_kicker">Career</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase text-textmain"
+                        data-i18n="idx_exp_title">Experience</h2>
+                    <p class="text-textmuted mt-4 max-w-2xl font-instrument text-lg" data-i18n="idx_exp_subtitle">3+
+                        years building data solutions, automation systems and AI tools.</p>
+                    <p
+                        class="text-xs text-textmuted mt-3 font-mono uppercase tracking-widest opacity-80 flex items-center gap-2">
+                        <span
+                            class="w-1.5 h-1.5 rounded-full bg-brand shadow-[0_0_10px_var(--brand-color)] animate-pulse opacity-70"></span>
+                        <span data-i18n="idx_exp_tags" class="text-textmain opacity-70 animate-pulse"> Evoluindo </span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline Wrapper -->
+            <div class="w-full relative reveal delay-200 z-10">
+
+                <!-- Fade gradients on the sides of the scrolling container for better UX -->
+                <div
+                    class="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none">
+                </div>
+                <div
+                    class="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none">
+                </div>
+
+                <!-- Scroll Container -->
+                <div id="timeline-scroll"
+                    class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory pt-0 md:pt-4 pb-2 w-full pl-6 md:pl-12 pr-[10vw] gap-0 relative scroll-smooth cursor-grab active:cursor-grabbing max-w-7xl mx-auto"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
+
+                    <!-- Line Start (Hidden to let node touch edge) -->
+                    <div class="shrink-0 w-0 h-[2px] bg-gradient-to-r from-transparent to-bordercolor hidden"></div>
+
+                    <!-- Timeline Item 1 -->
+                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
+                        <div class="flex flex-col items-center justify-center">
+                            <div
+                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
+                            </div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
+                            </div>
+                            <div
+                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                                <div
+                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    <div
+                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                        <i data-lucide="database" class="w-24 h-24 text-textmain"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div
+                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                            <span
+                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                            <span data-i18n="idx_exp_year1">2025 - Present</span>
+                                        </div>
+                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                            data-i18n="idx_exp_role1">Data Analyst</h3>
+                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                            data-i18n="idx_exp_company1">@ CNM</h4>
+                                        <div
+                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                            <div class="min-h-0">
+                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                    data-i18n="idx_exp_desc1"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
+                            <div
+                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Timeline Item 2 -->
+                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
+                        <div class="flex flex-col items-center justify-center">
+                            <div
+                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-end pb-10 shrink-0 pointer-events-auto z-10 px-4">
+                                <div
+                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-2xl group-hover:shadow-glow/50">
+                                    <div
+                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                        <i data-lucide="line-chart" class="w-24 h-24 text-textmain"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div
+                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                            <span
+                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                            <span data-i18n="idx_exp_year2">2024 - 2025</span>
+                                        </div>
+                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                            data-i18n="idx_exp_role2">Data Analyst (Internship)</h3>
+                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                            data-i18n="idx_exp_company2">@ Geap</h4>
+                                        <div
+                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                            <div class="min-h-0">
+                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                    data-i18n="idx_exp_desc2"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
+                            </div>
+                            <div
+                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
+                            </div>
+                        </div>
+                        <div
+                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
+                            <div
+                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Timeline Item 3 -->
+                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
+                        <div class="flex flex-col items-center justify-center">
+                            <div
+                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
+                            </div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
+                            </div>
+                            <div
+                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                                <div
+                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    <div
+                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                        <i data-lucide="code-2" class="w-24 h-24 text-textmain"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div
+                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                            <span
+                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                            <span data-i18n="idx_exp_year3">2025</span>
+                                        </div>
+                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                            data-i18n="idx_exp_role3">Full Stack Dev</h3>
+                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                            data-i18n="idx_exp_company3">@ Wehrmann</h4>
+                                        <div
+                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                            <div class="min-h-0">
+                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                    data-i18n="idx_exp_desc3"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
+                            <div
+                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Timeline Item 4 -->
+                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
+                        <div class="flex flex-col items-center justify-center">
+                            <div
+                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-end pb-10 shrink-0 pointer-events-auto z-10 px-4">
+                                <div
+                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-2xl group-hover:shadow-glow/50">
+                                    <div
+                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                        <i data-lucide="bar-chart-2" class="w-24 h-24 text-textmain"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div
+                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                            <span
+                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                            <span data-i18n="idx_exp_year4">2024 - Present</span>
+                                        </div>
+                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                            data-i18n="idx_exp_role4">Data Analyst</h3>
+                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                            data-i18n="idx_exp_company4">@ Freelancer</h4>
+                                        <div
+                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                            <div class="min-h-0">
+                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                    data-i18n="idx_exp_desc4"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
+                            </div>
+                            <div
+                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
+                            </div>
+                        </div>
+                        <div
+                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
+                            <div
+                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Timeline Item 5 -->
+                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
+                        <div class="flex flex-col items-center justify-center">
+                            <div
+                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
+                            </div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
+                            </div>
+                            <div
+                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                                <div
+                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    <div
+                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                        <i data-lucide="server" class="w-24 h-24 text-textmain"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div
+                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                            <span
+                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                            <span data-i18n="idx_exp_year5">2023</span>
+                                        </div>
+                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                            data-i18n="idx_exp_role5">Data Intern</h3>
+                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                            data-i18n="idx_exp_company5">@ Methabio</h4>
+                                        <div
+                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                            <div class="min-h-0">
+                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                    data-i18n="idx_exp_desc5"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Line End Removed -->
+
+                </div> <!-- End Scrolling container -->
+
+                <!-- Scroll Hint & Controls -->
+                <div class="flex items-center justify-center gap-6 z-20 pointer-events-auto mt-4 mb-4 relative pb-8">
+                    <!-- Scroll Left Button (Desktop only) -->
+                    <button id="btn-scroll-left"
+                        class="w-12 h-12 rounded-full border border-bordercolor bg-surface/80 backdrop-blur items-center justify-center text-textmain hover:bg-surface hover:text-brand hover:border-brand transition-all duration-300 group shadow-lg cursor-hover-target hidden md:flex">
+                        <i data-lucide="chevron-left"
+                            class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                    </button>
+
+                    <!-- Desktop Line Divider -->
+                    <div class="hidden md:block w-32 xl:w-48 h-[1px] bg-bordercolor opacity-50"></div>
+
+                    <!-- Center Label (Mobile text hint) -->
+                    <div class="flex md:hidden items-center gap-3 opacity-70">
+                        <i data-lucide="arrow-left" class="w-4 h-4 text-textmuted animate-pulse"></i>
+                        <span class="text-xs font-mono uppercase tracking-widest text-textmuted"
+                            data-i18n="idx_scroll_hint">Scroll horizontally</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 text-textmuted animate-pulse"></i>
+                    </div>
+
+                    <!-- Scroll Right Button (Desktop only) -->
+                    <button id="btn-scroll-right"
+                        class="w-12 h-12 rounded-full border border-bordercolor bg-surface/80 backdrop-blur items-center justify-center text-textmain hover:bg-surface hover:text-brand hover:border-brand transition-all duration-300 group shadow-lg cursor-hover-target hidden md:flex">
+                        <i data-lucide="chevron-right"
+                            class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about"
+            class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-surface overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-10"></div>
+
+            <!-- Ambient Bottom-Right Glow -->
+            <div
+                class="absolute -bottom-1/4 -right-1/4 w-[150%] md:w-[800px] aspect-square bg-brand/20 rounded-full blur-[120px] opacity-[0.08] pointer-events-none z-0">
+            </div>
+
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                    <!-- LEFT: Text Content -->
+                    <div class="col-span-1 lg:col-span-6 flex flex-col justify-center reveal relative">
+                        <!-- Faint Background Overlay for Text Side -->
+                        <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-[0.03]"
+                            style="-webkit-mask-image: radial-gradient(circle at center, black, transparent 80%); mask-image: radial-gradient(circle at center, black, transparent 80%);">
+                        </div>
+
+                        <div class="relative z-10">
+                            <span
+                                class="text-xs font-mono uppercase text-textmain opacity-80 mb-2 block tracking-widest"
+                                data-i18n="idx_about_kicker">Profile</span>
+                            <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase text-textmain mb-8"
+                                data-i18n="idx_about_title">About</h2>
+
+                            <p class="text-lg text-textmuted font-instrument leading-relaxed font-light mb-2"
+                                data-i18n="idx_about_p1">
+                                I build data systems, automation pipelines and AI-powered solutions.
+                            </p>
+                            <p class="text-lg text-textmuted font-instrument leading-relaxed font-light mb-2"
+                                data-i18n="idx_about_p2">
+                                Focused on transforming complex data into insights and scalable tools.
+                            </p>
+                            <p class="text-lg text-textmuted font-instrument leading-relaxed font-light"
+                                data-i18n="idx_about_p3">
+                                I also work with data integration, dashboards and process automation in real-world
+                                scenarios.
+                            </p>
+
+                            <!-- Small Stats Enhancement & Contact Links -->
+                            <div
+                                class="mt-8 pt-8 border-t border-bordercolor border-dashed flex flex-col xl:flex-row items-start xl:items-center gap-6 xl:justify-between w-full">
+
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                                    <div class="flex items-center gap-3">
+                                        <span
+                                            class="text-xs font-mono uppercase tracking-widest text-textmain opacity-90 whitespace-nowrap"
+                                            data-i18n="idx_about_yrs">3+ years experience</span>
+                                    </div>
+                                    <div class="hidden sm:block w-px h-4 bg-bordercolor shrink-0"></div>
+                                    <div class="flex items-center gap-3 group/stat cursor-hover-target">
+                                        <i data-lucide="cpu"
+                                            class="w-4 h-4 shrink-0 text-brand transition-all duration-500 group-hover/stat:scale-110 group-hover/stat:drop-shadow-[0_0_8px_var(--brand-color)]"></i>
+                                        <span
+                                            class="text-xs font-mono uppercase tracking-widest text-textmain opacity-90 whitespace-nowrap"
+                                            data-i18n="idx_about_tags">Data • AI • Automation</span>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Icons -->
+                                <div class="flex items-center gap-5">
+                                    <a href="https://github.com/luidyenrico" target="_blank" rel="noopener noreferrer"
+                                        aria-label="GitHub"
+                                        class="text-textmain opacity-50 hover:opacity-100 hover:text-brand transition-all duration-300 group cursor-hover-target">
+                                        <i data-lucide="github"
+                                            class="w-[18px] h-[18px] group-hover:scale-110 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/luidy-enrico" target="_blank"
+                                        rel="noopener noreferrer" aria-label="LinkedIn"
+                                        class="text-textmain opacity-50 hover:opacity-100 hover:text-brand transition-all duration-300 group cursor-hover-target">
+                                        <i data-lucide="linkedin"
+                                            class="w-[18px] h-[18px] group-hover:scale-110 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
+                                    </a>
+                                    <a href="https://wa.me/5561992911028" target="_blank" rel="noopener noreferrer"
+                                        aria-label="WhatsApp"
+                                        class="text-textmain opacity-50 hover:opacity-100 hover:text-brand transition-all duration-300 group cursor-hover-target">
+                                        <i data-lucide="message-circle"
+                                            class="w-[18px] h-[18px] group-hover:scale-110 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
+                                    </a>
+                                    <div class="w-px h-4 bg-bordercolor opacity-60 mx-1"></div>
+                                    <div tabindex="0" aria-label="Download CV Options"
+                                        class="relative flex items-center gap-2 text-textmain opacity-50 hover:opacity-100 focus:opacity-100 hover:text-brand focus:text-brand transition-all duration-300 group cursor-hover-target outline-none">
+                                        <i data-lucide="download"
+                                            class="w-[18px] h-[18px] group-hover:scale-110 group-focus:scale-110 group-hover:-translate-y-0.5 group-focus:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] group-focus:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
+                                        <span
+                                            class="text-[10px] uppercase font-mono tracking-widest leading-none mt-0.5 font-bold mix-blend-screen">CV</span>
+
+                                        <!-- Dropdown Menu -->
+                                        <div
+                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 flex flex-col w-32 p-1.5 rounded-xl bg-surface/95 backdrop-blur-md border border-bordercolor opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus:opacity-100 group-focus:visible transition-all duration-300 translate-y-3 group-hover:translate-y-0 group-focus:translate-y-0 z-50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                                            <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" download
+                                                class="flex items-center justify-between px-3 py-2.5 text-[10px] font-mono uppercase tracking-widest text-textmuted hover:text-textmain hover:bg-brand/10 rounded-lg transition-colors">
+                                                <span>PT</span>
+                                                <i data-lucide="file-text" class="w-3 h-3 opacity-50"></i>
+                                            </a>
+                                            <a href="assets/cv-en.pdf" target="_blank" rel="noopener noreferrer"
+                                                download
+                                                class="flex items-center justify-between px-3 py-2.5 text-[10px] font-mono uppercase tracking-widest text-textmuted hover:text-textmain hover:bg-brand/10 rounded-lg transition-colors">
+                                                <span>EN</span>
+                                                <i data-lucide="file-text" class="w-3 h-3 opacity-50"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Profile Image -->
+                    <div class="col-span-1 lg:col-span-6 relative flex justify-center lg:justify-end reveal delay-200">
+                        <div class="relative w-full max-w-md aspect-[4/5] group cursor-hover-target">
+
+                            <!-- Glow relocated to section background -->
+
+                            <!-- Depth Layer 1: Glass Panel -->
+                            <div
+                                class="absolute inset-0 translate-x-2 translate-y-2 glass-panel rounded-[2rem] border border-bordercolor transition-transform duration-700 ease-out group-hover:translate-x-3 group-hover:translate-y-3">
+                            </div>
+
+                            <!-- Main Image Container -->
+                            <div
+                                class="absolute inset-0 rounded-[2rem] overflow-hidden bg-background border border-bordercolor shadow-lg shadow-glow transition-transform duration-1000 ease-out group-hover:-translate-y-2 group-hover:-translate-x-2">
+
+                                <!-- Soft Pattern inside -->
+                                <div
+                                    class="absolute inset-0 hero-pattern opacity-10 pointer-events-none mix-blend-overlay z-0">
+                                </div>
+
+                                <!-- The Profile Image -->
+                                <img src="assets/Eu.png" alt="Profile"
+                                    class="absolute inset-0 w-full h-full object-cover object-top grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-[1.03] z-10 origin-center" />
+
+                                <!-- Gradient Overlays for depth and blending -->
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80 z-20 pointer-events-none transition-opacity duration-700 group-hover:opacity-40">
+                                </div>
+
+                                <!-- Decorative element -->
+                                <div
+                                    class="absolute bottom-6 left-6 z-30 opacity-40 group-hover:opacity-100 transition-all duration-700 group-hover:drop-shadow-[0_0_8px_var(--brand-color)]">
+                                    <i data-lucide="user" class="w-5 h-5 text-textmain"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- EDUCATION SUB-SECTION -->
+                <div class="mt-20 relative z-10">
+                    <div class="mb-20 reveal">
+                        <div class="flex items-center gap-4">
+                            <i data-lucide="graduation-cap" class="w-6 h-6 text-brand"></i>
+                            <h3 class="text-xl md:text-2xl font-medium tracking-tight font-oswald uppercase text-textmain"
+                                data-i18n="idx_edu_title">Education</h3>
+                            <div class="h-px bg-bordercolor border-dashed flex-grow opacity-50"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                        <!-- Card 1: Software Eng -->
+                        <div
+                            class="glass-panel p-1 rounded-3xl cursor-hover-target group relative overflow-hidden flex flex-col h-full hover:bg-surface border border-bordercolor transition-all duration-500 reveal delay-100">
+                            <!-- Header Image Banner -->
+                            <div
+                                class="relative w-full h-40 rounded-t-[1.35rem] overflow-hidden mb-6 border-b border-bordercolor bg-background">
+                                <img src="assets/ucb.jpg" alt="Universidade Católica"
+                                    class="absolute inset-0 w-full h-full object-cover object-center grayscale-[0.8] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent">
+                                </div>
+
+                                <!-- Status Badge Overlay -->
+                                <div
+                                    class="absolute top-4 right-4 px-3 py-1.5 rounded-full border border-bordercolor bg-surface/80 backdrop-blur-md shadow-sm w-fit flex items-center gap-2 z-10 transition-transform duration-300 group-hover:-translate-y-1">
+                                    <span class="relative flex h-2 w-2">
+                                        <span
+                                            class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    </span>
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-textmain"
+                                        data-i18n="idx_edu_status">Completed</span>
+                                </div>
+                            </div>
+
+                            <div class="px-8 pb-8 flex flex-col flex-grow relative z-10">
+                                <div class="flex items-start gap-4 mb-4 mt-2">
+                                    <div
+                                        class="w-12 h-12 shrink-0 bg-accent/5 border border-bordercolor rounded-2xl flex items-center justify-center text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-accentfg group-hover:scale-110 shadow-sm mt-1">
+                                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl md:text-2xl font-instrument font-bold text-textmain leading-tight mb-1"
+                                            data-i18n="idx_edu_eng_title">Engenharia de Software</h4>
+                                        <p class="text-xs font-mono uppercase tracking-widest text-textmuted"
+                                            data-i18n="idx_edu_eng_deg">Bacharelado</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm md:text-base text-textmuted leading-relaxed font-sans mb-8 mt-2"
+                                    data-i18n="idx_edu_uni">
+                                    Universidade Católica
+                                </p>
+                                <div
+                                    class="mt-auto flex items-center justify-between border-t border-bordercolor border-dashed pt-5">
+                                    <span class="text-xs font-mono font-bold tracking-widest text-textmain opacity-80"
+                                        data-i18n="idx_edu_eng_date">2021 - 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: ADS -->
+                        <div
+                            class="glass-panel p-1 rounded-3xl cursor-hover-target group relative overflow-hidden flex flex-col h-full hover:bg-surface border border-bordercolor transition-all duration-500 reveal delay-200">
+                            <!-- Header Image Banner -->
+                            <div
+                                class="relative w-full h-40 rounded-t-[1.35rem] overflow-hidden mb-6 border-b border-bordercolor bg-background">
+                                <img src="assets/ucb.jpg" alt="Universidade Católica"
+                                    class="absolute inset-0 w-full h-full object-cover object-center grayscale-[0.8] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105" />
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent">
+                                </div>
+
+                                <!-- Status Badge Overlay -->
+                                <div
+                                    class="absolute top-4 right-4 px-3 py-1.5 rounded-full border border-bordercolor bg-surface/80 backdrop-blur-md shadow-sm w-fit flex items-center gap-2 z-10 transition-transform duration-300 group-hover:-translate-y-1">
+                                    <span class="relative flex h-2 w-2">
+                                        <span
+                                            class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    </span>
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-textmain"
+                                        data-i18n="idx_edu_status">Completed</span>
+                                </div>
+                            </div>
+
+                            <div class="px-8 pb-8 flex flex-col flex-grow relative z-10">
+                                <div class="flex items-start gap-4 mb-4 mt-2">
+                                    <div
+                                        class="w-12 h-12 shrink-0 bg-accent/5 border border-bordercolor rounded-2xl flex items-center justify-center text-accent transition-all duration-300 group-hover:bg-accent group-hover:text-accentfg group-hover:scale-110 shadow-sm mt-1">
+                                        <i data-lucide="code-2" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl md:text-2xl font-instrument font-bold text-textmain leading-tight mb-1"
+                                            data-i18n="idx_edu_ads_title">Análise e Desenvolvimento de Sistemas</h4>
+                                        <p class="text-xs font-mono uppercase tracking-widest text-textmuted"
+                                            data-i18n="idx_edu_ads_deg">Tecnólogo</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm md:text-base text-textmuted leading-relaxed font-sans mb-8 mt-2"
+                                    data-i18n="idx_edu_uni">
+                                    Universidade Católica
+                                </p>
+                                <div
+                                    class="mt-auto flex items-center justify-between border-t border-bordercolor border-dashed pt-5">
+                                    <span class="text-xs font-mono font-bold tracking-widest text-textmain opacity-80"
+                                        data-i18n="idx_edu_ads_date">2022 - 2024</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS SECTION -->
+        <section id="certifications"
+            class="relative z-10 py-24 px-6 md:px-12 border-b border-bordercolor bg-background overflow-hidden flex flex-col">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-10"></div>
+            <!-- Ambient Glow -->
+            <div
+                class="absolute top-[10%] left-[-10%] w-[500px] aspect-square bg-brand/20 rounded-full blur-[120px] opacity-[0.05] pointer-events-none z-0">
+            </div>
+            <div
+                class="absolute bottom-[-10%] right-[-10%] w-[600px] aspect-square bg-bordercolor rounded-full blur-[100px] opacity-[0.1] pointer-events-none z-0">
+            </div>
+
+            <!-- Header -->
+            <div class="max-w-7xl mx-auto w-full mb-16 reveal relative z-20 pointer-events-none">
+                <div class="pointer-events-auto">
+                    <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest"
+                        data-i18n="idx_cert_kicker">Learning</span>
+                    <h2 class="text-4xl md:text-5xl font-medium tracking-tight font-oswald uppercase text-textmain"
+                        data-i18n="idx_cert_title">Selected Certifications</h2>
+                    <!-- Summary tagline -->
+                    <p class="text-textmuted/70 mt-3 font-instrument text-sm tracking-wide"
+                        data-i18n="idx_cert_summary">Focused on Data, AI and Automation</p>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="max-w-7xl mx-auto w-full relative reveal delay-200 z-10 pointer-events-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+                    <!-- Card 1 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado_Google_Dados.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado_Google_Dados.jpg" alt="Certificado_Google_Dados"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider1">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year1">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title1">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc1"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">SQL</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">ETL</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Visualization</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Analytics</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://coursera.org/share/7c21208659adddf3e5579ef6fb29ae01" target="_blank"
+                                class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado-Engenheiro-Agentes-IA.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado-Engenheiro-Agentes-IA.jpg"
+                                        alt="Certificado-Engenheiro-Agentes-IA"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider2">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year2">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title2">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc2"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">AI
+                                        Agents</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">LLMs</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Agno</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Python</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://hub.asimov.academy/validar-certificado/7e3e285c-5c00-42da-a077-e1af859ff83a"
+                                target="_blank" class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado-Analista-de-dados-Asimov.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado-Analista-de-dados-Asimov.jpg"
+                                        alt="Certificado-Analista-de-dados-Asimov"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider3">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year3">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title3">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc3"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Python</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Pandas</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">EDA</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Visualization</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://hub.asimov.academy/validar-certificado/bdfefcb1-b6be-4be2-9731-403e0dec4cf6"
+                                target="_blank" class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado-Business-Intelligence.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado-Business-Intelligence.jpg"
+                                        alt="Certificado-Business-Intelligence"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider4">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year4">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title4">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc4"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Modeling</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Pipelines</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Dashboards</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">BI</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://coursera.org/share/5e4980ad1954e5c50f264c8e3abe29b9" target="_blank"
+                                class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado_Python_DSA.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado_Python_DSA.jpg" alt="Certificado_Python_DSA"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider5">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year5">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title5">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc5"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Python</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Pandas</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Science</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://mycourse.app/NMWO6zgOz3HlAjS51" target="_blank"
+                                class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="group cursor-hover-target block w-full h-full relative">
+                        <div
+                            class="glass-panel p-5 md:p-6 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm group-hover:shadow-[0_20px_50px_-12px_var(--glow-color)] group-hover:scale-[1.02] transition-all duration-300 relative overflow-hidden backdrop-blur-md flex flex-col h-full group-hover:-translate-y-2">
+                            <!-- Image Container -->
+                            <div
+                                class="w-full aspect-[3/2] rounded-2xl overflow-hidden relative border border-bordercolor mb-6 group-hover:border-accent/30 transition-colors duration-300 z-20">
+                                <a href="certificados/Certificado-BancoDeDados.jpg" target="_blank"
+                                    class="block w-full h-full relative group/img cursor-zoom-in">
+                                    <img src="certificados/Certificado-BancoDeDados.jpg" alt="Certificado-BancoDeDados"
+                                        class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-transform duration-700 group-hover:scale-[1.04]" />
+                                    <div
+                                        class="absolute inset-0 bg-brand/10 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity duration-300 z-10 pointer-events-none">
+                                    </div>
+
+                                    <!-- Desktop Dark Overlay for Hover -->
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 md:group-hover/img:opacity-100 transition-opacity duration-300 z-10 pointer-events-none hidden md:block">
+                                    </div>
+                                    <!-- Zoom Badge (Mobile: Top Right | Desktop: Center Hover) -->
+                                    <div
+                                        class="absolute top-2 right-2 md:top-1/2 md:right-auto md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center gap-1.5 px-2.5 py-1 md:w-12 md:h-12 md:p-0 rounded-full bg-black/60 md:bg-black/40 backdrop-blur-md border border-white/20 text-white/90 shadow-xl opacity-100 md:opacity-0 md:group-hover/img:opacity-100 md:group-hover/img:scale-110 transition-all duration-300 pointer-events-none">
+                                        <i data-lucide="zoom-in" class="w-3.5 h-3.5 md:w-5 md:h-5"></i>
+                                        <span
+                                            class="text-[9px] font-bold tracking-widest uppercase md:hidden">Zoom</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Content -->
+                            <div class="flex flex-col flex-grow">
+                                <div
+                                    class="text-[#6a8019] dark:text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center justify-between">
+                                    <span data-i18n="idx_cert_provider6">Platform</span>
+                                    <span class="text-textmuted flex items-center gap-2">
+                                        <span
+                                            class="w-1.5 h-1.5 rounded-full bg-bordercolor group-hover:bg-brand group-hover:animate-ping transition-colors duration-300"></span>
+                                        <span data-i18n="idx_cert_year6">2024</span>
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-oswald uppercase text-textmain mb-4 tracking-tight group-hover:text-transparent-stroke transition-colors"
+                                    data-i18n="idx_cert_title6">Title</h3>
+                                <p class="text-textmuted text-sm mb-5 line-clamp-3 leading-relaxed"
+                                    data-i18n="idx_cert_desc6"></p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">SQL</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Data
+                                        Modeling</span>
+                                    <span
+                                        class="px-2 py-1 bg-black/5 dark:bg-surface border border-black/10 dark:border-bordercolor rounded-md text-[10px] font-mono font-bold dark:font-normal text-[#5e7019] dark:text-brand uppercase tracking-wider">Relational
+                                        Databases</span>
+                                </div>
+                                <!-- CTA -->
+                                <div
+                                    class="mt-auto pt-4 w-full border-t border-dashed border-bordercolor/30 group-hover:border-brand/40 transition-colors duration-300">
+                                    <div
+                                        class="font-bold tracking-widest uppercase text-[10px] md:text-xs flex items-center gap-1.5 text-[#6a8019]/80 dark:text-brand/70 group-hover:text-[#4d5e10] dark:group-hover:text-brand transition-all duration-300 w-fit group-hover:translate-x-1">
+                                        <span data-i18n="idx_cert_view">View Certificate</span>
+                                        <i data-lucide="external-link"
+                                            class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="https://ude.my/UC-a34bb0d1-6485-4093-ad68-f8518c252103" target="_blank"
+                                class="absolute inset-0 z-10" aria-label="View Certificate"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER: HIGH-END CLOSING SECTION -->
+        <footer id="contact"
+            class="relative z-10 py-24 md:py-32 px-6 md:px-12 border-t border-bordercolor bg-surface overflow-hidden flex flex-col items-center justify-center">
+
+            <!-- Premium Background & Depth Effects -->
+            <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-10"
+                style="-webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, black, transparent); mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, black, transparent);">
+            </div>
+            <div class="absolute inset-0 pointer-events-none wave-overlay z-0 opacity-[0.03]"></div>
+
+            <!-- Huge Ambient Glow rising from the bottom -->
+            <div
+                class="absolute bottom-[-30%] left-1/2 -translate-x-1/2 w-[800px] md:w-[1200px] aspect-square bg-brand/10 rounded-full blur-[150px] pointer-events-none z-0">
+            </div>
+
+            <div class="relative z-20 max-w-6xl mx-auto w-full flex flex-col items-center gap-16 md:gap-24">
+
+                <!-- Signature Headline & CTA -->
+                <div class="flex flex-col items-center justify-center gap-6 cursor-hover-target footer-reveal w-full">
+                    <h2
+                        class="text-6xl sm:text-7xl md:text-[8rem] lg:text-[10rem] leading-none font-oswald font-bold tracking-tighter uppercase text-transparent-stroke transition-all duration-700 select-none text-center">
+                        Luidy Enrico
+                    </h2>
+                    <div class="h-px w-24 md:w-32 bg-gradient-to-r from-transparent via-brand/50 to-transparent my-2">
+                    </div>
+                    <p class="text-xl md:text-2xl font-instrument text-textmain font-light tracking-wider max-w-2xl text-center"
+                        data-i18n="footer_cta">
+                        Let's build intelligent systems together.
+                    </p>
+                </div>
+
+                <!-- Contact Grid: Interactive Cards -->
+                <div class="w-full grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 footer-reveal">
+
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/luidy-enrico" target="_blank" rel="noopener noreferrer"
+                        class="group cursor-hover-target w-full flex flex-col items-center justify-center gap-4 p-8 glass-panel rounded-[2rem] border border-bordercolor hover:border-brand/40 bg-surface/30 hover:bg-surface transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_var(--glow-color)] relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                        </div>
+                        <div
+                            class="relative z-10 w-16 h-16 rounded-2xl bg-surface border border-bordercolor/50 flex items-center justify-center group-hover:scale-110 group-hover:border-transparent group-hover:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)]">
+                            <iconify-icon icon="lucide:linkedin"
+                                class="text-3xl text-textmuted group-hover:text-[#1c1c1c] transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <span
+                            class="relative z-10 text-xs font-mono font-bold tracking-widest uppercase text-textmuted group-hover:text-textmain transition-colors duration-500 mt-2">LinkedIn</span>
+                    </a>
+
+                    <!-- GitHub -->
+                    <a href="https://github.com/luidyenrico" target="_blank" rel="noopener noreferrer"
+                        class="group cursor-hover-target w-full flex flex-col items-center justify-center gap-4 p-8 glass-panel rounded-[2rem] border border-bordercolor hover:border-brand/40 bg-surface/30 hover:bg-surface transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_var(--glow-color)] delay-75 relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                        </div>
+                        <div
+                            class="relative z-10 w-16 h-16 rounded-2xl bg-surface border border-bordercolor/50 flex items-center justify-center group-hover:scale-110 group-hover:border-transparent group-hover:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)]">
+                            <iconify-icon icon="lucide:github"
+                                class="text-3xl text-textmuted group-hover:text-[#1c1c1c] transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <span
+                            class="relative z-10 text-xs font-mono font-bold tracking-widest uppercase text-textmuted group-hover:text-textmain transition-colors duration-500 mt-2">GitHub</span>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/5561992911028" target="_blank" rel="noopener noreferrer"
+                        class="group cursor-hover-target w-full flex flex-col items-center justify-center gap-4 p-8 glass-panel rounded-[2rem] border border-bordercolor hover:border-brand/40 bg-surface/30 hover:bg-surface transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_var(--glow-color)] delay-150 relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                        </div>
+                        <div
+                            class="relative z-10 w-16 h-16 rounded-2xl bg-surface border border-bordercolor/50 flex items-center justify-center group-hover:scale-110 group-hover:border-transparent group-hover:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)]">
+                            <iconify-icon icon="lucide:message-circle"
+                                class="text-3xl text-textmuted group-hover:text-[#1c1c1c] transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <span
+                            class="relative z-10 text-xs font-mono font-bold tracking-widest uppercase text-textmuted group-hover:text-textmain transition-colors duration-500 mt-2">WhatsApp</span>
+                    </a>
+
+                    <!-- Email -->
+                    <a href="mailto:luidy.efcti@gmail.com"
+                        class="group cursor-hover-target w-full flex flex-col items-center justify-center gap-4 p-8 glass-panel rounded-[2rem] border border-bordercolor hover:border-brand/40 bg-surface/30 hover:bg-surface transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_-15px_var(--glow-color)] delay-200 relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                        </div>
+                        <div
+                            class="relative z-10 w-16 h-16 rounded-2xl bg-surface border border-bordercolor/50 flex items-center justify-center group-hover:scale-110 group-hover:border-transparent group-hover:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)]">
+                            <iconify-icon icon="lucide:mail"
+                                class="text-3xl text-textmuted group-hover:text-[#1c1c1c] transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <span
+                            class="relative z-10 text-xs font-mono font-bold tracking-widest uppercase text-textmuted group-hover:text-textmain transition-colors duration-500 mt-2">Email</span>
+                    </a>
+
+                    <!-- CV - Retained Brand Green with Perfect High Contrast -->
+                    <div tabindex="0"
+                        class="group cursor-hover-target w-full col-span-2 lg:col-span-1 flex flex-col items-center justify-center p-8 glass-panel rounded-[2rem] border border-brand/40 hover:border-brand focus:border-brand bg-brand/5 hover:bg-brand/10 focus:bg-brand/10 transition-all duration-500 hover:-translate-y-2 focus:-translate-y-2 shadow-[0_15px_40px_-15px_var(--glow-color)] hover:shadow-[0_15px_40px_-15px_var(--brand-color)] focus:shadow-[0_15px_40px_-15px_var(--brand-color)] delay-300 relative overflow-hidden outline-none">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/10 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 z-0">
+                        </div>
+
+                        <!-- Main Content (slides up slightly on hover/focus) -->
+                        <div
+                            class="flex flex-col items-center justify-center gap-4 transition-transform duration-500 group-hover:-translate-y-3 group-focus:-translate-y-3">
+                            <div
+                                class="relative z-10 w-16 h-16 rounded-2xl bg-brand/20 border border-brand/30 flex items-center justify-center group-hover:scale-110 group-focus:scale-110 group-hover:border-transparent group-focus:border-transparent group-hover:bg-brand group-focus:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)] group-focus:shadow-[0_0_20px_0px_var(--brand-color)]">
+                                <iconify-icon icon="lucide:download"
+                                    class="text-3xl text-textmain group-hover:text-[#1c1c1c] group-focus:text-[#1c1c1c] transition-colors duration-500"></iconify-icon>
+                            </div>
+                            <span
+                                class="relative z-10 text-xs font-mono font-bold tracking-widest uppercase text-textmain transition-colors duration-500 mt-2"
+                                data-i18n="btn_cv_full">Download CV</span>
+                        </div>
+
+                        <!-- Reveal Buttons -->
+                        <div
+                            class="absolute bottom-6 left-0 w-full flex justify-center gap-3 opacity-0 translate-y-8 group-hover:opacity-100 group-focus:opacity-100 group-hover:translate-y-0 group-focus:translate-y-0 transition-all duration-500 z-20 px-4">
+                            <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" download
+                                aria-label="Download CV PT"
+                                class="flex-1 max-w-[100px] py-2.5 rounded-xl border border-brand/30 bg-surface/50 hover:bg-brand text-textmain hover:text-black font-mono text-[10px] font-bold tracking-widest uppercase text-center backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_15px_var(--brand-color)]">PT</a>
+                            <a href="assets/cv-en.pdf" target="_blank" rel="noopener noreferrer" download
+                                aria-label="Download CV EN"
+                                class="flex-1 max-w-[100px] py-2.5 rounded-xl border border-bordercolor/50 bg-surface/50 hover:bg-brand hover:border-brand text-textmain hover:text-black font-mono text-[10px] font-bold tracking-widest uppercase text-center backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_15px_var(--brand-color)]">EN</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Copyright & Status Line -->
+                <div
+                    class="w-full flex flex-col md:flex-row items-center justify-between gap-8 pt-12 md:pt-16 mt-8 border-t border-bordercolor/30 footer-reveal">
+
+                    <!-- Availability Status -->
+                    <div class="flex items-center gap-3">
+                        <span class="relative flex h-3 w-3">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                            <span
+                                class="relative inline-flex rounded-full h-3 w-3 bg-brand shadow-[0_0_8px_var(--brand-color)]"></span>
+                        </span>
+                        <span class="text-[10px] md:text-xs font-mono uppercase tracking-widest text-textmuted"
+                            data-i18n="footer_status">Available for new opportunities</span>
+                    </div>
+
+                    <!-- Back to Top Button -->
+                    <button id="btn-back-to-top"
+                        class="group flex items-center gap-2 cursor-hover-target px-4 py-2 rounded-full hover:bg-surface transition-colors duration-300">
+                        <span
+                            class="text-[10px] md:text-xs font-mono uppercase tracking-widest text-textmuted group-hover:text-brand transition-colors"
+                            data-i18n="footer_top">Back to top</span>
+                        <i data-lucide="arrow-up"
+                            class="w-4 h-4 text-textmuted group-hover:text-brand group-hover:-translate-y-1 transition-all duration-300"></i>
+                    </button>
+
+                    <!-- Copyright -->
+                    <div
+                        class="text-[10px] md:text-xs font-mono uppercase tracking-widest text-textmuted/60 text-center md:text-right">
+                        <span data-i18n="footer_rights">© 2026 Luidy Enrico.<br class="md:inline hidden" /> All rights
+                            reserved.</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-hover-target, iconify-icon');
+        interactiveElements.forEach((el) => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // Theme Toggle
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        let savedTheme = localStorage.getItem('vibe_theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        html.setAttribute('data-theme', savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('vibe_theme', newTheme);
+        });
+
+        // i18n Translations
+        const translations = {
+            en: {
+                nav_projects: "Projects",
+                nav_experience: "Experience",
+                nav_about: "About",
+                nav_certifications: "Certifications",
+                nav_contact: "Contact",
+                hero_status: "System Active",
+                hero_role: "Data • AI • ML • Automation",
+                hero_desc_1: "Building data-driven applications and solutions, turning ideas into practical solutions that solve real-world problems.",
+                btn_projects: "View Projects",
+                btn_contact: "Contact",
+                idx_proj_kicker: "Works",
+                idx_proj_title: "Projects",
+                idx_proj_subtitle: "A selection of projects that represent part of what I’ve been building and learning.",
+                idx_proj_card1_title: "AI Job Matcher",
+                idx_proj_card1_desc: "An AI-powered system that searches job listings via API, filters them based on your skills, and provides intelligent analysis for each matching vacancy.",
+                idx_proj_card2_title: "Full BI Pipeline",
+                idx_proj_card2_desc: "Complete BI project from SQL extraction to full visualization in Power BI.",
+                idx_proj_card3_title: "Web Scraping",
+                idx_proj_card3_desc: "Web scraping public health funds data with Python automation.",
+                idx_proj_card4_title: "BI: Data Cross-referencing",
+                idx_proj_card4_desc: "Projects dealing with obtaining data, crossing information, and presenting in Power BI with complex relationships and DAX.",
+                idx_proj_view_all: "View all projects",
+                idx_exp_kicker: "Career",
+                idx_exp_title: "Experience",
+                idx_exp_subtitle: "Hands-on experience developing applied solutions using data and technology.",
+                idx_exp_tags: "Evolving",
+                idx_exp_year1: "2025 - Present",
+                idx_exp_role1: "Data Analyst",
+                idx_exp_company1: "@ CNM",
+                idx_exp_desc1: "Development of data pipelines, exploratory data analysis, automation with AI agents and web scraping.",
+                idx_exp_year2: "2024 - 2025",
+                idx_exp_role2: "Data Analyst",
+                idx_exp_company2: "@ Geap",
+                idx_exp_desc2: "Creation of dashboards, SQL for data extraction, process automation and analysis of large data volumes.",
+                idx_exp_year3: "2025",
+                idx_exp_role3: "Full Stack Dev",
+                idx_exp_company3: "@ Wehrmann",
+                idx_exp_desc3: "Development of APIs, data modeling, full-stack development for building data-driven applications.",
+                idx_exp_year4: "2024 - Present",
+                idx_exp_role4: "Data Engineer",
+                idx_exp_company4: "@ Freelancer",
+                idx_exp_desc4: "Creation of analytical solutions using Python, SQL, Power BI, AI agents and web scraping.",
+                idx_exp_year5: "2023",
+                idx_exp_role5: "Data Intern",
+                idx_exp_company5: "@ Methabio",
+                idx_exp_desc5: "Support for databases and development of dashboards and reports for data control and analysis.",
+                idx_about_kicker: "Profile",
+                idx_about_title: "About",
+                idx_about_p1: "I like building things that actually work in the real world.",
+                idx_about_p2: "I develop applications that use data to generate intelligent solutions.",
+                idx_about_p3: "My focus is transforming data into useful, practical and scalable solutions.",
+                idx_about_yrs: "3+ years experience",
+                idx_about_tags: "Engineering • Data • ML • AI",
+                idx_scroll_hint: "Scroll horizontally",
+                idx_cert_kicker: "Learning",
+                idx_cert_title: "Selected Certifications",
+                idx_cert_summary: "Relevant certifications in data and artificial intelligence.",
+                idx_cert_view: "View Certificate",
+                idx_cert_title1: "Google Data Analytics Professional",
+                idx_cert_provider1: "Google",
+                idx_cert_year1: "2025",
+                idx_cert_desc1: "End-to-end data analysis: cleaning, visualization and insights using SQL.",
+                idx_cert_title2: "AI Agents Engineer",
+                idx_cert_provider2: "Asimov Academy",
+                idx_cert_year2: "2026",
+                idx_cert_desc2: "Building AI agents with LLMs for automation and real-world workflows.",
+                idx_cert_title3: "Data Analyst Track",
+                idx_cert_provider3: "Asimov Academy",
+                idx_cert_year3: "2026",
+                idx_cert_desc3: "Exploratory data analysis, statistics and visualizations using Python and SQL.",
+                idx_cert_title4: "Google Business Intelligence",
+                idx_cert_provider4: "Google",
+                idx_cert_year4: "2025",
+                idx_cert_desc4: "Data modeling, ETL pipelines and dashboards for business decision-making.",
+                idx_cert_title5: "Python for Data Science",
+                idx_cert_provider5: "Data Science Academy",
+                idx_cert_year5: "2025",
+                idx_cert_desc5: "Data analysis and processing with Python, focused on real-world datasets.",
+                idx_cert_title6: "SQL Databases",
+                idx_cert_provider6: "Udemy",
+                idx_cert_year6: "2024",
+                idx_cert_desc6: "Relational databases, SQL queries and data modeling for scalable systems.",
+                idx_edu_kicker: "Academic Background",
+                idx_edu_title: "Education",
+                idx_edu_status: "Completed",
+                idx_edu_eng_title: "Software Engineering",
+                idx_edu_eng_deg: "Bachelor's Degree",
+                idx_edu_ads_title: "Systems Analysis and Development",
+                idx_edu_ads_deg: "Associate's Degree",
+                idx_edu_uni: "Catholic University",
+                idx_edu_eng_date: "2021 - 2026",
+                idx_edu_ads_date: "2022 - 2024",
+                footer_cta: "Intelligence is not magic. It's engineering.",
+                btn_cv_full: "Download CV",
+                footer_status: "Available for contact",
+                footer_top: "Back to top",
+                footer_rights: "© 2026 Luidy Enrico. All rights reserved."
+            },
+            pt: {
+                nav_projects: "Projetos",
+                nav_experience: "Experiência",
+                nav_about: "Sobre",
+                nav_certifications: "Certificações",
+                nav_contact: "Contato",
+                hero_status: "Sistema Ativo",
+                hero_role: "Dados • IA • ML • Automação",
+                hero_desc_1: "Construindo aplicações e soluções orientadas a dados, transformando ideias em soluções práticas que resolvem problemas reais.",
+                btn_projects: "Ver Projetos",
+                btn_contact: "Contato",
+                idx_proj_kicker: "Trabalhos",
+                idx_proj_title: "Projetos",
+                idx_proj_subtitle: "Uma seleção de trabalhos que representam parte do que venho construindo e aprendendo.",
+                idx_proj_card1_title: "AI Job Matcher",
+                idx_proj_card1_desc: "Sistema com IA que busca vagas via API, filtra com base nas suas competências e analisa cada oportunidade de forma inteligente.",
+                idx_proj_view: "Ver Projeto",
+                idx_proj_card2_title: "Pipeline BI Completo",
+                idx_proj_card2_desc: "Projeto de BI que vai desde a extração com SQL, tratamento com Python e visualização completa com Power BI.",
+                idx_proj_card3_title: "Web Scraping",
+                idx_proj_card3_desc: "Web scraping de dados de fundos de saúde pública com Python.",
+                idx_proj_view_all: "Ver todos os projetos",
+                idx_exp_kicker: "Carreira",
+                idx_exp_title: "Experiência",
+                idx_exp_subtitle: "Experiência prática no desenvolvimento de soluções com dados e tecnologia.",
+                idx_exp_tags: "Evoluindo",
+                idx_exp_year1: "2025 - Presente",
+                idx_exp_role1: "Analista de dados",
+                idx_exp_company1: "@ CNM",
+                idx_exp_desc1: "Desenvolvimento de pipelines de dados, análises exploratórias de dados, automações com agentes de IA e web scraping.",
+                idx_exp_year2: "2024 - 2025",
+                idx_exp_role2: "Analista de dados",
+                idx_exp_company2: "@ Geap Autogestão em Saúde",
+                idx_exp_desc2: "Criação de dashboards, SQL para extração de dados, automação de processos e análise de grandes volumes de dados.",
+                idx_exp_year3: "2025",
+                idx_exp_role3: "Dev Full Stack",
+                idx_exp_company3: "@ Wehrmann Agrícola",
+                idx_exp_desc3: "Construção de APIs, modelagem de dados, desenvolvimento full-stack para construção de aplicações orientadas a dados.",
+                idx_exp_year4: "2024 - Presente",
+                idx_exp_role4: "Engenheiro de dados",
+                idx_exp_company4: "@ Freelancer",
+                idx_exp_desc4: "Criação de soluções analíticas com Python, SQL, Power BI, Agentes de IA e web scraping.",
+                idx_exp_year5: "2023",
+                idx_exp_role5: "Estagiário de dados",
+                idx_exp_company5: "@ Methabio Farmacêutica",
+                idx_exp_desc5: "Suporte a bancos de dados e desenvolvimento de dashboards e relatórios para controle e análise de dados.",
+                idx_about_kicker: "Perfil",
+                idx_about_title: "Sobre",
+                idx_about_p1: "Gosto de construir coisas que funcionam de verdade na vida real.",
+                idx_about_p2: "Desenvolvo aplicações que utilizam dados para gerar soluções inteligentes.",
+                idx_about_p3: "Meu foco é criar soluções úteis, práticas, escaláveis e principalmente, inteligentes.",
+                idx_about_yrs: "3+ anos de experiência",
+                idx_about_tags: "Engenharia • Dados • ML • IA",
+                idx_scroll_hint: "Role horizontalmente",
+                idx_cert_kicker: "Aprendizado",
+                idx_cert_title: "Principais Certificações",
+                idx_cert_summary: "Certificações relevantes em dados e inteligência artificial.",
+                idx_cert_view: "Ver Certificado",
+                idx_cert_title1: "Google Data Analytics Professional",
+                idx_cert_provider1: "Google",
+                idx_cert_year1: "2025",
+                idx_cert_desc1: "Análise de dados ponta a ponta: limpeza, visualização e geração de insights com SQL.",
+                idx_cert_title2: "Engenheiro de Agentes de IA",
+                idx_cert_provider2: "Asimov Academy",
+                idx_cert_year2: "2026",
+                idx_cert_desc2: "Construção de agentes de IA com LLMs para automação e aplicações reais.",
+                idx_cert_title3: "Formação Analista de Dados",
+                idx_cert_provider3: "Asimov Academy",
+                idx_cert_year3: "2026",
+                idx_cert_desc3: "Análise exploratória, estatística e visualizações com Python e SQL.",
+                idx_cert_title4: "Google Business Intelligence",
+                idx_cert_provider4: "Google",
+                idx_cert_year4: "2025",
+                idx_cert_desc4: "Modelagem de dados, pipelines ETL e dashboards para tomada de decisão.",
+                idx_cert_title5: "Python para Data Science",
+                idx_cert_provider5: "Data Science Academy",
+                idx_cert_year5: "2025",
+                idx_cert_desc5: "Análise e processamento de dados com Python focado em aplicações reais.",
+                idx_cert_title6: "Bancos de Dados SQL",
+                idx_cert_provider6: "Udemy",
+                idx_cert_year6: "2024",
+                idx_cert_desc6: "Bancos relacionais, consultas SQL e modelagem de dados para sistemas escaláveis.",
+                idx_edu_kicker: "Formação Acadêmica",
+                idx_edu_title: "Formações",
+                idx_edu_status: "Concluído",
+                idx_edu_eng_title: "Engenharia de Software",
+                idx_edu_eng_deg: "Bacharelado",
+                idx_edu_ads_title: "Análise e Desenvolvimento de Sistemas",
+                idx_edu_ads_deg: "Tecnólogo",
+                idx_edu_uni: "Universidade Católica",
+                idx_edu_eng_date: "2021 - 2026",
+                idx_edu_ads_date: "2022 - 2024",
+                footer_cta: "Inteligência não é mágica. É engenharia.",
+                btn_cv_full: "Baixar Currículo",
+                footer_status: "Disponível para contato",
+                footer_top: "Voltar ao topo",
+                footer_rights: "© 2026 Luidy Enrico. Todos os direitos reservados."
+            }
+        };
+
+        const langBtn = document.getElementById('lang-toggle');
+        const langTextSpan = langBtn.querySelector('[data-lang-text]');
+        const flagEn = document.getElementById('lang-flag-en');
+        const flagPt = document.getElementById('lang-flag-pt');
+        const bodyTag = document.body;
+
+        let currentLang = localStorage.getItem('vibe_lang') || 'en';
+
+        function applyLanguage(lang) {
+            bodyTag.setAttribute('data-i18n-lang', lang);
+
+            if (lang === 'en') {
+                langTextSpan.textContent = 'EN';
+                flagEn.classList.remove('hidden');
+                flagPt.classList.add('hidden');
+            } else {
+                langTextSpan.textContent = 'PT';
+                flagPt.classList.remove('hidden');
+                flagEn.classList.add('hidden');
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        applyLanguage(currentLang);
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+            localStorage.setItem('vibe_lang', currentLang);
+            applyLanguage(currentLang);
+        });
+
+        // GSAP Nav Reveal + Animations
+        document.addEventListener("DOMContentLoaded", (event) => {
+            document.body.classList.add('reveal-active');
+            gsap.registerPlugin(ScrollTrigger);
+
+            const lenis = new Lenis({
+                duration: 0.6,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            // Anchor links handler for Lenis
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') {
+                        e.preventDefault();
+                        return;
+                    }
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        lenis.scrollTo(targetElement, { offset: -80 });
+                    }
+                });
+            });
+
+            // Back to top handler
+            const btnBackToTop = document.getElementById('btn-back-to-top');
+            if (btnBackToTop) {
+                btnBackToTop.addEventListener('click', () => {
+                    lenis.scrollTo(0);
+                });
+            }
+
+            gsap.fromTo(".gsap-reveal",
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out", delay: 0.5 }
+            );
+
+            // High-End Footer Reveal Animation
+            const footerElements = gsap.utils.toArray('.footer-reveal');
+            if (footerElements.length > 0) {
+                gsap.fromTo(footerElements,
+                    { y: 60, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 1.2,
+                        stagger: 0.15,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: "#contact",
+                            start: "top 85%"
+                        }
+                    }
+                );
+            }
+
+            // Timeline Horizontal Scroll with Interactive Buttons
+            const timelineScroll = document.getElementById('timeline-scroll');
+            const btnLeft = document.getElementById('btn-scroll-left');
+            const btnRight = document.getElementById('btn-scroll-right');
+
+            if (timelineScroll) {
+                // Disabled 'wheel' event logic here as requested to allow vertical scroll over cards.
+                // Navigation relies on buttons for Desktop and native horizontal swipe on Mobile.
+
+                // Button Controls Logic
+                if (btnLeft && btnRight) {
+                    const scrollAmount = window.innerWidth < 768 ? 300 : 400; // How far to scroll on button click
+
+                    btnLeft.addEventListener('click', () => {
+                        timelineScroll.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                    });
+
+                    btnRight.addEventListener('click', () => {
+                        timelineScroll.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                    });
+
+                    // Optional: Update button opacity based on scroll position
+                    const updateButtons = () => {
+                        btnLeft.style.opacity = timelineScroll.scrollLeft <= 0 ? '0.3' : '1';
+                        btnLeft.style.pointerEvents = timelineScroll.scrollLeft <= 0 ? 'none' : 'auto';
+
+                        const atRight = timelineScroll.scrollLeft >= (timelineScroll.scrollWidth - timelineScroll.clientWidth) - 5;
+                        btnRight.style.opacity = atRight ? '0.3' : '1';
+                        btnRight.style.pointerEvents = atRight ? 'none' : 'auto';
+                    };
+
+                    timelineScroll.addEventListener('scroll', updateButtons);
+                    // Initial check
+                    setTimeout(updateButtons, 100);
+                }
+
+                // Simple Drag to scroll
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                timelineScroll.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    timelineScroll.classList.add('active:cursor-grabbing');
+                    startX = e.pageX - timelineScroll.offsetLeft;
+                    scrollLeft = timelineScroll.scrollLeft;
+                });
+                timelineScroll.addEventListener('mouseleave', () => { isDown = false; });
+                timelineScroll.addEventListener('mouseup', () => { isDown = false; });
+                timelineScroll.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - timelineScroll.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    timelineScroll.scrollLeft = scrollLeft - walk;
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

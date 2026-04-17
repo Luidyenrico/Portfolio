@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System - Liquid Architecture</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ['class', '[data-theme="dark"]'],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['DM Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        primary: 'var(--primary)',
+                        'primary-foreground': 'var(--primary-foreground)',
+                        'primary-glow': 'var(--primary-glow)',
+                        background: 'var(--bg-main)',
+                        surface: 'var(--bg-card)',
+                        border: 'var(--border-color)',
+                        text: {
+                            main: 'var(--text-main)',
+                            muted: 'var(--text-muted)'
+                        },
+                        accent: 'var(--accent)'
+                    },
+                    animation: {
+                        'float': 'float 15s infinite alternate cubic-bezier(0.4, 0, 0.2, 1)',
+                        'float-delayed': 'float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1) -5s',
+                        'pulse-glow': 'pulse-glow 3s infinite',
+                        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%': { transform: 'translate(0, 0) scale(1)' },
+                            '100%': { transform: 'translate(30px, 50px) scale(1.1)' }
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Global CSS Variables */
+        :root[data-theme="light"] {
+            --bg-main: #FAFAFA;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-glass: rgba(255, 255, 255, 0.4);
+            --bg-glass-hover: rgba(255, 255, 255, 0.6);
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --primary: #000000;
+            --primary-foreground: #FFFFFF;
+            --primary-glow: rgba(0, 0, 0, 0.1);
+            --accent: #2563EB;
+            --cursor-color: rgba(0, 0, 0, 0.5);
+            --blob-1: #BFDBFE;
+            /* blue-200 */
+            --blob-2: #E9D5FF;
+            /* purple-200 */
+        }
+
+        :root[data-theme="dark"] {
+            --bg-main: #050A14;
+            --bg-card: rgba(20, 20, 30, 0.6);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --bg-glass-hover: rgba(255, 255, 255, 0.06);
+            --text-main: #F9FAFB;
+            --text-muted: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #FFFFFF;
+            --primary-foreground: #000000;
+            --primary-glow: rgba(255, 255, 255, 0.15);
+            --accent: #3B82F6;
+            --cursor-color: rgba(255, 255, 255, 0.5);
+            --blob-1: #1E3A8A;
+            /* blue-900 */
+            --blob-2: #581C87;
+            /* purple-900 */
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            cursor: none;
+            /* Custom cursor */
+            overflow-x: hidden;
+        }
+
+        a,
+        button,
+        input,
+        select,
+        textarea {
+            cursor: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Ambient Liquid Blob */
+        .liquid-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: -1;
+            pointer-events: none;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-glow), transparent);
+            transition: 0.5s;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .glass-panel:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--primary-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--primary-glow);
+        }
+
+        .glass-panel:hover::before {
+            left: 100%;
+            transition: 0.7s ease-in-out;
+        }
+
+        /* Transparent Stroke Text */
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .text-transparent-stroke:hover {
+            color: var(--text-main);
+            -webkit-text-stroke: 1px transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Text Reveal Wrapper for GSAP */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            display: inline-block;
+            transform: translateY(110%);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* =========================================
+       CUSTOM CURSOR
+       ========================================= */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--text-main);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 36px;
+            height: 36px;
+            background-color: var(--bg-glass);
+            border-color: var(--text-muted);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Noise Overlay for texture */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* Nav specific */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--text-main);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Utility */
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        [data-i18n-lang="pt"] [data-i18n-en] {
+            display: none;
+        }
+
+        [data-i18n-lang="en"] [data-i18n-pt] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-accent/30 selection:text-text-main relative" data-i18n-lang="en">
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div class="noise-overlay"></div>
+
+    <!-- Liquid Background Layer -->
+    <div class="liquid-blob animate-float"
+        style="width: 50vw; height: 50vw; top: -10vw; left: -10vw; background-color: var(--blob-1);"></div>
+    <div class="liquid-blob animate-float-delayed"
+        style="width: 40vw; height: 40vw; top: 40%; right: -10vw; background-color: var(--blob-2);"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-[60] top-0 transition-all duration-300 py-6 px-6" id="navbar">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass-panel rounded-full px-6 py-3 flex items-center justify-between">
+                <a href="#" class="flex items-center gap-3 group cursor-hover-target">
+                    <div
+                        class="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-blue-400 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <i data-lucide="layers" class="text-white w-4 h-4"></i>
+                    </div>
+                    <span class="font-heading font-bold text-lg tracking-tight text-text-main">VibeSystem</span>
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#hero"
+                        class="nav-link text-sm font-medium text-text-muted hover:text-text-main transition-colors cursor-hover-target">
+                        <span data-i18n-en>Intro</span><span data-i18n-pt>Início</span>
+                    </a>
+                    <a href="#typography"
+                        class="nav-link text-sm font-medium text-text-muted hover:text-text-main transition-colors cursor-hover-target">
+                        <span data-i18n-en>Typography</span><span data-i18n-pt>Tipografia</span>
+                    </a>
+                    <a href="#colors"
+                        class="nav-link text-sm font-medium text-text-muted hover:text-text-main transition-colors cursor-hover-target">
+                        <span data-i18n-en>Colors</span><span data-i18n-pt>Cores</span>
+                    </a>
+                    <a href="#components"
+                        class="nav-link text-sm font-medium text-text-muted hover:text-text-main transition-colors cursor-hover-target">
+                        <span data-i18n-en>Components</span><span data-i18n-pt>Componentes</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="theme-toggle"
+                        class="cursor-hover-target w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors border border-transparent hover:border-border"
+                        aria-label="Toggle Theme">
+                        <i data-lucide="moon" class="w-4 h-4 text-text-main dark:hidden"></i>
+                        <i data-lucide="sun" class="w-4 h-4 text-text-main hidden dark:block"></i>
+                    </button>
+                    <button id="lang-toggle"
+                        class="cursor-hover-target px-3 py-1.5 rounded-full border border-border hover:bg-primary hover:text-bg-main transition-colors text-xs font-bold uppercase tracking-widest text-text-main">
+                        <span data-lang-text>EN</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full flex flex-col items-center">
+
+        <!-- HERO DEMO -->
+        <section id="hero"
+            class="min-h-screen w-full flex flex-col justify-center px-6 pt-24 relative max-w-7xl mx-auto">
+
+            <div class="absolute top-32 left-6 z-20 hidden md:block hero-fade-up">
+                <span
+                    class="glass-panel px-3 py-1 rounded text-[10px] font-mono uppercase tracking-widest text-text-muted border border-border shadow-sm">
+                    [ <span data-i18n-en>00. Initialization</span><span data-i18n-pt>00. Inicialização</span> ]
+                </span>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full mt-12 md:mt-0">
+                <div class="max-w-3xl z-10 w-full">
+                    <div
+                        class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-surface backdrop-blur-md opacity-0 hero-fade-up shadow-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span
+                                class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                        </span>
+                        <span class="text-xs font-mono uppercase tracking-widest text-text-main">
+                            <span data-i18n-en>Design System 2.0</span><span data-i18n-pt>Sistema de Design 2.0</span>
+                        </span>
+                    </div>
+
+                    <h1
+                        class="text-6xl md:text-8xl lg:text-9xl font-heading font-bold tracking-tighter leading-[0.85] mb-8 text-text-main">
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content block">
+                                <span data-i18n-en>Liquid</span><span data-i18n-pt>Arquitetura</span>
+                            </span>
+                        </span>
+                        <br />
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content block text-transparent-stroke">
+                                <span data-i18n-en>Architecture</span><span data-i18n-pt>Líquida</span>
+                            </span>
+                        </span>
+                    </h1>
+
+                    <p
+                        class="text-lg md:text-xl text-text-muted max-w-xl font-light leading-relaxed opacity-0 hero-fade-up">
+                        <span data-i18n-en>Transforming constraints into fluid experiences. A modern design system
+                            crafted for aesthetic excellence and scalable engineering.</span>
+                        <span data-i18n-pt>Transformando limitações em experiências fluidas. Um sistema de design
+                            moderno criado para excelência estética e engenharia escalável.</span>
+                    </p>
+
+                    <div class="mt-12 flex items-center gap-6 opacity-0 hero-fade-up">
+                        <button
+                            class="cursor-hover-target px-8 py-4 bg-primary text-primary-foreground rounded-full text-sm font-semibold uppercase tracking-widest hover:scale-105 hover:shadow-lg hover:shadow-primary-glow transition-all duration-300 flex items-center gap-2">
+                            <span data-i18n-en>Explore</span><span data-i18n-pt>Explorar</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Abstract Decorative Element -->
+                <div
+                    class="hidden lg:block relative w-[400px] h-[400px] opacity-0 hero-fade-up delay-[800ms] cursor-hover-target">
+                    <div class="absolute inset-0 border border-border rounded-full animate-[spin_40s_linear_infinite]">
+                    </div>
+                    <div
+                        class="absolute inset-4 border border-border border-dashed rounded-full animate-[spin_30s_linear_infinite_reverse]">
+                    </div>
+                    <div
+                        class="absolute inset-1/4 glass-panel rounded-full flex items-center justify-center backdrop-blur-xl">
+                        <div class="text-center">
+                            <div class="text-4xl font-heading font-medium text-text-main">100%</div>
+                            <div class="text-[10px] font-mono text-text-muted uppercase tracking-widest mt-1">Responsive
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20 opacity-0 hero-fade-up delay-[1000ms]">
+                <span class="text-[10px] uppercase tracking-[0.2em] text-text-muted">
+                    <span data-i18n-en>Scroll</span><span data-i18n-pt>Rolar</span>
+                </span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-text-muted to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY SECTION -->
+        <section id="typography" class="w-full section-padding border-t border-border">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                            <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">01 //
+                                Typography</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                            <span data-i18n-en>Textual</span><span data-i18n-pt>Hierarquia</span><br />
+                            <span class="text-text-muted"><span data-i18n-en>Hierarchy</span><span
+                                    data-i18n-pt>Textual</span></span>
+                        </h2>
+                    </div>
+                    <p class="text-lg text-text-muted max-w-md font-light">
+                        <span data-i18n-en>Clarity and structure through precise letterforms, optimized for both display
+                            impact and long-form legibility.</span>
+                        <span data-i18n-pt>Clareza e estrutura através de formas precisas, otimizadas para impacto
+                            visual e legibilidade.</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
+                    <div class="lg:col-span-4 flex flex-col gap-6">
+                        <!-- Font Family Cards -->
+                        <div class="glass-panel p-8 rounded-2xl cursor-hover-target">
+                            <div class="flex justify-between items-start mb-12">
+                                <div
+                                    class="text-6xl font-heading font-bold text-text-main leading-none tracking-tighter">
+                                    Aa</div>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-text-muted border border-border px-2 py-1 rounded"><span
+                                        data-i18n-en></span>Heading</span><span data-i18n-pt>Título</span></span>
+                            </div>
+                            <h3 class="font-bold text-xl text-text-main mb-2">DM Sans</h3>
+                            <p class="text-sm text-text-muted leading-relaxed"><span data-i18n-en>Primary Display Font.
+                                    Clean, geometric, perfect for high-impact headlines and large text.</span><span
+                                    data-i18n-pt>Fonte de exibição principal. Limpa, geométrica e perfeita para títulos
+                                    de alto impacto e textos grandes.</span></p>
+                            <div class="mt-6 flex flex-wrap gap-2">
+                                <span
+                                    class="text-xs bg-bg-main px-2 py-1 rounded border border-border font-medium"><span
+                                        data-i18n-en>Regular</span><span data-i18n-pt>Normal</span></span>
+                                <span class="text-xs bg-bg-main px-2 py-1 rounded border border-border font-bold"><span
+                                        data-i18n-en>Bold</span><span data-i18n-pt>Negrito</span></span>
+                            </div>
+                        </div>
+                        <div class="glass-panel p-8 rounded-2xl cursor-hover-target">
+                            <div class="flex justify-between items-start mb-12">
+                                <div class="text-6xl font-sans font-medium text-text-main leading-none">Aa</div>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-text-muted border border-border px-2 py-1 rounded"><span
+                                        data-i18n-en>Body</span><span data-i18n-pt>Corpo</span></span>
+                            </div>
+                            <h3 class="font-bold text-xl text-text-main mb-2">Inter</h3>
+                            <p class="text-sm text-text-muted leading-relaxed"><span data-i18n-en>Secondary Body Font.
+                                    Highly legible at small sizes, neutral tone, meticulously crafted for
+                                    UI.</span><span data-i18n-pt>Fonte de corpo secundária. Altamente legível em
+                                    tamanhos pequenos, tom neutro, meticulosamente desenhada para UI.</span></p>
+                            <div class="mt-6 flex flex-wrap gap-2">
+                                <span class="text-xs bg-bg-main px-2 py-1 rounded border border-border font-light"><span
+                                        data-i18n-en>Light</span><span data-i18n-pt>Fina</span></span>
+                                <span
+                                    class="text-xs bg-bg-main px-2 py-1 rounded border border-border font-medium"><span
+                                        data-i18n-en>Medium</span><span data-i18n-pt>Média</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type Scale -->
+                    <div class="lg:col-span-8 flex flex-col gap-6">
+                        <div
+                            class="glass-panel p-8 rounded-2xl cursor-hover-target h-full flex flex-col justify-between">
+                            <div class="mb-8 border-b border-border pb-4 flex justify-between items-center">
+                                <span class="text-xs font-mono text-text-muted uppercase tracking-widest"><span
+                                        data-i18n-en>Type Scale Spec</span><span data-i18n-pt>Espec. de
+                                        Escala</span></span>
+                                <span class="text-[10px] text-text-muted border border-border px-2 py-1 rounded"><span
+                                        data-i18n-en>Tailwind Config</span><span data-i18n-pt>Config
+                                        Tailwind</span></span>
+                            </div>
+
+                            <div class="space-y-10 flex-1">
+                                <!-- H1 -->
+                                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 group-hover:text-accent transition-colors">
+                                        H1</div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="text-5xl md:text-7xl font-heading font-bold tracking-tighter text-text-main mb-2">
+                                            <span data-i18n-en>Display Large</span><span data-i18n-pt>Exibição
+                                                Grande</span>
+                                        </div>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-7xl / font-bold /
+                                            tracking-tighter</div>
+                                    </div>
+                                </div>
+                                <!-- H2 -->
+                                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 group-hover:text-accent transition-colors">
+                                        H2</div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-2">
+                                            <span data-i18n-en>Section Headline</span><span data-i18n-pt>Título
+                                                Principal de Seção</span>
+                                        </div>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-5xl / font-medium
+                                            / tracking-tight</div>
+                                    </div>
+                                </div>
+                                <!-- H3 -->
+                                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 group-hover:text-accent transition-colors">
+                                        H3</div>
+                                    <div class="flex-1">
+                                        <div class="text-2xl md:text-3xl font-heading font-medium text-text-main mb-2">
+                                            <span data-i18n-en>Card Elements Title</span><span data-i18n-pt>Título de
+                                                Cartão</span>
+                                        </div>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-3xl / font-medium
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Body Large -->
+                                <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 pt-1 group-hover:text-accent transition-colors">
+                                        Body LG</div>
+                                    <div class="flex-1">
+                                        <p
+                                            class="text-lg md:text-xl font-sans font-light text-text-muted leading-relaxed mb-2">
+                                            <span data-i18n-en>Large paragraph text used for introductions, subtitles,
+                                                and prominent text blocks that require high legibility.</span><span
+                                                data-i18n-pt>Texto longo usado para introduções, subtítulos, e blocos de
+                                                textos proeminentes que requerem alta legibilidade.</span>
+                                        </p>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-xl / font-light /
+                                            leading-relaxed</div>
+                                    </div>
+                                </div>
+                                <!-- Body Base -->
+                                <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 pt-1 group-hover:text-accent transition-colors">
+                                        Body</div>
+                                    <div class="flex-1">
+                                        <p class="text-base font-sans text-text-main leading-relaxed mb-2"><span
+                                                data-i18n-en>Standard paragraph text. The quick brown fox jumps over the
+                                                lazy dog. Inter is designed to be highly legible at small
+                                                sizes.</span><span data-i18n-pt>Texto de parágrafo padrão. A rápida
+                                                raposa marrom pula por cima do cão preguiçoso. Inter foi desenhada para
+                                                ter uma boa legibilidade.</span></p>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-base /
+                                            leading-relaxed</div>
+                                    </div>
+                                </div>
+                                <!-- Mono -->
+                                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 group">
+                                    <div
+                                        class="w-24 text-sm text-text-muted font-mono shrink-0 group-hover:text-accent transition-colors">
+                                        Mono</div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="text-sm font-mono text-text-muted uppercase tracking-widest mb-2 border border-border px-2 py-1 rounded w-fit">
+                                            <span data-i18n-en>Utility Labels & Code</span><span data-i18n-pt>Uso
+                                                Utilitário & Código</span>
+                                        </div>
+                                        <div class="text-xs text-text-muted font-mono opacity-60">text-sm / font-mono /
+                                            uppercase / tracking-widest</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- COLORS SECTION -->
+            <section id="colors" class="w-full section-padding border-t border-border">
+                <div class="max-w-7xl mx-auto px-6">
+                    <!-- Color Header -->
+                    <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">02 //
+                                    Colors</span>
+                            </div>
+                            <h2
+                                class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                                <span data-i18n-en>Chromatic</span><span data-i18n-pt>Espectro</span><br />
+                                <span class="text-text-muted"><span data-i18n-en>Spectrum</span><span
+                                        data-i18n-pt>Cromático</span></span>
+                            </h2>
+                        </div>
+                        <p class="text-lg text-text-muted max-w-md font-light">
+                            <span data-i18n-en>A carefully curated palette built around adaptability. Seamlessly
+                                transitions between Light and Dark contexts.</span>
+                            <span data-i18n-pt>Uma paleta cuidadosamente selecionada construída com adaptabilidade.
+                                Transita perfeitamente entre contextos Claro e Escuro.</span>
+                        </p>
+                    </div>
+
+                    <!-- Color Grids -->
+                    <div class="space-y-12">
+                        <!-- Base Colors -->
+                        <div class="reveal">
+                            <h3 class="text-lg font-bold font-heading text-text-main mb-6"><span
+                                    data-i18n-en></span>Base Foundation</span><span data-i18n-pt>Fundação Base</span>
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                <!-- Background Main -->
+                                <div class="group cursor-hover-target">
+                                    <div
+                                        class="h-32 rounded-2xl border border-border bg-bg-main mb-4 flex items-end p-4 shadow-sm group-hover:shadow-md transition-shadow">
+                                    </div>
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="font-bold text-sm"><span data-i18n-en>Background</span><span
+                                                data-i18n-pt>Fundo (BG)</span></span><span
+                                            class="text-[10px] font-mono text-text-muted bg-white/5 px-2 py-0.5 rounded border border-border">--bg-main</span>
+                                    </div>
+                                    <div class="text-xs text-text-muted"><span data-i18n-en>Base layer for
+                                            pages.</span><span data-i18n-pt>Camada base principal.</span></div>
+                                </div>
+                                <!-- Background Card / Surface -->
+                                <div class="group cursor-hover-target">
+                                    <div
+                                        class="h-32 rounded-2xl border border-border bg-surface mb-4 flex items-end p-4 shadow-sm group-hover:shadow-md transition-shadow">
+                                    </div>
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="font-bold text-sm"><span data-i18n-en>Surface</span><span
+                                                data-i18n-pt>Superfície</span></span><span
+                                            class="text-[10px] font-mono text-text-muted bg-white/5 px-2 py-0.5 rounded border border-border">--bg-card</span>
+                                    </div>
+                                    <div class="text-xs text-text-muted"><span data-i18n-en>Elevated solid
+                                            panels.</span><span data-i18n-pt>Painéis sólidos e elevados.</span></div>
+                                </div>
+                                <!-- Background Glass -->
+                                <div class="group cursor-hover-target">
+                                    <div
+                                        class="h-32 rounded-2xl border border-border bg-glass backdrop-blur-md mb-4 flex items-end p-4 shadow-sm group-hover:shadow-md transition-shadow relative overflow-hidden">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 z-[-1]">
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="font-bold text-sm"><span data-i18n-en>Glass</span><span
+                                                data-i18n-pt>Vidro (Glass)</span></span><span
+                                            class="text-[10px] font-mono text-text-muted bg-white/5 px-2 py-0.5 rounded border border-border">--bg-glass</span>
+                                    </div>
+                                    <div class="text-xs text-text-muted"><span data-i18n-en>Translucent UI
+                                            panels.</span><span data-i18n-pt>Painéis de UI translúcida.</span></div>
+                                </div>
+                                <!-- Border -->
+                                <div class="group cursor-hover-target">
+                                    <div
+                                        class="h-32 rounded-2xl border-2 border-border mb-4 flex items-center justify-center p-4 transition-all">
+                                        <div class="w-full h-[1px] bg-border transition-all"></div>
+                                    </div>
+                                    <div class="flex justify-between items-center mb-1"><span
+                                            class="font-bold text-sm"><span data-i18n-en>Border</span><span
+                                                data-i18n-pt>Borda</span></span><span
+                                            class="text-[10px] font-mono text-text-muted bg-white/5 px-2 py-0.5 rounded border border-border">--border-color</span>
+                                    </div>
+                                    <div class="text-xs text-text-muted"><span data-i18n-en>Dividers and
+                                            outlines.</span><span data-i18n-pt>Divisões e contornos.</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Typography Colors -->
+                        <div class="reveal">
+                            <h3 class="text-lg font-bold font-heading text-text-main mb-6"><span
+                                    data-i18n-en>Typography</span><span data-i18n-pt>Tipografia</span></h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div
+                                    class="glass-panel p-6 rounded-2xl flex items-center justify-between cursor-hover-target">
+                                    <div>
+                                        <div class="text-2xl font-bold text-text-main mb-1"><span data-i18n-en>Text
+                                                Main</span><span data-i18n-pt>Texto Primário</span></div>
+                                        <div class="text-xs text-text-muted"><span data-i18n-en>High contrast baseline
+                                                text</span><span data-i18n-pt>Texto base com alto contraste</span></div>
+                                    </div>
+                                    <span
+                                        class="text-xs font-mono text-text-muted bg-white/5 px-2 py-1 rounded border border-border">--text-main</span>
+                                </div>
+                                <div
+                                    class="glass-panel p-6 rounded-2xl flex items-center justify-between cursor-hover-target">
+                                    <div>
+                                        <div class="text-2xl font-bold text-text-muted mb-1"><span data-i18n-en>Text
+                                                Muted</span><span data-i18n-pt>Texto Oculto</span></div>
+                                        <div class="text-xs text-text-muted"><span data-i18n-en>Secondary, low contrast
+                                                text</span><span data-i18n-pt>Texto secundário de baixo contraste</span>
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="text-xs font-mono text-text-muted bg-white/5 px-2 py-1 rounded border border-border">--text-muted</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPONENTS SECTION -->
+            <section id="components" class="w-full section-padding border-t border-border">
+                <div class="max-w-7xl mx-auto px-6">
+                    <!-- Header -->
+                    <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">03 //
+                                    Components</span>
+                            </div>
+                            <h2
+                                class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                                <span data-i18n-en>Interactive</span><span data-i18n-pt>Elementos</span><br />
+                                <span class="text-text-muted"><span data-i18n-en>Elements</span><span
+                                        data-i18n-pt>Interativos</span></span>
+                            </h2>
+                        </div>
+                        <p class="text-lg text-text-muted max-w-md font-light">
+                            <span data-i18n-en>Modular blocks built for flexibility. Hover logic and native animations
+                                are baked in for immediate feedback.</span>
+                            <span data-i18n-pt>Blocos modulares contruídos para flexibilidade. Lógica interactiva para
+                                feedback imediato.</span>
+                        </p>
+                    </div>
+
+                    <!-- Buttons Area -->
+                    <div class="mb-16 reveal">
+                        <h3 class="text-lg font-bold font-heading text-text-main mb-6"><span data-i18n-en></span>Buttons
+                            & Actions</span><span data-i18n-pt>Botões & Ações</span></h3>
+                        <div class="glass-panel p-8 md:p-12 rounded-3xl flex flex-wrap items-center gap-12">
+                            <!-- Primary -->
+                            <div class="flex flex-col gap-3 items-center">
+                                <button
+                                    class="cursor-hover-target px-6 py-3 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:scale-105 hover:shadow-lg hover:shadow-primary-glow transition-all duration-300">
+                                    <span data-i18n-en>Primary Action</span><span data-i18n-pt>Ação Primária</span>
+                                </button>
+                                <span class="text-[10px] text-text-muted font-mono uppercase tracking-widest"><span
+                                        data-i18n-en>Main CTA</span><span data-i18n-pt>CTA Principal</span></span>
+                            </div>
+                            <!-- Outline -->
+                            <div class="flex flex-col gap-3 items-center">
+                                <button
+                                    class="cursor-hover-target px-6 py-3 bg-transparent border border-border text-text-main rounded-full text-sm font-semibold hover:border-primary hover:bg-primary/5 transition-all duration-300">
+                                    <span data-i18n-en>Secondary Outline</span><span data-i18n-pt>Secundário</span>
+                                </button>
+                                <span class="text-[10px] text-text-muted font-mono uppercase tracking-widest"><span
+                                        data-i18n-en>Secondary</span><span data-i18n-pt>Secundário</span></span>
+                            </div>
+                            <!-- Ghost -->
+                            <div class="flex flex-col gap-3 items-center">
+                                <button
+                                    class="cursor-hover-target px-6 py-3 bg-transparent text-text-muted rounded-full text-sm font-medium hover:text-text-main hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 flex items-center gap-2">
+                                    <i data-lucide="download" class="w-4 h-4"></i> <span data-i18n-en>Ghost
+                                        Link</span><span data-i18n-pt>Link Fantasma</span>
+                                </button>
+                                <span class="text-[10px] text-text-muted font-mono uppercase tracking-widest"><span
+                                        data-i18n-en>Tertiary</span><span data-i18n-pt>Terciário</span></span>
+                            </div>
+                            <!-- Icon Only -->
+                            <div class="flex flex-col gap-3 items-center">
+                                <button
+                                    class="cursor-hover-target w-12 h-12 bg-surface border border-border text-text-main rounded-full flex items-center justify-center hover:scale-110 hover:border-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 shadow-sm relative overflow-hidden group">
+                                    <div
+                                        class="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out">
+                                    </div>
+                                    <i data-lucide="arrow-up-right"
+                                        class="w-5 h-5 relative z-10 transition-colors duration-300 group-hover:text-primary-foreground"></i>
+                                </button>
+                                <span class="text-[10px] text-text-muted font-mono uppercase tracking-widest"><span
+                                        data-i18n-en>Icon Hover</span><span data-i18n-pt>Hover de Ícone</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Area -->
+                    <div class="mb-16 reveal">
+                        <h3 class="text-lg font-bold font-heading text-text-main mb-6"><span data-i18n-en>Cards &
+                                Panels</span><span data-i18n-pt>Cartões & Painéis</span></h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Default Glass Card -->
+                            <div class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full">
+                                <div
+                                    class="w-12 h-12 bg-primary/5 border border-border rounded-2xl flex items-center justify-center mb-6 text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-bg-main transition-all duration-300">
+                                    <i data-lucide="shield" class="w-5 h-5"></i>
+                                </div>
+                                <h4 class="text-2xl font-heading font-bold mb-3 text-text-main"><span data-i18n-en>Glass
+                                        Panel Card</span><span data-i18n-pt>Cartão de Painel de Vidro</span></h4>
+                                <p class="text-sm text-text-muted leading-relaxed mb-6"><span data-i18n-en>Basic
+                                        structural element showcasing blur backgrounds, subtle borders, and smooth hover
+                                        elevation.</span><span data-i18n-pt>Elemento estrutural básico mostrando fundo
+                                        fosco, bordas sutis e elevação suave no hover.</span></p>
+                                <div
+                                    class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-text-main group-hover:gap-4 transition-all duration-300">
+                                    <span data-i18n-en>Learn More</span><span data-i18n-pt>Saiba Mais</span> <i
+                                        data-lucide="arrow-right" class="w-3 h-3"></i>
+                                </div>
+                            </div>
+
+                            <!-- Technical/Metric Card -->
+                            <div
+                                class="glass-panel p-8 rounded-3xl cursor-hover-target group h-full relative overflow-hidden">
+                                <!-- Corner Accent -->
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-40 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500">
+                                    <i data-lucide="activity" class="w-6 h-6 text-accent"></i>
+                                </div>
+                                <h5 class="text-[10px] font-mono uppercase tracking-widest text-text-muted mb-6"><span
+                                        data-i18n-en>Metric Overview</span><span data-i18n-pt>Visão Geral de
+                                        Métrica</span></h5>
+
+                                <div class="flex items-end gap-2 mb-4">
+                                    <div class="text-6xl font-heading font-bold tracking-tighter text-text-main">99.9
+                                    </div>
+                                    <div class="text-2xl font-heading font-bold text-accent mb-2">%</div>
+                                </div>
+                                <p class="text-sm text-text-muted mb-8"><span data-i18n-en>System uptime across global
+                                        distributed architecture clusters over the 30 day period.</span><span
+                                        data-i18n-pt>Tempo de atividade do sistema nos conjuntos distribuídos
+                                        globalmente nos últimos 30 dias.</span></p>
+
+                                <div class="w-full bg-border rounded-full h-1.5 relative overflow-hidden">
+                                    <div
+                                        class="absolute top-0 left-0 h-full bg-accent rounded-full w-0 group-hover:w-[99%] transition-all duration-1000 ease-out">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Elements -->
+                    <div class="reveal">
+                        <h3 class="text-lg font-bold font-heading text-text-main mb-6"><span data-i18n-en>Form
+                                Interface</span><span data-i18n-pt>Interface de Formulário</span></h3>
+                        <div class="glass-panel p-8 md:p-12 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <!-- Inputs -->
+                            <div class="space-y-8 flex flex-col justify-center">
+                                <!-- Standard Input -->
+                                <div class="relative w-full">
+                                    <label
+                                        class="text-[10px] font-mono uppercase tracking-widest text-text-muted absolute -top-2.5 left-3 bg-bg-main px-1 transition-colors"><span
+                                            data-i18n-en>Email Address</span><span data-i18n-pt>Endereço de
+                                            E-mail</span></label>
+                                    <input type="email" placeholder="design@vibe.com"
+                                        class="w-full bg-transparent border border-border rounded-xl px-4 py-4 text-sm text-text-main focus:outline-none focus:border-primary transition-colors cursor-hover-target placeholder:text-text-muted/50" />
+                                </div>
+                                <!-- Error Input -->
+                                <div class="relative w-full">
+                                    <label
+                                        class="text-[10px] font-mono uppercase tracking-widest text-red-500 absolute -top-2.5 left-3 bg-bg-main px-1"><span
+                                            data-i18n-en>Password</span><span data-i18n-pt>Senha</span></label>
+                                    <input type="password" value="********"
+                                        class="w-full bg-transparent border border-red-500/50 rounded-xl px-4 py-4 text-sm text-text-main focus:outline-none focus:border-red-500 transition-colors cursor-hover-target" />
+                                    <span class="absolute right-4 top-4 text-red-500"><i data-lucide="alert-circle"
+                                            class="w-4 h-4"></i></span>
+                                </div>
+                            </div>
+
+                            <!-- Checkboxes & Toggles -->
+                            <div
+                                class="space-y-6 flex flex-col justify-center border-l-0 md:border-l md:border-border pl-0 md:pl-12">
+                                <label class="flex items-center gap-4 cursor-hover-target group cursor-pointer w-fit">
+                                    <div class="relative flex items-center justify-center">
+                                        <input type="checkbox" class="peer sr-only" />
+                                        <div
+                                            class="w-5 h-5 border border-border rounded bg-transparent peer-checked:bg-primary peer-checked:border-primary transition-colors">
+                                        </div>
+                                        <i data-lucide="check"
+                                            class="w-3 h-3 text-bg-main absolute opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                                    </div>
+                                    <span
+                                        class="text-sm font-medium text-text-main group-hover:text-primary transition-colors"><span
+                                            data-i18n-en>Enable Analytics</span><span data-i18n-pt>Habilitar
+                                            Métricas</span></span>
+                                </label>
+
+                                <label
+                                    class="flex items-center gap-4 cursor-hover-target group cursor-pointer w-fit mt-4">
+                                    <div class="relative">
+                                        <input type="checkbox" class="peer sr-only" checked />
+                                        <div
+                                            class="w-10 h-6 bg-border rounded-full peer-checked:bg-primary transition-colors">
+                                        </div>
+                                        <div
+                                            class="absolute left-1 top-1 bg-bg-main w-4 h-4 rounded-full transition-transform peer-checked:translate-x-4 shadow">
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="text-sm font-medium text-text-main group-hover:text-primary transition-colors"><span
+                                            data-i18n-en>Toggle Default</span><span data-i18n-pt>Ativar
+                                            Padrão</span></span>
+                                </label>
+
+                                <div class="flex gap-2 mt-6">
+                                    <span
+                                        class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-border rounded text-text-muted bg-surface cursor-hover-target hover:bg-border transition-colors"><span
+                                            data-i18n-en>Badge</span><span data-i18n-pt>Selo</span></span>
+                                    <span
+                                        class="px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-accent/30 rounded text-accent bg-accent/10 cursor-hover-target hover:bg-accent/20 transition-colors"><span
+                                            data-i18n-en>Active</span><span data-i18n-pt>Ativo</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ICONS SECTION -->
+            <section id="icons" class="w-full section-padding border-t border-border">
+                <div class="max-w-7xl mx-auto px-6">
+                    <!-- Header -->
+                    <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">04 //
+                                    Icons</span>
+                            </div>
+                            <h2
+                                class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                                <span data-i18n-en>Visual</span><span data-i18n-pt>Metáforas</span><br />
+                                <span class="text-text-muted"><span data-i18n-en>Metaphors</span><span
+                                        data-i18n-pt>Visuais</span></span>
+                            </h2>
+                        </div>
+                        <p class="text-lg text-text-muted max-w-md font-light">
+                            <span data-i18n-en>Clean, line-based iconography using Lucide and Iconify. Engineered for
+                                clarity at 24px base.</span>
+                            <span data-i18n-pt>Iconografia limpa baseada em linhas usando Lucide e Iconify. Projetada
+                                para clareza na base de 24px.</span>
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-8 md:p-12 rounded-3xl reveal">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
+                            <!-- Icon Items -->
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="home"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span
+                                        data-i18n-en></span>home</span><span data-i18n-pt>início</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="settings"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span
+                                        data-i18n-en>settings</span><span data-i18n-pt>configs</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="user"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span data-i18n-en>user</span><span
+                                        data-i18n-pt>usuário</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="mail"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span data-i18n-en>mail</span><span
+                                        data-i18n-pt>e-mail</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="bell"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span data-i18n-en>bell</span><span
+                                        data-i18n-pt>notificações</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="search"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span
+                                        data-i18n-en>search</span><span data-i18n-pt>busca</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="heart"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span data-i18n-en>heart</span><span
+                                        data-i18n-pt>favoritar</span></span>
+                            </div>
+                            <div class="flex flex-col items-center gap-3 group cursor-hover-target">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-surface border border-border flex items-center justify-center text-text-main group-hover:scale-110 group-hover:text-primary transition-all duration-300">
+                                    <i data-lucide="share-2"></i>
+                                </div>
+                                <span class="text-[10px] font-mono text-text-muted"><span data-i18n-en>share</span><span
+                                        data-i18n-pt>compartilhar</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ANIMATIONS SECTION -->
+            <section id="animations" class="w-full section-padding border-t border-border">
+                <div class="max-w-7xl mx-auto px-6">
+                    <!-- Header -->
+                    <div class="mb-16 reveal flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-1.5 h-1.5 rounded-full bg-text-muted"></div>
+                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">05 //
+                                    Motion</span>
+                            </div>
+                            <h2
+                                class="text-4xl md:text-5xl font-heading font-medium tracking-tight text-text-main mb-4">
+                                <span data-i18n-en>Kinetic</span><span data-i18n-pt>Experiência</span><br />
+                                <span class="text-text-muted"><span data-i18n-en>Experience</span><span
+                                        data-i18n-pt>Cinética</span></span>
+                            </h2>
+                        </div>
+                        <p class="text-lg text-text-muted max-w-md font-light">
+                            <span data-i18n-en>Scroll triggers, staggered reveals, and CSS-driven ambient motions create
+                                a living interface.</span>
+                            <span data-i18n-pt>Gatilhos de rolagem, revelações em cascata e movimentos sustentados por
+                                CSS criam uma interface viva.</span>
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                        <!-- Float Animation -->
+                        <div class="glass-panel p-8 rounded-3xl overflow-hidden relative min-h-[250px] flex items-end">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div
+                                    class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full blur-xl opacity-50 animate-float">
+                                </div>
+                                <div
+                                    class="w-16 h-16 bg-surface border border-border rounded-xl absolute animate-[float_4s_ease-in-out_infinite_alternate] shadow-lg">
+                                </div>
+                            </div>
+                            <div class="relative z-10">
+                                <h4 class="font-bold text-text-main"><span data-i18n-en>Ambient Float</span><span
+                                        data-i18n-pt>Flutuação Ambiente</span></h4>
+                                <p class="text-xs text-text-muted mt-1"><span data-i18n-en>Continuous organic
+                                        movement.</span><span data-i18n-pt>Movimento contínuo e orgânico.</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Pulse Glow -->
+                        <div class="glass-panel p-8 rounded-3xl overflow-hidden relative min-h-[250px] flex items-end">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div
+                                    class="w-16 h-16 bg-accent rounded-full animate-pulse-glow flex items-center justify-center text-white">
+                                    <i data-lucide="wifi"></i>
+                                </div>
+                            </div>
+                            <div class="relative z-10">
+                                <h4 class="font-bold text-text-main"><span data-i18n-en>Pulse Glow</span><span
+                                        data-i18n-pt>Brilho Pulsante</span></h4>
+                                <p class="text-xs text-text-muted mt-1"><span data-i18n-en>Draws attention to status or
+                                        actions.</span><span data-i18n-pt>Chama a atenção para um status ou ação.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Ping Slow -->
+                        <div class="glass-panel p-8 rounded-3xl overflow-hidden relative min-h-[250px] flex items-end">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="relative flex h-8 w-8">
+                                    <span
+                                        class="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                                    <span
+                                        class="relative inline-flex rounded-full h-8 w-8 bg-accent flex items-center justify-center text-white"><i
+                                            data-lucide="radio" class="w-4 h-4"></i></span>
+                                </div>
+                            </div>
+                            <div class="relative z-10">
+                                <h4 class="font-bold text-text-main"><span data-i18n-en>Status Ping</span><span
+                                        data-i18n-pt>Ping de Status</span></h4>
+                                <p class="text-xs text-text-muted mt-1"><span data-i18n-en>Live indicator
+                                        marker.</span><span data-i18n-pt>Marcador indicador em tempo real.</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER / END -->
+            <footer class="w-full border-t border-border py-12 mt-20 z-20 relative bg-bg-main">
+                <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="layers" class="text-text-muted w-4 h-4"></i>
+                        <span class="text-xs font-mono uppercase tracking-widest text-text-muted">VibeSystem 2.0</span>
+                    </div>
+                    <div class="text-xs text-text-muted">
+                        <span data-i18n-en>© 2026 Vibe Technology Portfolio. All rights reserved.</span><span
+                            data-i18n-pt>© 2026 Vibe Technology Portfolio. Todos os direitos reservados.</span>
+                    </div>
+                </div>
+            </footer>
+
+    </main>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // 1. Language Toggle Logic first so DOM is correct before GSAP captures text
+        const langBtn = document.getElementById('lang-toggle');
+        const langTextSpan = langBtn.querySelector('[data-lang-text]');
+        const bodyTag = document.body;
+
+        // Check localStorage for language
+        let currentLang = localStorage.getItem('site_lang') || 'en';
+
+        function applyLanguage(lang) {
+            bodyTag.setAttribute('data-i18n-lang', lang);
+            langTextSpan.textContent = lang === 'en' ? 'PT' : 'EN';
+        }
+
+        applyLanguage(currentLang);
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+            localStorage.setItem('site_lang', currentLang);
+            applyLanguage(currentLang);
+        });
+
+        // 2. Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        let savedTheme = localStorage.getItem('site_theme');
+        if (!savedTheme) {
+            savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        html.setAttribute('data-theme', savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('site_theme', newTheme);
+        });
+
+        // 3. Custom Cursor Logic - GSAP-powered smooth tracking
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        // Place cursors at center to avoid initial jump from corner
+        if (dot) { dot.style.left = window.innerWidth / 2 + 'px'; dot.style.top = window.innerHeight / 2 + 'px'; }
+        if (outline) { outline.style.left = window.innerWidth / 2 + 'px'; outline.style.top = window.innerHeight / 2 + 'px'; }
+
+        if (typeof gsap !== 'undefined' && dot && outline) {
+            // Outline uses smooth tracking
+            const xRing = gsap.quickTo(outline, 'left', { duration: 0.55, ease: 'power2.out' });
+            const yRing = gsap.quickTo(outline, 'top', { duration: 0.55, ease: 'power2.out' });
+
+            window.addEventListener('mousemove', e => {
+                // Dot uses instant vanilla JS tracking for 0 delay
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+
+                // Ring uses GSAP
+                xRing(e.clientX);
+                yRing(e.clientY);
+            });
+
+            // Hide cursors when mouse leaves window
+            document.addEventListener('mouseleave', () => {
+                gsap.to([dot, outline], { opacity: 0, duration: 0.3 });
+            });
+            document.addEventListener('mouseenter', () => {
+                gsap.to([dot, outline], { opacity: 1, duration: 0.3 });
+            });
+        }
+
+        // Cursor hover states (decorative elements)
+        function bindCursorHover() {
+            document.querySelectorAll('a, button, input, textarea, select, [data-lucide], iconify-icon, .cursor-hover-target, .glass-panel').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
+        bindCursorHover();
+
+        // 4. GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Init hidden state
+        gsap.set('.text-reveal-content', { y: '110%', opacity: 0 });
+        gsap.set('.hero-fade-up', { y: 30, opacity: 0 });
+
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            // Text reveal
+            tl.to('.text-reveal-content', {
+                y: '0%',
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: 'power4.out',
+                delay: 0.1
+            })
+                // Fade up secondary elements
+                .to('.hero-fade-up', {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: 'power3.out'
+                }, "-=0.8");
+        });
+
+        // Scroll reveals
+        gsap.utils.toArray('.reveal').forEach(element => {
+            gsap.fromTo(element,
+                { y: 50, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+
+    </script>
+</body>
+
+</html>

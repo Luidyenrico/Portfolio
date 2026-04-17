@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System - Tech Portfolio</title>
+
+    <!-- Scripts & Fonts Integration -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300..900;1,300..900&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Tailwind Config for Utility usage in raw CSS if needed (assuming base CSS handles most, but providing classes from prompt context) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* === GLOBAL VARIABLES === */
+        :root {
+            /* Light Theme (Default, based on Lumina) */
+            --bg-primary: #e8e6df;
+            --bg-secondary: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.4);
+            --text-primary: #1a1a1a;
+            --text-secondary: rgba(26, 26, 26, 0.6);
+            --border-color: rgba(26, 26, 26, 0.15);
+            --accent-glow: rgba(0, 123, 255, 0.1);
+            --accent-color: #1a1a1a;
+            --glass-border: rgba(255, 255, 255, 0.3);
+
+            /* Typography */
+            --font-heading: 'DM Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme (Based on Glass Effect) */
+            --bg-primary: #050a14;
+            --bg-secondary: #0a1122;
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --accent-glow: rgba(0, 123, 255, 0.2);
+            --accent-color: #007bff;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* === BASE STYLES === */
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-heading {
+            font-family: var(--font-heading);
+            font-weight: 300;
+        }
+
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        /* === CUSTOM CURSOR === */
+        body {
+            cursor: none;
+            /* Hide default cursor */
+        }
+
+        /* Ensure inputs keep text cursor if needed, or hide based on preference */
+        input,
+        textarea,
+        button,
+        a,
+        select {
+            cursor: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        .cursor-outline {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+        }
+
+        /* Hover States for Cursor */
+        .cursor-hover .cursor-dot {
+            background-color: transparent;
+        }
+
+        .cursor-hover .cursor-outline {
+            width: 35px;
+            height: 35px;
+            background-color: var(--bg-glass);
+            border-color: var(--text-primary);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+
+        /* === GLASS & EFFECTS === */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 1rem;
+        }
+
+        [data-theme="dark"] .glass-panel {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            border-color: var(--text-secondary);
+        }
+
+        /* Ambient Blobs (Glass Effect Inspiration) */
+        .liquid-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 0;
+            animation: float 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        [data-theme="dark"] .liquid-blob {
+            opacity: 0.15;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(30px, 50px) scale(1.1);
+            }
+        }
+
+        /* === GRID BACKGROUND (Lumina Inspiration) === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bg-grid-lines {
+            width: 100%;
+            max-width: 1440px;
+            height: 100%;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 3rem;
+        }
+
+        .bg-grid-line {
+            width: 1px;
+            height: 100%;
+            background-color: var(--border-color);
+        }
+
+        /* === TEXT REVEAL ANIMATION (Cloned from Digital Architect) === */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        /* === ANIMATIONS === */
+        .reveal-word {
+            display: inline-block;
+            transform: translateY(110%);
+        }
+
+        .overflow-hidden-word {
+            display: inline-flex;
+            overflow: hidden;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Transparent Lettering */
+        .text-transparent-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .text-transparent-stroke:hover {
+            color: var(--text-primary);
+            -webkit-text-stroke: 0px;
+            text-shadow: 0 0 20px var(--bg-primary);
+        }
+
+        [data-theme="dark"] .text-transparent-stroke {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="dark"] .text-transparent-stroke:hover {
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Marquee */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .marquee-content {
+            display: flex;
+            animation: scroll 30s linear infinite;
+        }
+
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Navbar & Toggles */
+        .controls-nav {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        /* Prevent navbar from jumping off center on hover */
+        .controls-nav.glass-panel:hover {
+            transform: translateX(-50%);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            border-color: var(--glass-border);
+        }
+
+        [data-theme="dark"] .controls-nav.glass-panel:hover {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* Layout */
+        .container-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .section-padding {
+            padding: 6rem 3rem;
+        }
+
+        .border-b-grid {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .border-t-grid {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .border-r-grid {
+            border-right: 1px solid var(--border-color);
+        }
+
+        /* Component Details */
+        .ds-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] pre {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Ambient Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="liquid-blob"
+            style="background-color: var(--accent-color); width: 500px; height: 500px; top: -100px; left: -100px; animation-duration: 15s;">
+        </div>
+        <div class="liquid-blob"
+            style="background-color: #7c3aed; width: 400px; height: 400px; top: 40%; right: -100px; animation-duration: 20s; animation-delay: -5s;">
+        </div>
+    </div>
+
+    <!-- Background Grid -->
+    <div class="bg-grid">
+        <div class="bg-grid-lines">
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden md:block"></div>
+            <div class="bg-grid-line hidden lg:block"></div>
+            <div class="bg-grid-line"></div>
+        </div>
+    </div>
+
+    <!-- Theme & Language Controls -->
+    <nav class="glass-panel controls-nav">
+        <!-- Theme Toggle -->
+        <button id="themeToggle" class="toggle-btn" aria-label="Toggle Theme">
+            <i data-lucide="moon" class="w-4 h-4 dark-icon hidden"></i>
+            <i data-lucide="sun" class="w-4 h-4 light-icon"></i>
+            <span data-i18n="theme_label">Theme</span>
+        </button>
+
+        <div class="w-px h-4 bg-[var(--border-color)]"></div>
+
+        <!-- Language Toggle -->
+        <button id="langToggle" class="toggle-btn" aria-label="Toggle Language">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span id="langLabel">EN</span>
+        </button>
+    </nav>
+
+    <main class="container-content">
+
+        <!-- 1. HERO DEMO -->
+        <section id="hero-demo"
+            class="min-h-screen flex flex-col justify-center section-padding border-b-grid relative overflow-hidden">
+            <!-- Hero specific blur glows (ambient background) -->
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[1000px] md:h-[1000px] bg-[var(--text-primary)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none hero-glow z-0">
+            </div>
+
+            <div class="flex justify-between items-center ds-label mb-12 relative z-10">
+                <span>(*01)</span>
+                <span data-i18n="hero_eyebrow">Visual Manifesto</span>
+                <span>(2024)</span>
+            </div>
+
+            <h1 id="hero-title"
+                class="text-[clamp(3.5rem,8vw,11rem)] leading-[0.85] tracking-tighter uppercase flex flex-wrap items-center gap-x-4 md:gap-x-8 gap-y-2 relative z-10">
+                <span class="text-reveal-wrapper"><span
+                        class="text-reveal-content delay-200 font-heading text-transparent-stroke"
+                        style="display: block;">Design</span></span>
+                <span class="text-reveal-wrapper">
+                    <iconify-icon
+                        class="text-reveal-content delay-200 text-[clamp(3rem,6vw,8rem)] text-[var(--accent-color)]"
+                        icon="solar:asterisk-linear" style="display: block;"></iconify-icon>
+                </span>
+                <span class="text-reveal-wrapper"><span class="text-reveal-content delay-300 font-heading"
+                        style="display: block;">System</span></span>
+            </h1>
+
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
+                <div class="md:col-span-4 ds-label pt-2 border-t-grid">
+                    <span data-i18n="hero_status">[ Systems Online ]</span>
+                </div>
+                <div
+                    class="md:col-span-8 text-base md:text-lg leading-relaxed max-w-3xl font-body text-[var(--text-secondary)]">
+                    <span data-i18n="hero_desc">This document serves as the canonical pattern library. It catalogs the
+                        typography, colors, layout patterns, and interaction models that constitute the foundational
+                        vocabulary of our digital experiences, blending ultra-clean geometries with fluid glass
+                        interfaces.</span>
+                </div>
+            </div>
+
+            <!-- Adorno em movimento (Blur sphere animada) -->
+            <div
+                class="absolute bottom-10 right-[10%] w-32 h-32 bg-[var(--accent-color)] opacity-20 rounded-full blur-[60px] pointer-events-none animate-[float_6s_ease-in-out_infinite] z-0 delay-1000">
+            </div>
+        </section>
+
+        <!-- 2. TYPOGRAPHY -->
+        <section id="typography" class="min-h-screen flex flex-col justify-center section-padding border-b-grid">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*02)</span>
+                <span data-i18n="type_eyebrow">Typography</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Font Families -->
+                <div>
+                    <h3 class="text-2xl font-heading mb-8" data-i18n="type_families">Font Families</h3>
+
+                    <div class="glass-panel p-8 mb-6 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-heading mb-1 text-[var(--text-primary)]">DM Sans</h4>
+                                <span class="text-sm text-[var(--text-secondary)]">Primary / Headings</span>
+                            </div>
+                            <span
+                                class="text-4xl font-heading opacity-50 group-hover:opacity-100 transition-opacity">Aa</span>
+                        </div>
+                        <p class="font-heading text-lg mb-4 opacity-80 break-all">
+                            ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+                        <div class="flex gap-4 text-sm text-[var(--text-secondary)]">
+                            <span>Light 300</span>
+                            <span>Regular 400</span>
+                            <span class="font-bold">Bold 700</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-8 mb-6 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-body mb-1">Inter</h4>
+                                <span class="text-sm text-[var(--text-secondary)]">Secondary / Body Text</span>
+                            </div>
+                            <span
+                                class="text-4xl font-body opacity-50 group-hover:opacity-100 transition-opacity">Aa</span>
+                        </div>
+                        <p class="font-body text-lg mb-4 opacity-80 break-all">
+                            ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+                        <div class="flex gap-4 text-sm text-[var(--text-secondary)]">
+                            <span>Regular 400</span>
+                            <span class="font-medium">Medium 500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Type Scale -->
+                <div>
+                    <h3 class="text-2xl font-heading mb-8" data-i18n="type_scale">Global Type Scale</h3>
+                    <div class="flex flex-col gap-8">
+                        <div class="border-b border-[var(--border-color)] pb-6 hover:pl-4 transition-all duration-300">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">.text-7xl / H1</span>
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">72px / DM Sans</span>
+                            </div>
+                            <h1 class="text-5xl md:text-7xl font-heading leading-tight" data-i18n="type_sample_h1">Hero
+                                Display Title</h1>
+                        </div>
+                        <div class="border-b border-[var(--border-color)] pb-6 hover:pl-4 transition-all duration-300">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">.text-5xl / H2</span>
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">48px / DM Sans</span>
+                            </div>
+                            <h2 class="text-4xl md:text-5xl font-heading leading-tight" data-i18n="type_sample_h2">
+                                Section Heading</h2>
+                        </div>
+                        <div class="border-b border-[var(--border-color)] pb-6 hover:pl-4 transition-all duration-300">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">.text-2xl / H3</span>
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">24px / DM Sans</span>
+                            </div>
+                            <h3 class="text-2xl font-heading" data-i18n="type_sample_h3">Card Title Component</h3>
+                        </div>
+                        <div class="border-b border-[var(--border-color)] pb-6 hover:pl-4 transition-all duration-300">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">.text-base / p</span>
+                                <span class="text-sm text-[var(--text-secondary)] font-mono">16px / Inter</span>
+                            </div>
+                            <p class="text-base font-body text-[var(--text-secondary)]" data-i18n="type_sample_p">The
+                                quick brown fox jumps over the lazy dog. Fluid typography scales gracefully across
+                                viewports.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. COLOR SYSTEM -->
+        <section id="colors" class="flex flex-col justify-center section-padding border-b-grid">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*03)</span>
+                <span data-i18n="color_eyebrow">Color System</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Color Cards -->
+                <div class="glass-panel p-4 group cursor-help">
+                    <div
+                        class="h-32 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] mb-4 transition-transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-heading text-lg">Background Primary</h4>
+                        <span class="text-xs text-[var(--text-secondary)] font-mono data-theme-val"
+                            title="Hover to see value">var(--bg-primary)</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 group cursor-help">
+                    <div
+                        class="h-32 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)] mb-4 transition-transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-heading text-lg">Background Surface</h4>
+                        <span
+                            class="text-xs text-[var(--text-secondary)] font-mono data-theme-val">var(--bg-secondary)</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 group cursor-help">
+                    <div
+                        class="h-32 rounded-lg bg-[var(--text-primary)] border border-[var(--border-color)] mb-4 transition-transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-heading text-lg">Text Primary</h4>
+                        <span
+                            class="text-xs text-[var(--text-primary)] mix-blend-difference font-mono data-theme-val">var(--text-primary)</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 group cursor-help">
+                    <div
+                        class="h-32 rounded-lg bg-[var(--accent-color)] border border-[var(--border-color)] mb-4 transition-transform group-hover:scale-105 duration-500">
+                    </div>
+                    <div class="flex flex-col">
+                        <h4 class="font-heading text-lg">Accent Default</h4>
+                        <span
+                            class="text-xs text-[var(--text-secondary)] font-mono data-theme-val">var(--accent-color)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 p-6 glass-panel border border-[var(--border-color)] bg-[var(--bg-glass)] rounded-xl">
+                <p class="text-sm font-mono text-[var(--text-secondary)] text-center">Color values update automatically
+                    when toggling between Light and Dark themes via CSS Custom Properties. Hover over variable names to
+                    see computed color values (HEX/RGB).</p>
+            </div>
+        </section>
+
+        <!-- 4. UI COMPONENTS -->
+        <section id="components" class="flex flex-col justify-center section-padding border-b-grid">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*04)</span>
+                <span data-i18n="comp_eyebrow">UI Components</span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-heading mb-8" data-i18n="comp_buttons">Buttons & Interactions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Solid Button -->
+                    <div class="glass-panel p-8 flex flex-col items-center justify-center gap-4">
+                        <button
+                            class="px-6 py-3 bg-[var(--text-primary)] text-[var(--bg-primary)] rounded-full font-body font-medium transition-transform hover:scale-105 hover:shadow-lg flex items-center gap-2 group">
+                            <span data-i18n="btn_primary">Primary Action</span>
+                            <i data-lucide="arrow-right"
+                                class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                        <span class="text-xs text-[var(--text-secondary)] font-mono">.btn-primary</span>
+                    </div>
+
+                    <!-- Outline Button -->
+                    <div class="glass-panel p-8 flex flex-col items-center justify-center gap-4">
+                        <button
+                            class="px-6 py-3 border border-[var(--text-primary)] text-[var(--text-primary)] rounded-full font-body font-medium transition-all hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] flex items-center gap-2">
+                            <span data-i18n="btn_secondary">Secondary Outline</span>
+                        </button>
+                        <span class="text-xs text-[var(--text-secondary)] font-mono">.btn-outline</span>
+                    </div>
+
+                    <!-- Ghost/Link Button -->
+                    <div class="glass-panel p-8 flex flex-col items-center justify-center gap-4">
+                        <button
+                            class="px-6 py-3 text-[var(--text-primary)] font-body font-medium transition-colors hover:text-[var(--accent-color)] flex items-center gap-2 relative group overflow-hidden">
+                            <span data-i18n="btn_ghost">Ghost Link</span>
+                            <div
+                                class="absolute bottom-2 left-6 right-6 h-px bg-[var(--text-primary)] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left">
+                            </div>
+                        </button>
+                        <span class="text-xs text-[var(--text-secondary)] font-mono">.btn-ghost</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cards & Panels -->
+            <div class="mb-16">
+                <h3 class="text-2xl font-heading mb-8" data-i18n="comp_cards">Cards & Glass Panels</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Glass Card -->
+                    <div class="glass-panel p-8 group relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-[var(--accent-glow)] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-12 h-12 rounded-full bg-[var(--bg-primary)] border border-[var(--border-color)] flex items-center justify-center mb-6">
+                                <i data-lucide="cpu" class="w-6 h-6 text-[var(--text-primary)]"></i>
+                            </div>
+                            <h4 class="text-xl font-heading mb-3" data-i18n="card_title">Processing Unit</h4>
+                            <p class="text-[var(--text-secondary)] mb-6 text-sm" data-i18n="card_desc">Advanced data
+                                processing modules with real-time feedback loops and glass-morphism aesthetics.</p>
+                            <a href="#"
+                                class="inline-flex items-center gap-2 text-sm font-medium hover:text-[var(--accent-color)] transition-colors">
+                                <span data-i18n="card_link">Explore Module</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tech Card (Aura Build inspiration) -->
+                    <div
+                        class="border border-[var(--border-color)] bg-[var(--bg-secondary)] p-8 relative overflow-hidden group">
+                        <!-- Corner accents -->
+                        <div
+                            class="absolute top-0 left-0 w-2 h-2 border-t border-l border-[var(--text-primary)] transition-all group-hover:w-4 group-hover:h-4">
+                        </div>
+                        <div
+                            class="absolute top-0 right-0 w-2 h-2 border-t border-r border-[var(--text-primary)] transition-all group-hover:w-4 group-hover:h-4">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[var(--text-primary)] transition-all group-hover:w-4 group-hover:h-4">
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[var(--text-primary)] transition-all group-hover:w-4 group-hover:h-4">
+                        </div>
+
+                        <div class="flex justify-between items-start mb-8">
+                            <span class="text-xs font-mono text-[var(--text-secondary)] tracking-widest">[ SYS.AUTH
+                                ]</span>
+                            <span class="flex h-3 w-3 relative">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-color)] opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-[var(--text-primary)]"></span>
+                            </span>
+                        </div>
+                        <h4 class="text-2xl font-heading mb-2 uppercase tracking-wide">Secure Enclave</h4>
+                        <div class="h-px w-full bg-gradient-to-r from-[var(--border-color)] to-transparent my-4"></div>
+                        <div class="font-mono text-xs text-[var(--text-secondary)] space-y-1">
+                            <p>> INITIALIZING PROTOCOLS...</p>
+                            <p>> ENCRYPTION VERIFIED.</p>
+                            <p class="text-[var(--text-primary)] mt-2">> STATUS: <span
+                                    class="text-green-500">OPTIMAL</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inputs & Form Controls -->
+            <div>
+                <h3 class="text-2xl font-heading mb-8" data-i18n="comp_forms">Inputs & Controls</h3>
+                <div class="glass-panel p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+                        <!-- Text Input -->
+                        <div class="flex flex-col gap-2 relative">
+                            <label class="text-xs font-mono text-[var(--text-secondary)]" data-i18n="form_label">Email
+                                Address</label>
+                            <div class="relative group">
+                                <i data-lucide="mail"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-secondary)] group-focus-within:text-[var(--text-primary)] transition-colors"></i>
+                                <input type="email"
+                                    class="w-full bg-transparent border border-[var(--border-color)] rounded-lg py-3 pl-12 pr-4 text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
+                                    placeholder="system@lumina.design">
+                            </div>
+                        </div>
+
+                        <!-- Toggle/Switch -->
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs font-mono text-[var(--text-secondary)]" data-i18n="form_toggle">System
+                                Notifications</label>
+                            <label class="relative inline-flex items-center cursor-pointer mt-2">
+                                <input type="checkbox" value="" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-[var(--border-color)] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--bg-primary)] after:border after:border-[var(--border-color)] after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--text-primary)]">
+                                </div>
+                                <span class="ml-3 text-sm font-medium" data-i18n="form_toggle_active">Active</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ICONS -->
+        <section id="icons" class="flex flex-col justify-center section-padding border-b-grid">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*05)</span>
+                <span data-i18n="icon_eyebrow">Iconography</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <!-- Lucide Icons -->
+                <div>
+                    <h3 class="text-2xl font-heading mb-4">Lucide (<span data-i18n="icon_stroke">Stroke</span>)</h3>
+                    <p class="text-[var(--text-secondary)] mb-8 text-sm" data-i18n="icon_lucide_desc">Clean, consistent
+                        stroke icons. Weight and color inherit from text context.</p>
+
+                    <div class="glass-panel p-8 grid grid-cols-4 sm:grid-cols-6 gap-6 justify-items-center">
+                        <i data-lucide="cpu"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                        <i data-lucide="database"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                        <i data-lucide="shield"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                        <i data-lucide="terminal"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                        <i data-lucide="power"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                        <i data-lucide="activity"
+                            class="w-6 h-6 hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></i>
+                    </div>
+                </div>
+
+                <!-- Iconify -->
+                <div>
+                    <h3 class="text-2xl font-heading mb-4">Iconify (<span data-i18n="icon_fill">Fill/Complex</span>)
+                    </h3>
+                    <p class="text-[var(--text-secondary)] mb-8 text-sm" data-i18n="icon_iconify_desc">Access to
+                        multiple libraries. Used for specific decorative or branded icons.</p>
+
+                    <div class="glass-panel p-8 grid grid-cols-4 sm:grid-cols-6 gap-6 justify-items-center">
+                        <iconify-icon icon="solar:atom-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:rotate-90 transition-all cursor-crosshair"></iconify-icon>
+                        <iconify-icon icon="solar:code-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></iconify-icon>
+                        <iconify-icon icon="solar:server-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></iconify-icon>
+                        <iconify-icon icon="solar:shield-keyhole-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></iconify-icon>
+                        <iconify-icon icon="solar:rocket-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:-translate-y-2 transition-all cursor-crosshair"></iconify-icon>
+                        <iconify-icon icon="solar:star-fall-bold-duotone"
+                            class="text-3xl hover:text-[var(--accent-color)] hover:scale-110 transition-all cursor-crosshair"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. ANIMATIONS & MOTION -->
+        <section id="motion" class="flex flex-col justify-center section-padding pb-32">
+            <div class="flex justify-between items-center ds-label mb-12">
+                <span>(*06)</span>
+                <span data-i18n="anim_eyebrow">Motion Basics</span>
+            </div>
+
+            <h3 class="text-2xl font-heading mb-8" data-i18n="anim_title">Micro-interactions</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Hover Scale -->
+                <div class="glass-panel p-8 group cursor-pointer overflow-hidden relative">
+                    <span class="absolute top-4 right-4 text-xs font-mono text-[var(--text-secondary)]">transform:
+                        scale</span>
+                    <h4 class="font-heading text-lg mb-2">Hover Scale</h4>
+                    <p class="text-sm text-[var(--text-secondary)] mb-8">Subtle expansion on interaction (glass panels,
+                        cards).</p>
+
+                    <div
+                        class="w-full h-32 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg transition-transform duration-500 ease-out group-hover:scale-105 flex items-center justify-center">
+                        <i data-lucide="maximize" class="w-6 h-6 text-[var(--text-primary)]"></i>
+                    </div>
+                </div>
+
+                <!-- Magnetic Float -->
+                <div class="glass-panel p-8 group cursor-pointer overflow-hidden relative">
+                    <span class="absolute top-4 right-4 text-xs font-mono text-[var(--text-secondary)]">keyframes:
+                        float</span>
+                    <h4 class="font-heading text-lg mb-2">Continuous Float</h4>
+                    <p class="text-sm text-[var(--text-secondary)] mb-8">Continuous ambient movement for floating
+                        elements.</p>
+
+                    <div class="w-full h-32 flex items-center justify-center relative">
+                        <!-- Floating object -->
+                        <div
+                            class="w-16 h-16 bg-gradient-to-br from-[var(--text-primary)] to-[var(--text-secondary)] rounded-2xl shadow-xl flex items-center justify-center text-[var(--bg-primary)] z-10 animate-[float_4s_ease-in-out_infinite]">
+                            <i data-lucide="box" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marquee Engine -->
+            <div
+                class="w-full py-12 border-y border-[var(--border-color)] relative overflow-hidden bg-[var(--bg-glass)] backdrop-blur-md">
+                <div class="ds-label absolute top-4 left-4 z-10 font-bold" data-i18n="anim_marquee">Infinite Marquee
+                </div>
+                <div class="marquee-container mt-4">
+                    <div class="marquee-content font-heading text-6xl uppercase tracking-tighter opacity-20">
+                        <span class="mx-8">Data</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Artificial Intelligence</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Automation</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Systems</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <!-- Repeat for infinite illusion -->
+                        <span class="mx-8">Data</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Artificial Intelligence</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Automation</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                        <span class="mx-8">Systems</span> <iconify-icon icon="solar:star-bold"
+                            class="text-3xl self-center text-[var(--accent-color)]"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // --- I18N SYSTEM ---
+        const translations = {
+            en: {
+                theme_label: "Dark",
+                hero_eyebrow: "Visual Manifesto",
+                hero_status: "[ Systems Online ]",
+                hero_desc: "This document serves as the canonical pattern library. It catalogs the typography, colors, layout patterns, and interaction models that constitute the foundational vocabulary of our digital experiences, blending ultra-clean geometries with fluid glass interfaces.",
+                type_eyebrow: "Typography",
+                type_families: "Font Families",
+                type_scale: "Global Type Scale",
+                type_sample_h1: "Hero Display Title",
+                type_sample_h2: "Section Heading",
+                type_sample_h3: "Card Title Component",
+                type_sample_p: "The quick brown fox jumps over the lazy dog. Fluid typography scales gracefully across viewports.",
+                color_eyebrow: "Color System",
+                comp_eyebrow: "UI Components",
+                comp_buttons: "Buttons & Interactions",
+                btn_primary: "Primary Action",
+                btn_secondary: "Secondary Outline",
+                btn_ghost: "Ghost Link",
+                comp_cards: "Cards & Glass Panels",
+                card_title: "Processing Unit",
+                card_desc: "Advanced data processing modules with real-time feedback loops and glass-morphism aesthetics.",
+                card_link: "Explore Module",
+                comp_forms: "Inputs & Controls",
+                form_label: "Email Address",
+                form_toggle: "System Notifications",
+                form_toggle_active: "Active",
+                icon_eyebrow: "Iconography",
+                icon_stroke: "Stroke",
+                icon_lucide_desc: "Clean, consistent stroke icons. Weight and color inherit from text context.",
+                icon_fill: "Fill/Complex",
+                icon_iconify_desc: "Access to multiple libraries. Used for specific decorative or branded icons.",
+                anim_eyebrow: "Motion Basics",
+                anim_title: "Micro-interactions",
+                anim_marquee: "Infinite Marquee",
+                // Add more keys as needed
+            },
+            pt: {
+                theme_label: "Escuro",
+                hero_eyebrow: "Manifesto Visual",
+                hero_status: "[ Sistemas Online ]",
+                hero_desc: "Este documento serve como a biblioteca de padrões canônica. Ele cataloga a tipografia, cores, padrões de layout e modelos de interação que constituem o vocabulário fundamental de nossas experiências digitais, combinando geometrias ultra-limpas com interfaces fluidas de vidro.",
+                type_eyebrow: "Tipografia",
+                type_families: "Famílias de Fontes",
+                type_scale: "Escala Tipográfica Global",
+                type_sample_h1: "Título de Destaque",
+                type_sample_h2: "Cabeçalho de Seção",
+                type_sample_h3: "Componente de Título de Cartão",
+                type_sample_p: "A raposa marrom rápida salta sobre o cão preguiçoso. A tipografia fluida se adapta graciosamente a diferentes telas.",
+                color_eyebrow: "Sistema de Cores",
+                comp_eyebrow: "Componentes de UI",
+                comp_buttons: "Botões e Interações",
+                btn_primary: "Ação Principal",
+                btn_secondary: "Contorno Secundário",
+                btn_ghost: "Link Fantasma",
+                comp_cards: "Cartões e Painéis de Vidro",
+                card_title: "Unidade de Processamento",
+                card_desc: "Módulos avançados de processamento de dados com loops de feedback em tempo real e estética glass-morphism.",
+                card_link: "Explorar Módulo",
+                comp_forms: "Entradas e Controles",
+                form_label: "Endereço de E-mail",
+                form_toggle: "Notificações do Sistema",
+                form_toggle_active: "Ativo",
+                icon_eyebrow: "Iconografia",
+                icon_stroke: "Contorno",
+                icon_lucide_desc: "Ícones de contorno limpos e consistentes. Peso e cor são herdados do contexto do texto.",
+                icon_fill: "Preenchimento/Complexo",
+                icon_iconify_desc: "Acesso a múltiplas bibliotecas. Usado para ícones decorativos ou de marca específicos.",
+                anim_eyebrow: "Princípios de Movimento",
+                anim_title: "Micro-interações",
+                anim_marquee: "Letreiro Infinito",
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'en';
+
+        function applyLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+            document.getElementById('langLabel').textContent = lang === 'pt' ? 'PT-BR' : 'EN';
+            document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+            // Adjust theme label based on current theme state
+            if (lang === 'pt') {
+                document.querySelector('[data-i18n="theme_label"]').textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'Claro' : 'Escuro';
+            } else {
+                document.querySelector('[data-i18n="theme_label"]').textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark';
+            }
+        }
+
+        document.getElementById('langToggle').addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+            localStorage.setItem('lang', currentLang);
+            applyLanguage(currentLang);
+
+            // Re-trigger entrance animation
+            gsap.fromTo("[data-i18n]", { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: 0.1, stagger: 0.05 });
+        });
+
+        // --- THEME SYSTEM ---
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        const docHtml = document.documentElement;
+
+        function applyTheme(theme) {
+            docHtml.setAttribute('data-theme', theme);
+            const lightIcon = document.querySelector('.light-icon');
+            const darkIcon = document.querySelector('.dark-icon');
+
+            if (theme === 'dark') {
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+                document.querySelector('[data-i18n="theme_label"]').textContent = currentLang === 'pt' ? 'Claro' : 'Light';
+            } else {
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+                document.querySelector('[data-i18n="theme_label"]').textContent = currentLang === 'pt' ? 'Escuro' : 'Dark';
+            }
+
+            // Update color values display if the function exists
+            if (typeof updateColorValues === 'function') {
+                setTimeout(updateColorValues, 100);
+            }
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+            applyTheme(currentTheme);
+        });
+
+        // Initialize state
+        applyTheme(currentTheme);
+        applyLanguage(currentLang);
+
+        function updateColorValues() {
+            const rootStyle = getComputedStyle(document.body);
+            document.querySelectorAll('.data-theme-val').forEach(el => {
+                const varName = el.textContent.trim();
+                const varValue = rootStyle.getPropertyValue(varName).trim();
+                if (varValue) {
+                    el.title = `HEX/RGB: ${varValue}`;
+                }
+            });
+        }
+        updateColorValues();
+
+        // --- GSAP ANIMATIONS ---
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // --- HERO TITLE REVEAL (CSS-Based from Digital Architect) ---
+            setTimeout(() => {
+                const heroTitle = document.getElementById('hero-title');
+                if (heroTitle) heroTitle.classList.add('reveal-active');
+            }, 500);
+
+            // Glow breathing background animation
+            gsap.to('.hero-glow', {
+                scale: 1.15,
+                opacity: 0.08,
+                duration: 4,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+            // --- CUSTOM CURSOR LOGIC ---
+            const cursorDot = document.getElementById("cursor-dot");
+            const cursorOutline = document.getElementById("cursor-outline");
+
+            // Setup quickTo for inner dot (small delay)
+            const xDotTo = gsap.quickTo(cursorDot, "left", { duration: 0.4, ease: "power3" });
+            const yDotTo = gsap.quickTo(cursorDot, "top", { duration: 0.4, ease: "power3" });
+
+            // Keep track of outline logical position purely for distance calculation
+            let outlineX = window.innerWidth / 2;
+            let outlineY = window.innerHeight / 2;
+
+            window.addEventListener("mousemove", (e) => {
+                // Instantly move the dot with small delay
+                xDotTo(e.clientX);
+                yDotTo(e.clientY);
+
+                // Calculate distance for dynamic outer circle acceleration
+                let distX = e.clientX - outlineX;
+                let distY = e.clientY - outlineY;
+                let distance = Math.sqrt(distX * distX + distY * distY);
+
+                // Update logical position tracking
+                outlineX = e.clientX;
+                outlineY = e.clientY;
+
+                // Dynamic Duration: 
+                // Base is 1.3s (very slow, just like before).
+                // If the mouse moves 1000 pixels away, it drops duration making it faster. 
+                // Minimum duration is 0.15s
+                let calcDuration = 0.8 - (distance * 0.000001);
+                calcDuration = Math.max(calcDuration, 1.3);
+
+                gsap.to(cursorOutline, {
+                    left: e.clientX,
+                    top: e.clientY,
+                    duration: calcDuration,
+                    ease: "power2.out",
+                    overwrite: "auto"
+                });
+            });
+
+            // Hover effects on interactive elements
+            const interactives = document.querySelectorAll('a, button, input, .cursor-pointer, [data-lucide], iconify-icon');
+
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>
