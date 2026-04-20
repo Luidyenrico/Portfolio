@@ -301,8 +301,6 @@
                         class="px-4 py-2 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">OpenAI</span>
                     <span
                         class="px-4 py-2 rounded-md border border-cyan-500/30 bg-cyan-500/10 text-[10px] font-mono tracking-widest uppercase text-cyan-600 dark:text-cyan-400 shadow-sm">APIs</span>
-                    <span
-                        class="px-4 py-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono tracking-widest uppercase text-emerald-600 dark:text-emerald-400 shadow-sm">Agno</span>
                 </div>
 
                 <div class="flex flex-wrap items-center justify-center gap-4 gsap-reveal delay-300">
@@ -409,13 +407,6 @@
                                 <span
                                     class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-cyan-500 transition-colors">APIs</span>
                             </div>
-                            <div
-                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all duration-300">
-                                <iconify-icon icon="lucide:brain-circuit"
-                                    class="text-2xl text-textmuted group-hover:text-emerald-500 transition-colors"></iconify-icon>
-                                <span
-                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-emerald-500 transition-colors">Agno</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -431,29 +422,6 @@
                         </h3>
                     </div>
                     <div class="col-span-1 md:col-span-3">
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-                            <div
-                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">95<span class="text-brand">%</span>
-                                </p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_time_saved">Time Saved</p>
-                            </div>
-                            <div
-                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">100<span class="text-brand">%</span>
-                                </p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_accuracy">AI Analyzed</p>
-                            </div>
-                            <div
-                                class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">0<span class="text-brand"></span>
-                                </p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_docs_day">Manual Search</p>
-                            </div>
-                        </div>
                         <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_results_desc">
                             A completely automated pipeline that eliminates the tedious manual job search, delivering only relevant, pre-analyzed opportunities directly to the user.
                         </p>
@@ -565,53 +533,53 @@
                 tpl_title2: "Matcher",
                 tpl_view_code: "View Code",
                 tpl_problem: "Problem",
-                tpl_problem_title: "Finding the right job in a sea of listings.",
-                tpl_problem_desc: "Job seekers spend hours manually browsing through hundreds of job listings, trying to find positions that match their specific skill set. The process is time-consuming, repetitive, and often leads to missed opportunities or applications for poorly matched roles.",
-                tpl_problem_list1: "Manual and exhausting job search process",
-                tpl_problem_list2: "Difficulty filtering relevant opportunities",
-                tpl_problem_list3: "No intelligent skill-to-job matching",
-                tpl_problem_list4: "Lack of structured analysis per vacancy",
+                tpl_problem_title: "Difficulty filtering relevant job opportunities.",
+                tpl_problem_desc: "Searching for a job often requires hours of manual reading across different platforms. Because the requirements for each role vary significantly, it can be difficult and time-consuming to accurately cross-reference which opportunities are a true fit for a candidate's profile, resulting in a lot of time wasted reading incompatible listings.",
+                tpl_problem_list1: "Manual and repetitive job hunting",
+                tpl_problem_list2: "Difficulty filtering what truly aligns with a candidate's profile",
+                tpl_problem_list3: "No clear structure to analyze match probability for each role",
+                tpl_problem_list4: "Time wasted evaluating incompatible opportunities",
                 tpl_solution: "Solution",
-                tpl_solution_title: "AI-powered job matching and analysis.",
-                tpl_solution_desc: "A system built with Python that connects to job listing APIs, filters vacancies based on the user's competencies, and leverages AI to provide a detailed analysis of each matching position — including fit score, required skills breakdown, and actionable recommendations.",
-                tpl_solution_list1: "Automated job search via external APIs",
-                tpl_solution_list2: "Intelligent skill-based filtering and ranking",
-                tpl_solution_list3: "AI-driven vacancy analysis and scoring",
-                tpl_solution_list4: "Personalized recommendations per listing",
+                tpl_solution_title: "Automation and AI for smart job recommendations.",
+                tpl_solution_desc: "Development of a Python system to fetch and analyze job listings via APIs. The script uses the OpenAI API to compare the real requirements described in the job posting against the skills present on a resume. This way, it provides a compatibility score and maps exactly where the requirements are met and where there are skill gaps.",
+                tpl_solution_list1: "Automating the job search using external APIs",
+                tpl_solution_list2: "Cleaning and formatting job descriptions with Python",
+                tpl_solution_list3: "Using AI to compare listings against a candidate's resume",
+                tpl_solution_list4: "Generating a compatibility score for each role",
                 tpl_tech_stack: "Tech Stack",
                 tpl_results: "Results",
-                tpl_time_saved: "Time Saved",
-                tpl_accuracy: "AI Analyzed",
-                tpl_docs_day: "Manual Search",
-                tpl_results_desc: "A completely automated pipeline that eliminates the tedious manual job search, delivering only relevant, pre-analyzed opportunities directly to the user.",
+                tpl_zero_effort: "Manual Search",
+                tpl_match_score: "Fit Analysis",
+                tpl_focus: "Precision Increase",
+                tpl_results_desc: "The tool automates the entire manual phase of hunting for jobs. It quickly generates a shortlist containing only the positions with the highest match potential. This speeds up the application process and makes it clear which skills need to be highlighted in interviews or topics that might require further study.",
                 tpl_next_project_label: "Next Project",
                 tpl_next_project_title: "Full BI Pipeline"
             },
             pt: {
                 back_projects: "Voltar a Projetos",
-                tpl_title1: "AI Job",
-                tpl_title2: "Matcher",
+                tpl_title1: "Analisador de Vagas",
+                tpl_title2: "com IA",
                 tpl_view_code: "Ver Código",
                 tpl_problem: "Problema",
-                tpl_problem_title: "Encontrar a vaga certa em um mar de oportunidades.",
-                tpl_problem_desc: "Candidatos gastam horas navegando manualmente por centenas de vagas, tentando encontrar posições que correspondam às suas competências específicas. O processo é demorado, repetitivo e frequentemente leva a oportunidades perdidas ou candidaturas para vagas pouco compatíveis.",
-                tpl_problem_list1: "Processo manual e exaustivo de busca",
-                tpl_problem_list2: "Dificuldade em filtrar oportunidades relevantes",
-                tpl_problem_list3: "Sem correspondência inteligente de habilidades",
-                tpl_problem_list4: "Falta de análise estruturada por vaga",
+                tpl_problem_title: "Dificuldade em filtrar oportunidades relevantes de emprego.",
+                tpl_problem_desc: "A busca por vagas frequentemente exige horas de leitura manual em diferentes plataformas. Como os requisitos de cada posição variam bastante, pode ser difícil e demorado cruzar exatamente quais oportunidades têm real aderência com o perfil do candidato, resultando em muito tempo perdido lendo textos incompatíveis.",
+                tpl_problem_list1: "Busca manual e repetitiva por vagas",
+                tpl_problem_list2: "Dificuldade em filtrar o que realmente se alinha com o perfil do candidato",
+                tpl_problem_list3: "Sem estrutura clara para analisar as chances reais em cada vaga",
+                tpl_problem_list4: "Tempo desperdiçado avaliando processos incompatíveis",
                 tpl_solution: "Solução",
-                tpl_solution_title: "Matching e análise de vagas com IA.",
-                tpl_solution_desc: "Um sistema desenvolvido em Python que se conecta a APIs de vagas, filtra oportunidades com base nas competências do usuário e utiliza IA para fornecer uma análise detalhada de cada posição compatível — incluindo pontuação de compatibilidade, detalhamento de habilidades e recomendações personalizadas.",
-                tpl_solution_list1: "Busca automatizada via APIs externas",
-                tpl_solution_list2: "Filtragem inteligente baseada em competências",
-                tpl_solution_list3: "Análise e pontuação de vagas com IA",
-                tpl_solution_list4: "Recomendações personalizadas por vaga",
+                tpl_solution_title: "Automação e uso de IA para recomendar as melhores vagas.",
+                tpl_solution_desc: "Desenvolvimento de um sistema em Python para buscar e analisar vagas através de APIs. O script usa a API da OpenAI para comparar as exigências reais descritas na vaga com as habilidades de um currículo. Dessa forma, gera uma nota de compatibilidade e mapeia exatamente quais requisitos são atendidos e onde existem lacunas.",
+                tpl_solution_list1: "Automação da busca de vagas utilizando APIs externas",
+                tpl_solution_list2: "Limpeza e formatação de textos de vagas com Python",
+                tpl_solution_list3: "Uso de IA para comparar as oportunidades com um currículo",
+                tpl_solution_list4: "Geração de nota de compatibilidade para cada vaga",
                 tpl_tech_stack: "Tecnologias Usadas",
                 tpl_results: "Resultados",
-                tpl_time_saved: "Tempo Economizado",
-                tpl_accuracy: "Análise IA",
-                tpl_docs_day: "Busca Manual",
-                tpl_results_desc: "Um pipeline completamente automatizado que elimina a busca manual tediosa, entregando apenas oportunidades relevantes e pré-analisadas diretamente ao usuário.",
+                tpl_zero_effort: "Busca Manual",
+                tpl_match_score: "Análise de Fit",
+                tpl_focus: "Aumento na Precisão",
+                tpl_results_desc: "A ferramenta automatiza toda a etapa manual de garimpo de vagas. O sistema gera rapidamente uma lista apenas com as posições de maior compatibilidade. Isso agiliza a candidatura e deixa claro quais conhecimentos precisam ser destacados nas entrevistas ou o que pode precisar de mais estudo.",
                 tpl_next_project_label: "Próximo Projeto",
                 tpl_next_project_title: "Projeto BI Completo"
             }

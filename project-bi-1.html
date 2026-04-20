@@ -407,7 +407,6 @@
                     <span class="px-4 py-2 rounded-md border border-blue-500/30 bg-blue-500/10 text-[10px] font-mono tracking-widest uppercase text-blue-600 dark:text-blue-400 shadow-sm">Python</span>
                     <span class="px-4 py-2 rounded-md border border-indigo-500/30 bg-indigo-500/10 text-[10px] font-mono tracking-widest uppercase text-indigo-600 dark:text-indigo-400 shadow-sm">SQL</span>
                     <span class="px-4 py-2 rounded-md border border-amber-500/30 bg-amber-500/10 text-[10px] font-mono tracking-widest uppercase text-amber-600 dark:text-amber-500 shadow-sm">Power BI</span>
-                    <span class="px-4 py-2 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">APIs</span>
                 </div>
 
                 <div class="flex flex-wrap items-center justify-center gap-4 gsap-reveal delay-300">
@@ -506,16 +505,16 @@
                     <div class="col-span-1 md:col-span-3">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                             <div class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">85<span class="text-brand">%</span></p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_time_saved">Time Saved</p>
+                                <p class="text-4xl font-oswald text-textmain mb-1">+40<span class="text-brand">%</span></p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_sales_increase">Sales Increase</p>
                             </div>
                             <div class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">99.9<span class="text-brand">%</span></p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_accuracy">Accuracy</p>
+                                <p class="text-4xl font-oswald text-textmain mb-1">100<span class="text-brand">%</span></p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_visibility">Traceability</p>
                             </div>
                             <div class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">10<span class="text-brand">k+</span></p>
-                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_docs_day">Docs/Day</p>
+                                <p class="text-4xl font-oswald text-textmain mb-1">1:1<span class="text-brand"></span></p>
+                                <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest" data-i18n="tpl_support">Targeted Support</p>
                             </div>
                         </div>
                         <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_results_desc">
@@ -636,47 +635,47 @@
         const translations = {
             en: {
                 back_projects: "Back to Projects",
-                tpl_title1: "Performance Analysis of",
-                tpl_title2: "Sales and Customer Service",
+                tpl_title1: "Performance Analysis",
+                tpl_title2: "of Sales Agents",
                 tpl_view_dashboard: "View Dashboard",
                 tpl_problem: "Problem",
                 tpl_problem_title: "Difficulty analyzing agent performance.",
                 tpl_problem_desc: "The marketing and acquisition team was manually evaluating the sales representatives' interactions, assigning scores to each step of the process. However, the data was scattered and lacked analytical structure, making it difficult to visualize score evolution, compare regions, and identify improvement points.",
                 tpl_solution: "Solution",
                 tpl_solution_title: "Analytical dashboard for informed decision-making.",
-                tpl_solution_desc: "SQL extraction, Python data treatment, and a comprehensive Power BI dashboard for full business visibility.",
-                tpl_solution_list1: "Data integration and structuring",
-                tpl_solution_list2: "Data treatment and transformation with Python and SQL",
-                tpl_solution_list3: "Complete Power BI visualization",
+                tpl_solution_desc: "Development of a Power BI dashboard from Dataverse data. Used SQL to extract dimensions from the company's internal database and Python to process complex tables prior to import. Using Power Query and DAX, the data was modeled to enable detailed performance analysis by agent, region, and service stage.",
+                tpl_solution_list1: "Data integration with SQL and Dataverse",
+                tpl_solution_list2: "Data treatment using Python and Power Query",
+                tpl_solution_list3: "DAX modeling and interactive Power BI dashboard",
                 tpl_tech_stack: "Tech Stack",
                 tpl_results: "Results",
-                tpl_time_saved: "Insights",
-                tpl_accuracy: "Decisions",
-                tpl_docs_day: "KPIs Tracked",
-                tpl_results_desc: "Empowering business leaders with real-time strategic overviews.",
+                tpl_sales_increase: "Sales Growth",
+                tpl_visibility: "Traceability",
+                tpl_support: "Targeted Support",
+                tpl_results_desc: "The dashboard implementation led to a significant performance improvement for the sales team. Evaluators used the tool to identify top and bottom performers, enabling them to provide necessary support and conduct 1:1 meetings. This data-driven strategy resulted in a 40% increase in overall sales.",
                 tpl_next_project_label: "Next Project",
                 tpl_next_project_title: "BI: Data Cross-referencing 2"
             },
             pt: {
                 back_projects: "Voltar a Projetos",
-                tpl_title1: "Análise de Performance de",
-                tpl_title2: "Vendas e Atendimento",
+                tpl_title1: "Análise de Performance",
+                tpl_title2: "de Vendedores",
                 tpl_view_dashboard: "Ver Dashboard",
                 tpl_problem: "Problema",
                 tpl_problem_title: "Dificuldade em analisar a performance dos atendimentos.",
                 tpl_problem_desc: "A equipe de marketing e captação realizava avaliações manuais dos atendimentos dos vendedores, atribuindo notas para cada etapa do processo. \nNo entanto, os dados estavam dispersos e sem estrutura analítica, dificultando a visualização da evolução das notas, a comparação entre regiões e a identificação de pontos de melhoria",
                 tpl_solution: "Solução",
                 tpl_solution_title: "Dashboard analítico para tomada de decisões.",
-                tpl_solution_desc: "Desenvolvimento de um dashboard no Power BI a partir de dados do Dataverse, com tratamento via Power Query e modelagem em DAX, permitindo análise da performance por vendedor, região e etapa do atendimento.",
-                tpl_solution_list1: "Integração de dados",
-                tpl_solution_list2: "Tratamento e transformação com Power Query e Modelagem e métricas com DAX",
-                tpl_solution_list3: "Dashboard interativo no Power BI",
+                tpl_solution_desc: "Desenvolvimento de um dashboard no Power BI a partir de dados do Dataverse. Utilizei SQL para extrair dimensões da base interna da empresa e Python para tratar tabelas complexas antes da importação. Com Power Query e DAX, modelei os dados para permitir a análise detalhada da performance por vendedor, região e etapa do atendimento.",
+                tpl_solution_list1: "Integração de dados com SQL e Dataverse",
+                tpl_solution_list2: "Tratamento de dados usando Python e Power Query",
+                tpl_solution_list3: "Modelagem com DAX e dashboard interativo no Power BI",
                 tpl_tech_stack: "Tecnologias Usadas",
                 tpl_results: "Resultados",
-                tpl_time_saved: "Autonomia",
-                tpl_accuracy: "Clareza",
-                tpl_docs_day: "Métricas",
-                tpl_results_desc: "Impacto massivo na velocidade de entendimento do executivo.",
+                tpl_sales_increase: "Aumento Vendas",
+                tpl_visibility: "Rastreabilidade",
+                tpl_support: "Suporte Direcionado",
+                tpl_results_desc: "Houve uma melhora notável na performance dos vendedores após a implementação. Os avaliadores começaram a utilizar o dashboard para identificar facilmente quem estava com desempenho inferior ou superior, oferecendo suporte necessário através de reuniões e feedbacks. Essa atuação direcionada gerou um aumento de 40% nas vendas.",
                 tpl_next_project_label: "Próximo Projeto",
                 tpl_next_project_title: "BI: Cruzamento de Dados 2"
             }
