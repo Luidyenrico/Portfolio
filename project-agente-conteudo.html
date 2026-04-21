@@ -340,10 +340,7 @@
                         <h4 class="text-3xl font-instrument tracking-tight text-textmain mb-4"
                             data-i18n="tpl_problem_title">The challenge with unstructured data at scale.</h4>
                         <p class="text-lg leading-relaxed text-textmuted font-light mb-6" data-i18n="tpl_problem_desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                            voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Content creation from videos or audio is an extremely slow task. Manually transcribing and then summarizing or transforming that material into different formats (scripts, articles, posts) consumes hours of intellectual work and often lacks consistency in tone of voice. Scaling this production without losing quality was impossible.
                         </p>
                         <ul class="list-disc pl-5 text-lg leading-relaxed text-textmuted font-light space-y-2">
                             <li data-i18n="tpl_problem_list1">Processos manuais e demorados</li>
@@ -368,15 +365,13 @@
                         <h4 class="text-3xl font-instrument tracking-tight text-textmain mb-4"
                             data-i18n="tpl_solution_title">An intelligent, automated extraction pipeline.</h4>
                         <p class="text-lg leading-relaxed text-textmuted font-light mb-6" data-i18n="tpl_solution_desc">
-                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                            anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                            accusantium doloremque laudantium.
+                            I developed a two-stage automated solution. First, I used FFmpeg to process audiovisual files and Whisper (Groq) to generate accurate transcriptions at high speed. Second, I created an AI agent using Agno (Phidata) and OpenAI that uses these transcriptions as context to generate any type of content in a standardized style, maintaining same quality regardless of the subject.
                         </p>
                         <ul class="list-disc pl-5 text-lg leading-relaxed text-textmuted font-light space-y-2">
-                            <li data-i18n="tpl_solution_list1">Automated data ingestion via REST APIs</li>
-                            <li data-i18n="tpl_solution_list2">Natural Language Processing using LangChain</li>
-                            <li data-i18n="tpl_solution_list3">Real-time visualization in dynamic dashboards</li>
-                            <li data-i18n="tpl_solution_list4">Reusable output generation</li>
+                            <li data-i18n="tpl_solution_list1">Automated audio extraction and processing with FFmpeg</li>
+                            <li data-i18n="tpl_solution_list2">High-speed AI-powered transcription (Whisper/Groq)</li>
+                            <li data-i18n="tpl_solution_list3">AI agent orchestration with Agno/Phidata</li>
+                            <li data-i18n="tpl_solution_list4">Multi-format content generation with consistent tone</li>
                         </ul>
                     </div>
                 </div>
@@ -462,8 +457,7 @@
                             </div>
                         </div>
                         <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_results_desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.
+                            The agent provides a structured workflow for content managers, significantly reducing the gap between recording and final publication.
                         </p>
                     </div>
                 </div>
@@ -480,7 +474,7 @@
                     data-i18n="tpl_next_project_label">Next Project</span>
                 <h4 class="text-3xl md:text-5xl font-oswald uppercase text-textmain group-hover:text-transparent-stroke transition-colors text-center"
                     data-i18n="tpl_next_project_title">
-                    Automação de ETL
+                    Sales Performance Analysis
                 </h4>
             </a>
         </section>
@@ -573,19 +567,15 @@
                 tpl_title2: "Creation Agent",
                 tpl_live_demo: "View Code",
                 tpl_problem: "Problem",
-                tpl_problem_title: "Challenges in content analysis and generation",
-                tpl_problem_desc: "Creating texts and scripts requires a lot of time and effort, thinking about how you should present the information can be as complex as creating the information itself. Fully manual processes can lead to inconsistencies, low productivity, and difficulty scaling production, especially when you need to create multiple contents like articles, scripts, summaries, etc.",
-                tpl_problem_list1: "Manual and time-consuming processes",
-                tpl_problem_list2: "Difficulty scaling production",
-                tpl_problem_list3: "Lack of standardization in results",
-                tpl_problem_list4: "Volatile quality",
+                tpl_problem_title: "The bottleneck of manual content creation.",
+                tpl_problem_desc: "Content creation from videos or audios is an extremely slow task. Manually transcribing content and then trying to summarize or transform it into different formats (scripts, articles, posts) consumes hours of intellectual work and often lacks consistency in tone. Scaling this production without losing quality was impossible.",
                 tpl_solution: "Solution",
-                tpl_solution_title: "Automation and intelligence applied to the process",
-                tpl_solution_desc: "I developed a solution based on automation and artificial intelligence in two stages. The first stage consists of obtaining transcriptions of audiovisual content, the second stage involves the AI agent that based on these texts and transcriptions, generates scripts and similar texts, with the same type of language, on any subject. This is useful to keep the texts always with a standard of quality and language.",
-                tpl_solution_list1: "Processing flow automation",
-                tpl_solution_list2: "Integration with AI tools",
-                tpl_solution_list3: "Structuring and organizing data",
-                tpl_solution_list4: "Reusable output generation",
+                tpl_solution_title: "Intelligent pipeline for transcription and generation.",
+                tpl_solution_desc: "I developed a two-stage automated solution. First, I used FFmpeg to process audiovisual files and Whisper (Groq) to generate accurate, high-speed transcriptions. Second, I built an AI agent using Agno (Phidata) and OpenAI that takes these transcripts as context to generate any type of content in a standardized style, keeping the same language and quality regardless of the topic.",
+                tpl_solution_list1: "Automated audio extraction and processing with FFmpeg",
+                tpl_solution_list2: "Transcript generation using high-speed AI (Whisper/Groq)",
+                tpl_solution_list3: "AI Agent orchestration with Agno/Phidata",
+                tpl_solution_list4: "Multi-format content generation with consistent tone",
                 tpl_tech_stack: "Tech Stack",
                 tpl_results: "Results",
                 tpl_time_saved: "Speed Factor",
@@ -593,7 +583,7 @@
                 tpl_docs_day: "Manual Work",
                 tpl_results_desc: "A structured process that helps in content creation, removing human bottlenecks and keeping quality high.",
                 tpl_next_project_label: "Next Project",
-                tpl_next_project_title: "BI: Data Cross-referencing 1"
+                tpl_next_project_title: "Sales Performance Analysis"
             },
             pt: {
                 back_projects: "Voltar a Projetos",
@@ -601,19 +591,15 @@
                 tpl_title2: "Criação de Conteúdo",
                 tpl_live_demo: "Ver Código",
                 tpl_problem: "Problema",
-                tpl_problem_title: "Desafios na análise e geração de conteúdo",
-                tpl_problem_desc: "A criação de textos e roteiros exige muito tempo de trabalho, pensar em como você deve apresentar a informação pode ser tão complexo quanto criar a própria informação. Processos totalmente manuais podem levar a inconsistências, baixa produtividade e dificuldade em escalar a produção, especialmente quando você deve criar diversos conteúdos, como artigos, roteiros, resumos, etc.",
-                tpl_problem_list1: "Processos manuais e demorados",
-                tpl_problem_list2: "Dificuldade em escalar a produção",
-                tpl_problem_list3: "Falta de padronização nos resultados",
-                tpl_problem_list4: "Qualidade volátil.",
+                tpl_problem_title: "O gargalo da criação manual de conteúdo.",
+                tpl_problem_desc: "A criação de conteúdo a partir de vídeos ou áudios é uma tarefa extremamente lenta. Transcrever manualmente e depois tentar resumir ou transformar aquilo em diferentes formatos (roteiros, artigos, posts) consome horas de trabalho intelectual e muitas vezes falta consistência no tom de voz. Escalar essa produção sem perder a qualidade era impossível.",
                 tpl_solution: "Solução",
-                tpl_solution_title: "Automação e inteligência aplicada ao processo",
-                tpl_solution_desc: "Desenvolvi uma solução baseada em automação e inteligência artifial em duas etapas. A primeira etapa consiste em obter transcrições de conteúdos audiovisuais, a segunda etapa envolve o agente de IA que com base nesses textos e transcrições, gera roteiros e textos similares, com o mesmo tipo de linguagem, sobre qualquer assunto. Isso é útil para que os textos fiquem sempre com um padrão de qualidade e linguagem.",
-                tpl_solution_list1: "Automação do fluxo de processamento",
-                tpl_solution_list2: "Integração com ferramentas de IA",
-                tpl_solution_list3: "Estruturação e organização dos dados",
-                tpl_solution_list4: "Geração de saídas reutilizáveis",
+                tpl_solution_title: "Pipeline inteligente de transcrição e geração.",
+                tpl_solution_desc: "Desenvolvi uma solução automatizada em duas etapas. Primeiro, utilizei FFmpeg para processar os arquivos audiovisuais e o Whisper (Groq) para gerar transcrições precisas em alta velocidade. Segundo, criei um agente de IA usando Agno (Phidata) e OpenAI que utiliza essas transcrições como contexto para gerar qualquer tipo de conteúdo em um estilo padronizado, mantendo a mesma linguagem e qualidade independente do assunto.",
+                tpl_solution_list1: "Extração e processamento de áudio automatizado com FFmpeg",
+                tpl_solution_list2: "Geração de transcrições via IA de alta velocidade (Whisper/Groq)",
+                tpl_solution_list3: "Orquestração de agentes de IA com Agno/Phidata",
+                tpl_solution_list4: "Geração de conteúdos multi-formato com tom consistente",
                 tpl_tech_stack: "Tecnologias Usadas",
                 tpl_results: "Resultados",
                 tpl_time_saved: "Mais Rápido",
@@ -621,7 +607,7 @@
                 tpl_docs_day: "Trabalho Manual",
                 tpl_results_desc: "Um processo estruturado que ajuda na criação de conteúdos, removendo gargalos humanos e mantendo a qualidade alta.",
                 tpl_next_project_label: "Próximo Projeto",
-                tpl_next_project_title: "BI: Cruzamento de Dados 1"
+                tpl_next_project_title: "Análise de Performance de Vendedores"
             }
         };
 

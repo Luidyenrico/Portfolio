@@ -436,7 +436,7 @@
                         class="px-4 py-2 rounded-md border border-amber-500/30 bg-amber-500/10 text-[10px] font-mono tracking-widest uppercase text-amber-600 dark:text-amber-500 shadow-sm">Power
                         BI</span>
                     <span
-                        class="px-4 py-2 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">APIs</span>
+                        class="px-4 py-2 rounded-md border border-purple-500/30 bg-purple-500/10 text-[10px] font-mono tracking-widest uppercase text-purple-600 dark:text-purple-400 shadow-sm">DAX</span>
                 </div>
 
                 <div class="flex flex-wrap items-center justify-center gap-4 gsap-reveal delay-300">
@@ -524,10 +524,17 @@
                             </div>
                             <div
                                 class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all duration-300">
-                                <iconify-icon icon="simple-icons:mysql"
+                                <iconify-icon icon="material-symbols:database"
                                     class="text-2xl text-textmuted group-hover:text-indigo-500 transition-colors"></iconify-icon>
                                 <span
                                     class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-indigo-500 transition-colors">SQL</span>
+                            </div>
+                            <div
+                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-amber-500/50 hover:bg-amber-500/5 transition-all duration-300">
+                                <iconify-icon icon="simple-icons:databricks"
+                                    class="text-2xl text-textmuted group-hover:text-amber-600 transition-colors"></iconify-icon>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-amber-600 transition-colors">Databricks</span>
                             </div>
                             <div
                                 class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-amber-500/50 hover:bg-amber-500/5 transition-all duration-300">
@@ -536,6 +543,13 @@
                                 <span
                                     class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-amber-500 transition-colors">Power
                                     BI</span>
+                            </div>
+                            <div
+                                class="group p-4 rounded-xl border border-bordercolor bg-background/50 flex flex-col items-center justify-center gap-3 cursor-hover-target hover:border-purple-500/50 hover:bg-purple-500/5 transition-all duration-300">
+                                <iconify-icon icon="material-symbols:function"
+                                    class="text-2xl text-textmuted group-hover:text-purple-500 transition-colors"></iconify-icon>
+                                <span
+                                    class="text-[10px] font-mono uppercase tracking-widest text-textmain group-hover:text-purple-500 transition-colors">DAX</span>
                             </div>
                         </div>
                     </div>
@@ -555,24 +569,24 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                             <div
                                 class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">85<span class="text-brand">%</span>
+                                <p class="text-4xl font-oswald text-textmain mb-1"><span class="text-brand">+</span>30
                                 </p>
                                 <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_time_saved">Queries</p>
+                                    data-i18n="tpl_time_saved">Government Entities</p>
                             </div>
                             <div
                                 class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">99.9<span class="text-brand">%</span>
+                                <p class="text-4xl font-oswald text-textmain mb-1">100<span class="text-brand">%</span>
                                 </p>
                                 <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_accuracy">Performance</p>
+                                    data-i18n="tpl_accuracy">Cost Visibility</p>
                             </div>
                             <div
                                 class="glass-panel p-6 rounded-2xl border border-bordercolor text-center hover:scale-105 transition-transform duration-300">
-                                <p class="text-4xl font-oswald text-textmain mb-1">10<span class="text-brand">k+</span>
+                                <p class="text-4xl font-oswald text-textmain mb-1">50<span class="text-brand">k+</span>
                                 </p>
                                 <p class="text-[10px] font-mono text-textmuted uppercase tracking-widest"
-                                    data-i18n="tpl_docs_day">Data Sources</p>
+                                    data-i18n="tpl_docs_day">Monitored Lives</p>
                             </div>
                         </div>
                         <p class="text-lg leading-relaxed text-textmuted font-light" data-i18n="tpl_results_desc">
@@ -698,47 +712,47 @@
         const translations = {
             en: {
                 back_projects: "Back to Projects",
-                tpl_title1: "BI Analytics",
-                tpl_title2: "& Modeling",
+                tpl_title1: "Group &",
+                tpl_title2: "Sinistrality Analytics",
                 tpl_view_dashboard: "View Dashboard",
                 tpl_problem: "Problem",
-                tpl_problem_title: "Lack of unified metric definitions.",
-                tpl_problem_desc: "When data sources mismatch, leadership lacks a reliable single source of truth for metrics.",
+                tpl_problem_title: "No unified view for government groups.",
+                tpl_problem_desc: "The big issue was managing various government groups (ministries, public bodies) without a way to track loss ratios or member evolution. Stakeholders stayed in the dark regarding costs versus usage, which created strategic blind spots and made it impossible to identify which accounts were sustainable.",
                 tpl_solution: "Solution",
-                tpl_solution_title: "Unified Power BI Data Model.",
-                tpl_solution_desc: "Combining multiple obtained datasets and harmonizing them through deep DAX modeling.",
-                tpl_solution_list1: "Harmonizing disparate data formats",
-                tpl_solution_list2: "Advanced DAX context transition",
-                tpl_solution_list3: "Performance optimization",
+                tpl_solution_title: "Unified dashboard with SQL and Python.",
+                tpl_solution_desc: "To solve this, I extracted the data directly via SQL from Databricks and used Python to treat data from other areas that came in different formats. In Power BI, I built the entire modeling structure, creating complex relationships between tables and developing several DAX formulas to reach exact loss ratio and cost participation values. I also focused heavily on visualization and storytelling to ensure managers could clearly see the portfolio profile and customer types, which made decision-making much faster.",
+                tpl_solution_list1: "Deep SQL extraction and Python data treatment",
+                tpl_solution_list2: "Advanced DAX modeling for accurate loss ratios",
+                tpl_solution_list3: "Strategic storytelling and visual dashboards",
                 tpl_tech_stack: "Tech Stack",
                 tpl_results: "Results",
-                tpl_time_saved: "Queries",
-                tpl_accuracy: "Performance",
-                tpl_docs_day: "Data Sources",
-                tpl_results_desc: "A reliable, high-performance data model serving as the foundation for executive dashboards.",
+                tpl_time_saved: "Government Entities",
+                tpl_accuracy: "Cost Visibility",
+                tpl_docs_day: "Monitored Lives",
+                tpl_results_desc: "The managers used the dashboard in high-level meetings with government clients to direct energy toward the most strategic groups, improving both the relationship and the financial bottom line.",
                 tpl_next_project_label: "Next Project",
                 tpl_next_project_title: "Web Scraping"
             },
             pt: {
                 back_projects: "Voltar a Projetos",
-                tpl_title1: "BI Analytics",
-                tpl_title2: "& Modelagem",
+                tpl_title1: "Análise de Grupos",
+                tpl_title2: "& Sinistralidade",
                 tpl_view_dashboard: "Ver Dashboard",
                 tpl_problem: "Problema",
-                tpl_problem_title: "Baixa confiabilidade nas métricas.",
-                tpl_problem_desc: "Quando as fontes de dados divergem, os gestores ficam sem uma fonte única de verdade para suas métricas.",
+                tpl_problem_title: "Falta de visão unificada para grupos governamentais.",
+                tpl_problem_desc: "O grande problema era gerir vários grupos do governo (como ministérios e órgãos públicos) sem ter como acompanhar a sinistralidade ou a evolução dos membros. Os gestores ficavam no escuro sobre quanto cada grupo pagava e quanto utilizava, o que gerava muitos pontos cegos estratégicos e impedia identificar quais contas eram sustentáveis.",
                 tpl_solution: "Solução",
-                tpl_solution_title: "Modelo Unificado com Power BI.",
-                tpl_solution_desc: "Combinação de múltiplos relatórios e sua harmonização através da modelagem robusta utilizando DAX.",
-                tpl_solution_list1: "Uniformização de formatos distintos",
-                tpl_solution_list2: "Transições de contexto complexas em DAX",
-                tpl_solution_list3: "Otimização de performance de consultas",
+                tpl_solution_title: "Dashboard unificado com SQL e Python.",
+                tpl_solution_desc: "Para resolver isso, eu extraí os dados diretamente via SQL do Databricks e usei o Python para tratar dados de outras áreas que vinham em formatos diferentes. No Power BI, construí toda a estrutura de modelagem, criando relacionamentos entre as tabelas e desenvolvendo várias fórmulas e cálculos em DAX para chegar nos valores exatos de sinistralidade e participação de gastos. Também foquei muito na parte de visualização e storytelling para garantir que os gestores conseguissem enxergar exatamente o perfil da carteira e o tipo de cliente, facilitando muito a tomada de decisão.",
+                tpl_solution_list1: "Extração profunda via SQL e tratamento em Python",
+                tpl_solution_list2: "Modelagem avançada em DAX para sinistralidade precisa",
+                tpl_solution_list3: "Storytelling estratégico e dashboards visuais",
                 tpl_tech_stack: "Tecnologias Usadas",
                 tpl_results: "Resultados",
-                tpl_time_saved: "Consultas",
-                tpl_accuracy: "Performance",
-                tpl_docs_day: "Fontes",
-                tpl_results_desc: "Garantia de integridade e velocidade para entrega de relatórios e tomada de decisão gerencial.",
+                tpl_time_saved: "Entidades Públicas",
+                tpl_accuracy: "Visibilidade de Custos",
+                tpl_docs_day: "Vidas Monitoradas",
+                tpl_results_desc: "Os gestores utilizaram o painel em reuniões de alto nível com os clientes do governo para direcionar a energia nos grupos mais estratégicos, melhorando muito a gestão financeira e o relacionamento.",
                 tpl_next_project_label: "Próximo Projeto",
                 tpl_next_project_title: "Web Scraping"
             }
