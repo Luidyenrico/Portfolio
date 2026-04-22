@@ -55,6 +55,7 @@
                         'led-glitch': 'led-glitch 4s infinite',
                         'scanline': 'scanline 4s linear infinite',
                         'wave': 'wave 8s linear infinite',
+                        'pulse-border': 'pulse-border 2s ease-in-out infinite',
                     },
                     keyframes: {
                         float: {
@@ -62,8 +63,8 @@
                             '50%': { transform: 'translateY(-20px)' },
                         },
                         'pulse-glow': {
-                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(212, 242, 104, 0.4)' },
-                            '50%': { opacity: 1, transform: 'scale(1.05)', boxShadow: '0 0 20px 10px rgba(212, 242, 104, 0.2)' }
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(var(--brand-rgb), 0.4)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)', boxShadow: '0 0 20px 10px rgba(var(--brand-rgb), 0.2)' }
                         },
                         'led-glitch': {
                             '0%, 84%': { opacity: 1, filter: 'brightness(1.05) contrast(1.10)' },
@@ -84,6 +85,10 @@
                         'wave': {
                             '0%': { backgroundPosition: '0 0' },
                             '100%': { backgroundPosition: '0 100%' }
+                        },
+                        'pulse-border': {
+                            '0%, 100%': { borderColor: 'rgba(var(--brand-rgb), 0.4)', boxShadow: '0 0 5px rgba(var(--brand-rgb), 0.1)' },
+                            '50%': { borderColor: 'rgba(var(--brand-rgb), 1)', boxShadow: '0 0 15px rgba(var(--brand-rgb), 0.4)' }
                         }
                     }
                 }
@@ -103,6 +108,7 @@
             --accent-fg: #FFFFFF;
             --glow-color: rgba(28, 28, 28, 0.1);
             --brand-color: #6a801b;
+            --brand-rgb: 106, 128, 27;
             --cursor-color: rgba(0, 0, 0, 0.5);
             --glass-bg: rgba(228, 228, 231, 0.8);
         }
@@ -118,6 +124,7 @@
             --accent-fg: #000000;
             --glow-color: rgba(255, 255, 255, 0.1);
             --brand-color: #C3E354;
+            --brand-rgb: 195, 227, 84;
             --cursor-color: rgba(255, 255, 255, 0.5);
             --glass-bg: rgba(0, 0, 0, 0.4);
         }
@@ -126,16 +133,65 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             transition: background-color 0.5s ease, color 0.5s ease;
-            cursor: none;
             overflow-x: hidden;
         }
 
-        a,
-        button,
-        input,
-        select,
-        textarea {
-            cursor: none;
+        @media (pointer: fine) {
+            body, a, button, input, select, textarea, .cursor-none { 
+                cursor: none !important; 
+            }
+
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: var(--text-main);
+                border-radius: 50%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background-color 0.2s;
+            }
+
+            .cursor-outline {
+                width: 48px;
+                height: 48px;
+                border: 1px solid var(--text-main);
+                border-radius: 50%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: 9998;
+                transform: translate(-50%, -50%);
+                transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+            }
+
+            .cursor-hover .cursor-dot {
+                background-color: transparent;
+            }
+
+            .cursor-hover .cursor-outline {
+                width: 36px;
+                height: 36px;
+                background-color: var(--glass-bg);
+                border-color: var(--text-muted);
+                backdrop-filter: blur(2px);
+            }
+        }
+
+        /* Hide cursor elements by default (Mobile/Touch) */
+        .cursor-dot, .cursor-outline {
+            display: none;
+        }
+
+        /* Show them only on Desktop */
+        @media (pointer: fine) {
+            .cursor-dot, .cursor-outline {
+                display: block;
+            }
         }
 
         ::-webkit-scrollbar {
@@ -149,46 +205,6 @@
         ::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 3px;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--text-main);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-
-        .cursor-outline {
-            width: 48px;
-            height: 48px;
-            border: 1px solid var(--text-main);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
-        }
-
-        .cursor-hover .cursor-dot {
-            background-color: transparent;
-        }
-
-        .cursor-hover .cursor-outline {
-            width: 36px;
-            height: 36px;
-            background-color: var(--glass-bg);
-            border-color: var(--text-muted);
-            backdrop-filter: blur(2px);
         }
 
         .text-reveal-wrapper {
@@ -208,6 +224,24 @@
             transform: translateY(0);
             opacity: 1;
         }
+
+        /* Mobile Tap Support for Experience Cards (covers all group-hover states) */
+        .group.is-tapped .group-hover\:grid-rows-\[1fr\] { grid-template-rows: 1fr !important; }
+        .group.is-tapped .group-hover\:opacity-100 { opacity: 1 !important; }
+        .group.is-tapped .group-hover\:scale-\[1\.5\] { transform: scale(1.5) !important; }
+        .group.is-tapped .group-hover\:scale-150 { transform: scale(1.5) !important; }
+        .group.is-tapped .group-hover\:rotate-12 { transform: rotate(12deg) scale(1.5) !important; }
+        .group.is-tapped .group-hover\:-rotate-12 { transform: rotate(-12deg) scale(1.5) !important; }
+        .group.is-tapped .group-hover\:border-accent { border-color: var(--brand-color) !important; }
+        .group.is-tapped .group-hover\:bg-accent { background-color: var(--brand-color) !important; }
+        .group.is-tapped .group-hover\:w-full { width: 100% !important; }
+        .group.is-tapped .glass-panel { 
+            background-color: var(--surface) !important; 
+            border-color: rgba(var(--brand-rgb), 0.4) !important;
+            box-shadow: 0 -25px 50px -12px rgba(0,0,0,0.25), 0 0 20px var(--glow-color) !important;
+        }
+        .group.is-tapped .group-hover\:shadow-glow\/50 { box-shadow: 0 0 20px var(--glow-color) !important; }
+        .group.is-tapped .group-hover\:animate-ping { animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite !important; }
 
         .text-transparent-stroke {
             color: transparent;
@@ -632,7 +666,7 @@
             <div class="absolute inset-0 pointer-events-none hero-pattern z-0 opacity-10"></div>
 
             <!-- Header -->
-            <div class="px-6 md:px-12 max-w-7xl mx-auto w-full mb-4 reveal relative z-20 pointer-events-none">
+            <div class="px-6 md:px-12 max-w-7xl mx-auto w-full mb-8 reveal relative z-20 pointer-events-none">
                 <div class="pointer-events-auto">
                     <span class="text-xs font-mono uppercase text-textmuted mb-2 block tracking-widest"
                         data-i18n="idx_exp_kicker">Career</span>
@@ -662,240 +696,246 @@
 
                 <!-- Scroll Container -->
                 <div id="timeline-scroll"
-                    class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory pt-0 md:pt-4 pb-2 w-full pl-6 md:pl-12 pr-[10vw] gap-0 relative scroll-smooth cursor-grab active:cursor-grabbing max-w-7xl mx-auto"
+                    class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory pt-4 pb-12 w-full pl-6 md:pl-12 pr-[10vw] gap-0 relative scroll-smooth cursor-grab active:cursor-grabbing max-w-7xl mx-auto"
                     style="scrollbar-width: none; -ms-overflow-style: none;">
 
                     <!-- Line Start (Hidden to let node touch edge) -->
                     <div class="shrink-0 w-0 h-[2px] bg-gradient-to-r from-transparent to-bordercolor hidden"></div>
 
                     <!-- Timeline Item 1 -->
-                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
-                            </div>
-                            <div
-                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
-                            </div>
-                            <div
-                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                    <div class="flex flex-col items-center shrink-0 snap-center group select-none cursor-none timeline-item">
+                        <!-- Axis Row -->
+                        <div class="flex items-center relative h-24 w-[340px] md:w-[390px] lg:w-[440px]">
+                            <div class="flex flex-col items-center justify-center w-full shrink-0 z-20 relative">
                                 <div
-                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-brand group-hover:bg-brand group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0">
+                                </div>
+                                <!-- Starting Point Marker -->
+                                <div class="absolute bottom-full mb-4 flex flex-col items-center animate-bounce-slow">
+                                    <span class="text-[10px] font-mono tracking-[0.2em] text-accent uppercase mb-1 opacity-70" data-i18n="idx_exp_start_label">The Start</span>
+                                    <i data-lucide="flag" class="w-4 h-4 text-accent opacity-70"></i>
+                                    <div class="w-[1px] h-4 bg-gradient-to-t from-accent/50 to-transparent mt-1"></div>
+                                </div>
+                            </div>
+                            <!-- Connector Line -->
+                            <div class="absolute left-1/2 top-1/2 -translate-y-1/2 w-[340px] md:w-[390px] lg:w-[440px] h-[2px] bg-bordercolor z-0 transition-all">
+                                <div
+                                    class="absolute left-0 top-0 h-full bg-brand w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Row -->
+                        <div class="w-[280px] md:w-[320px] lg:w-[360px] px-4 -mt-2">
+                            <div
+                                class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50 cursor-pointer" onclick="this.parentElement.parentElement.classList.toggle('expanded')">
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                    <i data-lucide="server" class="w-24 h-24 text-textmain"></i>
+                                </div>
+                                <div class="relative z-10">
                                     <div
-                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
-                                        <i data-lucide="database" class="w-24 h-24 text-textmain"></i>
+                                        class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                        <span data-i18n="idx_exp_year5">2023</span>
                                     </div>
-                                    <div class="relative z-10">
-                                        <div
-                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
-                                            <span data-i18n="idx_exp_year1">2025 - Present</span>
-                                        </div>
-                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
-                                            data-i18n="idx_exp_role1">Data Analyst</h3>
-                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
-                                            data-i18n="idx_exp_company1">@ CNM</h4>
-                                        <div
-                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
-                                            <div class="min-h-0">
-                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
-                                                    data-i18n="idx_exp_desc1"></p>
-                                            </div>
+                                    <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                        data-i18n="idx_exp_role5">Data Intern</h3>
+                                    <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                        data-i18n="idx_exp_company5">@ Methabio Farmacêutica</h4>
+                                    <div
+                                        class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] [.expanded_&]:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                        <div class="min-h-0">
+                                            <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 [.expanded_&]:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                data-i18n="idx_exp_desc5"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
-                            <div
-                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
-                            </div>
-                        </div>
                     </div>
+
                     <!-- Timeline Item 2 -->
-                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-end pb-10 shrink-0 pointer-events-auto z-10 px-4">
+                    <div class="flex flex-col items-center shrink-0 snap-center group select-none cursor-none timeline-item">
+                        <!-- Axis Row -->
+                        <div class="flex items-center relative h-24 w-[340px] md:w-[390px] lg:w-[440px]">
+                            <div class="flex flex-col items-center justify-center w-full shrink-0 z-20 relative">
                                 <div
-                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-2xl group-hover:shadow-glow/50">
+                                    class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-brand group-hover:bg-brand group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0">
+                                </div>
+                            </div>
+                            <div class="absolute left-1/2 top-1/2 -translate-y-1/2 w-[340px] md:w-[390px] lg:w-[440px] h-[2px] bg-bordercolor z-0 transition-all">
+                                <div
+                                    class="absolute left-0 top-0 h-full bg-brand w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Row -->
+                        <div class="w-[280px] md:w-[320px] lg:w-[360px] px-4 -mt-2">
+                            <div
+                                class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-brand/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                    <i data-lucide="bar-chart-2" class="w-24 h-24 text-textmain"></i>
+                                </div>
+                                <div class="relative z-10">
                                     <div
-                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
-                                        <i data-lucide="line-chart" class="w-24 h-24 text-textmain"></i>
+                                        class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                        <span data-i18n="idx_exp_year4">2024 - Present</span>
                                     </div>
-                                    <div class="relative z-10">
-                                        <div
-                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
-                                            <span data-i18n="idx_exp_year2">2024 - 2025</span>
-                                        </div>
-                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
-                                            data-i18n="idx_exp_role2">Data Analyst (Internship)</h3>
-                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
-                                            data-i18n="idx_exp_company2">@ Geap</h4>
-                                        <div
-                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
-                                            <div class="min-h-0">
-                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
-                                                    data-i18n="idx_exp_desc2"></p>
-                                            </div>
+                                    <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                        data-i18n="idx_exp_role4">Data Engineer</h3>
+                                    <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                        data-i18n="idx_exp_company4">@ Freelancer</h4>
+                                    <div
+                                        class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                        <div class="min-h-0">
+                                            <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                data-i18n="idx_exp_desc4"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
-                            </div>
-                            <div
-                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
-                            </div>
-                        </div>
-                        <div
-                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
-                            <div
-                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
-                            </div>
                         </div>
                     </div>
+
                     <!-- Timeline Item 3 -->
-                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
-                            </div>
-                            <div
-                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
-                            </div>
-                            <div
-                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                    <div class="flex flex-col items-center shrink-0 snap-center group select-none cursor-none timeline-item">
+                        <!-- Axis Row -->
+                        <div class="flex items-center relative h-24 w-[340px] md:w-[390px] lg:w-[440px]">
+                            <div class="flex flex-col items-center justify-center w-full shrink-0 z-20 relative">
                                 <div
-                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-brand group-hover:bg-brand group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0">
+                                </div>
+                            </div>
+                            <div class="absolute left-1/2 top-1/2 -translate-y-1/2 w-[340px] md:w-[390px] lg:w-[440px] h-[2px] bg-bordercolor z-0 transition-all">
+                                <div
+                                    class="absolute left-0 top-0 h-full bg-brand w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Row -->
+                        <div class="w-[280px] md:w-[320px] lg:w-[360px] px-4 -mt-2">
+                            <div
+                                class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-brand/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                    <i data-lucide="code-2" class="w-24 h-24 text-textmain"></i>
+                                </div>
+                                <div class="relative z-10">
                                     <div
-                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
-                                        <i data-lucide="code-2" class="w-24 h-24 text-textmain"></i>
+                                        class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                        <span data-i18n="idx_exp_year3">2025</span>
                                     </div>
-                                    <div class="relative z-10">
-                                        <div
-                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
-                                            <span data-i18n="idx_exp_year3">2025</span>
-                                        </div>
-                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
-                                            data-i18n="idx_exp_role3">Full Stack Dev</h3>
-                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
-                                            data-i18n="idx_exp_company3">@ Wehrmann</h4>
-                                        <div
-                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
-                                            <div class="min-h-0">
-                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
-                                                    data-i18n="idx_exp_desc3"></p>
-                                            </div>
+                                    <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                        data-i18n="idx_exp_role3">Full Stack Dev</h3>
+                                    <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                        data-i18n="idx_exp_company3">@ Wehrmann Agroindustrial</h4>
+                                    <div
+                                        class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                        <div class="min-h-0">
+                                            <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                data-i18n="idx_exp_desc3"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div
-                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
-                            <div
-                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
-                            </div>
-                        </div>
                     </div>
+
                     <!-- Timeline Item 4 -->
-                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-end pb-10 shrink-0 pointer-events-auto z-10 px-4">
+                    <div class="flex flex-col items-center shrink-0 snap-center group select-none cursor-none timeline-item">
+                        <!-- Axis Row -->
+                        <div class="flex items-center relative h-24 w-[340px] md:w-[390px] lg:w-[440px]">
+                            <div class="flex flex-col items-center justify-center w-full shrink-0 z-20 relative">
                                 <div
-                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-2xl group-hover:shadow-glow/50">
+                                    class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-brand group-hover:bg-brand group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0">
+                                </div>
+                            </div>
+                            <div class="absolute left-1/2 top-1/2 -translate-y-1/2 w-[340px] md:w-[390px] lg:w-[440px] h-[2px] bg-bordercolor z-0 transition-all">
+                                <div
+                                    class="absolute left-0 top-0 h-full bg-brand w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Row -->
+                        <div class="w-[280px] md:w-[320px] lg:w-[360px] px-4 -mt-2">
+                            <div
+                                class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-brand/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                    <i data-lucide="line-chart" class="w-24 h-24 text-textmain"></i>
+                                </div>
+                                <div class="relative z-10">
                                     <div
-                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:-rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
-                                        <i data-lucide="bar-chart-2" class="w-24 h-24 text-textmain"></i>
+                                        class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                        <span data-i18n="idx_exp_year2">2024 - 2025</span>
                                     </div>
-                                    <div class="relative z-10">
-                                        <div
-                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
-                                            <span data-i18n="idx_exp_year4">2024 - Present</span>
-                                        </div>
-                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
-                                            data-i18n="idx_exp_role4">Data Analyst</h3>
-                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
-                                            data-i18n="idx_exp_company4">@ Freelancer</h4>
-                                        <div
-                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
-                                            <div class="min-h-0">
-                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
-                                                    data-i18n="idx_exp_desc4"></p>
-                                            </div>
+                                    <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                        data-i18n="idx_exp_role2">Data Analyst (Internship)</h3>
+                                    <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                        data-i18n="idx_exp_company2">@ Geap Autogestão em Saúde</h4>
+                                    <div
+                                        class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                        <div class="min-h-0">
+                                            <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                data-i18n="idx_exp_desc2"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
-                            </div>
-                            <div
-                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
-                            </div>
-                        </div>
-                        <div
-                            class="shrink-0 w-[300px] md:w-[360px] lg:w-[440px] h-[2px] bg-bordercolor relative group cursor-hover-target z-0 transition-all -mx-[130px]">
-                            <div
-                                class="absolute left-0 top-0 h-full bg-accent w-0 group-hover:w-full transition-all duration-1000 ease-in-out opacity-80">
-                            </div>
                         </div>
                     </div>
+
                     <!-- Timeline Item 5 -->
-                    <div class="flex items-center shrink-0 snap-center group cursor-hover-target">
-                        <div class="flex flex-col items-center justify-center">
-                            <div
-                                class="h-[280px] md:h-[300px] w-4 pointer-events-none shrink-0 border-r border-dashed border-bordercolor/20 mr-4 opacity-0">
-                            </div>
-                            <div
-                                class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-accent group-hover:bg-accent group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0 -my-[16px]">
-                            </div>
-                            <div
-                                class="h-[280px] md:h-[300px] w-[320px] flex flex-col justify-start pt-10 shrink-0 pointer-events-auto z-10 px-4">
+                    <div class="flex flex-col items-center shrink-0 snap-center group select-none cursor-none timeline-item">
+                        <!-- Axis Row -->
+                        <div class="flex items-center relative h-24 w-[340px] md:w-[390px] lg:w-[440px]">
+                            <div class="flex flex-col items-center justify-center w-full shrink-0 z-20 relative">
                                 <div
-                                    class="glass-panel p-6 md:p-8 rounded-3xl border border-bordercolor bg-surface/50 group-hover:bg-surface group-hover:border-accent/40 shadow-sm transition-all duration-500 relative overflow-hidden backdrop-blur-md group-hover:shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] group-hover:shadow-glow/50">
+                                    class="w-5 h-5 rounded-full bg-surface border-2 border-textmuted group-hover:border-brand group-hover:bg-brand group-hover:scale-[1.5] transition-all duration-500 shadow-[0_0_0_6px_var(--bg-main)] group-hover:shadow-[0_0_20px_var(--glow-color)] z-20 relative shrink-0">
+                                </div>
+                                <!-- Present Day Marker -->
+                                <div class="absolute bottom-full mb-4 flex flex-col items-center">
+                                    <span class="text-[10px] font-mono tracking-[0.2em] text-accent uppercase mb-1 animate-pulse" data-i18n="idx_exp_present_label">Present</span>
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-accent animate-pulse"></i>
+                                    <div class="w-[1px] h-4 bg-gradient-to-t from-accent to-transparent mt-1 shadow-[0_0_10px_var(--accent)]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Row -->
+                        <div class="w-[280px] md:w-[320px] lg:w-[360px] px-4 -mt-2">
+                            <div
+                                class="glass-panel p-6 md:p-8 rounded-3xl border-2 border-brand bg-surface/80 group-hover:bg-surface shadow-sm animate-pulse-border transition-all duration-500 relative overflow-hidden backdrop-blur-md">
+                                <div
+                                    class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
+                                    <i data-lucide="database" class="w-24 h-24 text-textmain"></i>
+                                </div>
+                                <div class="relative z-10">
                                     <div
-                                        class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 group-hover:rotate-12 group-hover:scale-150 transition-all duration-700 pointer-events-none">
-                                        <i data-lucide="server" class="w-24 h-24 text-textmain"></i>
+                                        class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
+                                        <span data-i18n="idx_exp_year1">2025 - Present</span>
                                     </div>
-                                    <div class="relative z-10">
-                                        <div
-                                            class="text-brand font-mono text-xs tracking-widest uppercase mb-3 flex items-center gap-2">
-                                            <span
-                                                class="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping"></span>
-                                            <span data-i18n="idx_exp_year5">2023</span>
-                                        </div>
-                                        <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
-                                            data-i18n="idx_exp_role5">Data Intern</h3>
-                                        <h4 class="text-sm font-instrument text-textmuted mb-0"
-                                            data-i18n="idx_exp_company5">@ Methabio</h4>
-                                        <div
-                                            class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
-                                            <div class="min-h-0">
-                                                <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
-                                                    data-i18n="idx_exp_desc5"></p>
-                                            </div>
+                                    <h3 class="text-2xl font-oswald uppercase text-textmain mb-1 tracking-tight"
+                                        data-i18n="idx_exp_role1">Data Analyst</h3>
+                                    <h4 class="text-sm font-instrument text-textmuted mb-0"
+                                        data-i18n="idx_exp_company1">@ CNM - Confederação Nacional de Municípios</h4>
+                                    <div
+                                        class="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-500 overflow-hidden">
+                                        <div class="min-h-0">
+                                            <p class="font-instrument text-sm text-textmuted leading-relaxed mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 border-t border-bordercolor border-dashed pt-4"
+                                                data-i18n="idx_exp_desc1"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Line End Removed -->
-
-                </div> <!-- End Scrolling container -->
+                </div>
 
                 <!-- Scroll Hint & Controls -->
                 <div class="flex items-center justify-center gap-6 z-20 pointer-events-auto mt-4 mb-4 relative pb-8">
@@ -1011,16 +1051,16 @@
                                             class="w-[18px] h-[18px] group-hover:scale-110 group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
                                     </a>
                                     <div class="w-px h-4 bg-bordercolor opacity-60 mx-1"></div>
-                                    <div tabindex="0" aria-label="Download CV Options"
+                                        <div tabindex="0" aria-label="Download CV Options"
                                         class="relative flex items-center gap-2 text-textmain opacity-50 hover:opacity-100 focus:opacity-100 hover:text-brand focus:text-brand transition-all duration-300 group cursor-hover-target outline-none">
                                         <i data-lucide="download"
                                             class="w-[18px] h-[18px] group-hover:scale-110 group-focus:scale-110 group-hover:-translate-y-0.5 group-focus:-translate-y-0.5 group-hover:drop-shadow-[0_0_8px_var(--brand-color)] group-focus:drop-shadow-[0_0_8px_var(--brand-color)] transition-transform duration-300"></i>
                                         <span
-                                            class="text-[10px] uppercase font-mono tracking-widest leading-none mt-0.5 font-bold mix-blend-screen">CV</span>
+                                            class="text-[10px] uppercase font-mono tracking-widest leading-none mt-0.5 font-bold">CV</span>
 
                                         <!-- Dropdown Menu -->
                                         <div
-                                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 flex flex-col w-32 p-1.5 rounded-xl bg-surface/95 backdrop-blur-md border border-bordercolor opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus:opacity-100 group-focus:visible transition-all duration-300 translate-y-3 group-hover:translate-y-0 group-focus:translate-y-0 z-50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
+                                            class="absolute top-full left-1/2 -translate-x-1/2 mt-4 flex flex-col w-32 p-1.5 rounded-xl bg-surface backdrop-blur-md border border-bordercolor opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus:opacity-100 group-focus:visible transition-all duration-300 -translate-y-3 group-hover:translate-y-0 group-focus:translate-y-0 z-50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]">
                                             <a href="assets/cv.pdf" target="_blank" rel="noopener noreferrer" download
                                                 class="flex items-center justify-between px-3 py-2.5 text-[10px] font-mono uppercase tracking-widest text-textmuted hover:text-textmain hover:bg-brand/10 rounded-lg transition-colors">
                                                 <span>PT</span>
@@ -1754,9 +1794,9 @@
                             class="absolute inset-0 bg-gradient-to-b from-brand/0 to-brand/10 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 z-0">
                         </div>
 
-                        <!-- Main Content (slides up slightly on hover/focus) -->
+                        <!-- Main Content (slides up gracefully on hover/focus) -->
                         <div
-                            class="flex flex-col items-center justify-center gap-4 transition-transform duration-500 group-hover:-translate-y-3 group-focus:-translate-y-3">
+                            class="flex flex-col items-center justify-center gap-4 transition-transform duration-500 group-hover:-translate-y-10 group-focus:-translate-y-10">
                             <div
                                 class="relative z-10 w-16 h-16 rounded-2xl bg-brand/20 border border-brand/30 flex items-center justify-center group-hover:scale-110 group-focus:scale-110 group-hover:border-transparent group-focus:border-transparent group-hover:bg-brand group-focus:bg-brand transition-all duration-500 group-hover:shadow-[0_0_20px_0px_var(--brand-color)] group-focus:shadow-[0_0_20px_0px_var(--brand-color)]">
                                 <iconify-icon icon="lucide:download"
@@ -1829,25 +1869,41 @@
         // Initialize Icons
         lucide.createIcons();
 
-        // Custom Cursor
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOutline = document.getElementById('cursor-outline');
+        // Custom Cursor Logic (Only for devices with mouse)
+        if (window.matchMedia('(pointer: fine)').matches) {
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-outline');
 
-        window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
 
-        const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-hover-target, iconify-icon');
-        interactiveElements.forEach((el) => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-hover-target, iconify-icon');
+            interactiveElements.forEach((el) => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+             });
+        }
+
+        // Toggle Experience Cards on Mobile Tap
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Prevent interference if clicking buttons/links inside (though there are none currently)
+                if (e.target.closest('a, button')) return;
+                
+                const isTapped = item.classList.contains('is-tapped');
+                // Close others
+                document.querySelectorAll('.timeline-item').forEach(other => other.classList.remove('is-tapped'));
+                // Toggle current
+                if (!isTapped) item.classList.add('is-tapped');
+            });
         });
 
         // Theme Toggle
