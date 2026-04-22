@@ -128,16 +128,21 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             transition: background-color 0.5s ease, color 0.5s ease;
-            cursor: none;
             overflow-x: hidden;
         }
 
-        a,
-        button,
-        input,
-        select,
-        textarea {
-            cursor: none;
+        @media (pointer: fine) {
+            body, a, button, input, select, textarea, .cursor-none { 
+                cursor: none !important; 
+            }
+
+            .cursor-dot {
+                display: block;
+            }
+
+            .cursor-outline {
+                display: block;
+            }
         }
 
         ::-webkit-scrollbar {
@@ -165,6 +170,7 @@
             z-index: 99999;
             transform: translate(-50%, -50%);
             transition: width 0.2s, height 0.2s, background-color 0.2s;
+            display: none;
         }
 
         .cursor-outline {
@@ -179,6 +185,7 @@
             z-index: 99998;
             transform: translate(-50%, -50%);
             transition: width 0.5s, height 0.5s, border-color 0.2s, background-color 0.2s;
+            display: none;
         }
 
         .cursor-hover .cursor-dot {
